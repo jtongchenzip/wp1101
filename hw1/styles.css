@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Maven+Pro:wght@500&family=Open+Sans+Condensed:wght@300&display=swap');
+
 * {
     box-sizing: border-box;
 }
@@ -11,30 +13,22 @@ body {
     border: 0.1vw solid #dec3c3;
     width: 85%;
     float: right;
-    /* top: -5px; */
-    /* margin: -0.5%; */
-    /* padding: 5px; */
 }
 
 .header h2 {
-    /* margin-top: 5%; */
     padding-left: 1%;
-    /* font-size: 200%; */
+    font-size: 80%;
 }
 
 .title {
     border: 0.1vw solid #dec3c3;
     width: 85%;
     float: right;
-    top: 0;
-    margin: 0%;
     padding-left: 1%;
 }
 
 .title h2 {
-    /* margin-top: 5%; */
-    padding: 0vw;
-    /* font-size: 200%; */
+    font-size: 2.0vw;
 }
 
 .sidebar {
@@ -43,7 +37,6 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    /* overflow-y: auto; */
     padding-top: 1%;
     background-color: #e7d3d3;
     border: 0.1vw solid #dec3c3;
@@ -52,11 +45,13 @@ body {
 .sidebar h1 {
     margin: 5%;
     padding-bottom: 15%;
-    font-size: 2.4vw;
+    font-size: 2.8vw;
+    color:  #854442;
 }
 
 .previewarea {
     width: 50%;
+    height: 100vh;
     float: right;
     padding: 1.5vw;
     border: 0.1vw solid #dec3c3;
@@ -64,6 +59,7 @@ body {
   
 .showarea {
     width: 35%;
+    height: 100vh;
     float: right;
     padding: 1.5vw;
     border: 0.1vw solid #dec3c3;
@@ -71,10 +67,12 @@ body {
 
 .showarea p {
     margin: 0.5vw;
+    font-size: 1.5vw;
 }
 
 .previewarea p {
     margin: 0.5vw;
+    font-size: 1.5vw;
 }
 
 div.preview{
@@ -91,7 +89,6 @@ div.preview:hover {
     position: static;
     width: 50%; 
     height: auto;
-    /* display: block; */
 }
   
 div.preview img {
@@ -100,80 +97,44 @@ div.preview img {
 }
 
 div.preview p {
-    font-size: 0.3vw;
+    font-size: 0.5vw;
     text-align: center;
+    overflow: hidden;
 }
 
 div.show{
-    /* position: relative; */
-    margin-left: 2%;
-    margin-right: 2%;
-    margin-top: 2%;
-    margin-bottom: 2%;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-top: 1%;
+    margin-bottom: 1%;
     border: 0.3vw solid #be9b7b;
-    /* float: left; */
     width: 95%; 
     height: auto;
 }
 
-/* div.show:hover {
-    border: 1px solid lightsalmon;
-    width: 100%; 
-    height: auto;
-} */
+div.show:hover {
+    border: 0.6vw solid #be9b7b;
+    position: static;
+}
   
 div.show img {
     max-width: 90%;
     height: auto;
 }
 
-/* .responsive {
-    padding: 0 6px;
-    float: left;
-    width: 24.99999%;
-    width: 15%;
-} 
-
-@media only screen and (max-width: 700px) {
-    .responsive {
-      width: 49.99999%;
-      margin: 6px 0;
-    }
-  }
-  
-@media only screen and (max-width: 500px) {
-    .responsive {
-      width: 100%;
-    }
-}
-
-.clearfix:after {
-    content: "";
-    display: table;
-    clear: both;
-}  */
-
-/* .container {
-    position: relative;
-    width: 50%;
-} */
-
 h1 {
-    color: #854442;
-    font-family: verdana;
-    font-size: 300%;
+    color: #4b3832;
+    font-family: 'Maven Pro', sans-serif;
 }
 
 h2 {
     color: #854442;
-    font-family: verdana;
-    /* font-size: 300%; */
+    font-family: 'Maven Pro', sans-serif;
 }
 
 p {
     color: #854442;
-    font-family: verdana;
-    /* font-size: 300%; */
+    font-family: 'Maven Pro', sans-serif;
 }
 
 img.center {
@@ -186,18 +147,27 @@ img.center {
 
 button {
     border:0;
+    margin: 3%;
+
     background-color:  #c99789;
     color:#ffe9dc;
+
     border-radius: 10vw;
     width: 70%;
     height: 5%;
     cursor: pointer;
-    margin: 3%;
+    
+    font-family: 'Maven Pro', sans-serif;
     font-size: 1.25vw;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;  
 }
-      
+
 button:hover{
     color: #c99789;
     background-color:#fff;
-    border:0.2vw  #c99789 solid;
+    border: 0.2vw  #c99789 solid;
+    overflow: hidden;
 }

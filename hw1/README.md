@@ -16,9 +16,10 @@
 3. div for selecting albums with buttons
 4. feedback for hovering on preview photo (by enlarging the photo)
 5. sidebar
-6. 80% of RWD
+6. 90% of RWD
+7. hide overflow texts in preview area
 
 ## Known Bugs
-1. the width of sidebar is fixed, doesn't do RWD
-2. Text of Album name overflow with the scale of 250%
-3. With the scale of 100%, image4 flickers when hovering
+1. The width of sidebar is fixed, doesn't do RWD
+2. With the scale of 100%, image4 flickers when hovering ocassionally
+3. Text in button vertically overflow at 400%
