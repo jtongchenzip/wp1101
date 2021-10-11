@@ -3,12 +3,12 @@
 }
 
 body {
-    background-color: lightcyan;
+    background-color: #f0e4e4;
     opacity: 1;
 }
 
 .header {
-    border: 0.1vw solid red;
+    border: 0.1vw solid #dec3c3;
     width: 85%;
     float: right;
     /* top: -5px; */
@@ -23,7 +23,7 @@ body {
 }
 
 .title {
-    border: 0.1vw solid red;
+    border: 0.1vw solid #dec3c3;
     width: 85%;
     float: right;
     top: 0;
@@ -45,8 +45,8 @@ body {
     left: 0;
     /* overflow-y: auto; */
     padding-top: 1%;
-    background-color: lightblue;
-    border: 0.1vw solid red;
+    background-color: #e7d3d3;
+    border: 0.1vw solid #dec3c3;
 }
 
 .sidebar h1 {
@@ -59,14 +59,14 @@ body {
     width: 50%;
     float: right;
     padding: 1.5vw;
-    border: 0.1vw solid red;
+    border: 0.1vw solid #dec3c3;
 }
   
 .showarea {
     width: 35%;
     float: right;
     padding: 1.5vw;
-    border: 0.1vw solid red;
+    border: 0.1vw solid #dec3c3;
 }
 
 .showarea p {
@@ -80,14 +80,14 @@ body {
 div.preview{
     position: relative;
     margin: 0.5vw;
-    border: 0.1vw solid lightgray;
+    border: 0.1vw solid #be9b7b;
     float: left;
     width: 20%; 
     height: auto;
 }
 
 div.preview:hover {
-    border: 0.3vw solid lightsteelblue;
+    border: 0.3vw solid #be9b7b;
     position: static;
     width: 50%; 
     height: auto;
@@ -110,7 +110,7 @@ div.show{
     margin-right: 2%;
     margin-top: 2%;
     margin-bottom: 2%;
-    border: 0.3vw solid darkslategrey;
+    border: 0.3vw solid #be9b7b;
     /* float: left; */
     width: 95%; 
     height: auto;
@@ -159,19 +159,19 @@ div.show img {
 } */
 
 h1 {
-    color: black;
+    color: #854442;
     font-family: verdana;
     font-size: 300%;
 }
 
 h2 {
-    color: black;
+    color: #854442;
     font-family: verdana;
     /* font-size: 300%; */
 }
 
 p {
-    color: black;
+    color: #854442;
     font-family: verdana;
     /* font-size: 300%; */
 }
@@ -186,8 +186,8 @@ img.center {
 
 button {
     border:0;
-    background-color: rgba(84, 84, 253, 0.877);
-    color:rgba(233, 227, 227, 0.856);
+    background-color:  #c99789;
+    color:#ffe9dc;
     border-radius: 10vw;
     width: 70%;
     height: 5%;
@@ -197,7 +197,7 @@ button {
 }
       
 button:hover{
-    color:rgba(84, 84, 253, 0.877);
+    color: #c99789;
     background-color:#fff;
-    border:0.2vw rgba(84, 84, 253, 0.877) solid;
+    border:0.2vw  #c99789 solid;
 }
