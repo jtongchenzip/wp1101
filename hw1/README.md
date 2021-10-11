@@ -18,7 +18,7 @@
 5. sidebar
 6. 80% of RWD
 
-## Knows Bugs
+## Known Bugs
 1. the width of sidebar is fixed, doesn't do RWD
 2. Text of Album name overflow with the scale of 250%
 3. With the scale of 100%, image4 flickers when hovering
