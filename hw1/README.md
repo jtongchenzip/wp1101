@@ -1,13 +1,14 @@
 # wp1101 hw1 Digital Album
 #### 2021/10/11
 
-### Required functions
+## Requirements
+### Basics
 1. div for previewing photos
 2. div for displaying photos
 3. div for selecting albums
 4. feedback for hovering on preview photo
 
-### Advanced Requirements
+### Advance
 1. Responsive Web Design
 
 ## What I've done
