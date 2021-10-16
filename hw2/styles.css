@@ -124,51 +124,6 @@ img.center {
     font-size: 1.5vw;
 }
 
-/* #previewContainer {
-    position: relative;
-    margin: 0.5vw;
-    border: 0.1vw solid #be9b7b;
-    float: left;
-    width: 20%; 
-    height: fit-content;
-}
-
-#previewContainer:hover {
-    border: 0.3vw solid #be9b7b;
-    position: static;
-    width: 30%; 
-    height: auto;
-}
-  
-#previewContainer img {
-    display: block;
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-top: 5%;
-    margin-bottom: 5%;
-    max-width: 90%;
-    height: auto;
-}
-
-#previewContainer p {
-    font-size: 0.5vw;
-    text-align: center;
-    overflow: hidden;
-} */
-
-/* .previewarea {
-    width: 50%;
-    height: 100vh;
-    float: right;
-    padding: 1.5vw;
-    border: 0.1vw solid #dec3c3;
-}
-
-.previewarea p {
-    margin: 0.5vw;
-    font-size: 1.5vw;
-} */
-
 .previewContainer {
     background-color: #f0e4e4;
     position: relative;
