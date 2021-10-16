@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Maven+Pro:wght@500&family=Open+Sans+Condensed:wght@300&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f0e4e4;
+    opacity: 1;
+}
+
+.header {
+    border: 0.1vw solid #dec3c3;
+    width: 85%;
+    float: right;
+}
+
+.header h2 {
+    padding-left: 1%;
+    font-size: 80%;
+}
+
+.title {
+    border: 0.1vw solid #dec3c3;
+    width: 85%;
+    float: right;
+    padding-left: 1%;
+}
+
+.title h2 {
+    font-size: 2.0vw;
+}
+
+.sidebar {
+    height: 100%;
+    width: 15%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 1%;
+    background-color: #e7d3d3;
+    border: 0.1vw solid #dec3c3;
+}
+
+.sidebar h1 {
+    margin: 5%;
+    padding-bottom: 15%;
+    font-size: 2.8vw;
+    color:  #854442;
+}
+  
+#showarea {
+    width: 35%;
+    height: 100vh;
+    float: right;
+    padding: 1.5vw;
+    border: 0.1vw solid #dec3c3;
+}
+
+#showarea p {
+    margin: 0.5vw;
+    font-size: 1.5vw;
+}
+
+#show{
+    background-color:#be9b7b;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    border: 0.3vw solid #fff;
+    width: 95%; 
+    height: auto;
+}
+
+#show:hover {
+    border: 0.6vw solid #fff;
+    position: static;
+}
+  
+#show img {
+    max-width: 90%;
+    height: auto;
+    display: block;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+h1 {
+    color: #4b3832;
+    font-family: 'Maven Pro', sans-serif;
+}
+
+h2 {
+    color: #854442;
+    font-family: 'Maven Pro', sans-serif;
+}
+
+p {
+    color: #854442;
+    font-family: 'Maven Pro', sans-serif;
+}
+
+img.center {
+    display: block;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+#previewarea {
+    width: 50%;
+    height: 100vh;
+    float: right;
+    padding: 1.5vw;
+    border: 0.1vw solid #dec3c3;
+}
+
+#previewarea p {
+    margin: 0.5vw;
+    font-size: 1.5vw;
+}
+
+/* #previewContainer {
+    position: relative;
+    margin: 0.5vw;
+    border: 0.1vw solid #be9b7b;
+    float: left;
+    width: 20%; 
+    height: fit-content;
+}
+
+#previewContainer:hover {
+    border: 0.3vw solid #be9b7b;
+    position: static;
+    width: 30%; 
+    height: auto;
+}
+  
+#previewContainer img {
+    display: block;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    max-width: 90%;
+    height: auto;
+}
+
+#previewContainer p {
+    font-size: 0.5vw;
+    text-align: center;
+    overflow: hidden;
+} */
+
+/* .previewarea {
+    width: 50%;
+    height: 100vh;
+    float: right;
+    padding: 1.5vw;
+    border: 0.1vw solid #dec3c3;
+}
+
+.previewarea p {
+    margin: 0.5vw;
+    font-size: 1.5vw;
+} */
+
+.previewContainer {
+    background-color: #f0e4e4;
+    position: relative;
+    margin: 0.5vw;
+    border: 0.1vw solid #be9b7b;
+    float: left;
+    width: 20%; 
+    height: fit-content;
+    /* height: 25%; */
+}
+
+.previewContainer:hover {
+    border: 0.3vw solid #be9b7b;
+    /* transform: scale(1.1); */
+    position: static;
+    width: 30%; 
+    height: auto;
+    /* border-image-width: 100%; */
+}
+  
+.previewContainer img {
+    display: block;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    max-width: 90%;
+    height: auto;
+}
+
+.previewContainer p {
+    font-size: 0.5vw;
+    text-align: center;
+    overflow: hidden;
+}
+
+.notChosenbutton {
+    border:0;
+    margin: 3%;
+
+    background-color:  #c99789;
+    color:#ffe9dc;
+
+    border-radius: 10vw;
+    width: 70%;
+    height: 5%;
+    cursor: pointer;
+    
+    font-family: 'Maven Pro', sans-serif;
+    font-size: 1.25vw;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;  
+}
+
+.notChosenbutton:hover {
+    color:#fff;
+    background-color:#c99789;
+    border: 0.2vw  #fff solid;
+    overflow: hidden;
+}
+
+.chosenButton{
+    color: #c99789;
+    background-color:#fff;
+    border: 0.2vw  #fff solid;
+    overflow: hidden;
+}
+
+.chosenButton:hover {
+    color: #c99789;
+    background-color:#fff;
+    border: 0.2vw  #fff solid;
+    cursor: not-allowed;
+    overflow: hidden;
+}
+
+.selectedPic {
+    background-color: #be9b7b;
+    position: relative;
+    margin: 0.5vw;
+    border: 0.1vw solid #fff;
+    float: left;
+    width: 20%; 
+    height: fit-content;
+}
+
