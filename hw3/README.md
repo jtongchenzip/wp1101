@@ -1,9 +1,10 @@
-# wp1101 hw3 TODO List in pure JS
-#### 2021/10/23
+### wp1101 hw3
+# TODO List in pure JS
+####  2021/10/23
 
 ## Requirements
 ### Basics
-1. Only show the input box in the beginning, no todo-list nor footer.
+1. Only show the input box in the beginning, no todo-list nor the footer.
 2. After entering text, the item is at the bottom of the list, and the checkbox is unchecked.
 3. The checkbox becomes green and the text has decoration effect after clicking on the checkbox. 
 4. The checkbox becomes unchecked after clicking on it again.
@@ -25,8 +26,8 @@
 ## What I've done
 1. All the basic requirements
 2. All the Advance requirements
-3. Always shows all items after entering a new one.
+3. Always shows all the items after entering a new one.
 4. Reset the placeholder to `What needs to be done?` after entering a new item. 
 
 ## Known Bugs
-1. Haven't discovered and bug for now
+1. Haven't discovered any bug for now
