@@ -1,4 +1,5 @@
-# wp1101 hw2 Dynamic Digital Album
+### wp1101 hw2 
+# Dynamic Digital Album
 #### 2021/10/17
 
 ## Requirements
