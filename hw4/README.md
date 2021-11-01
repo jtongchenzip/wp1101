@@ -32,7 +32,7 @@
 ## Improvements
 1. Duplicated codes
 2. Could use more React hook
-3. There's some pure JS codes, not sure of it's a bad thing
+3. There's some pure JS codes, not sure if it's a bad thing
 
 
 ## How to run the app
