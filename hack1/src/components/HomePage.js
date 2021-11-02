@@ -23,6 +23,24 @@ const HomePage = ({startGameOnClick, mineNumOnChange, boardSizeOnChange, mineNum
           <button className = 'btn' onClick = { startGameOnClick }>Start Game</button>
           {/* <button className = 'btn'>Difficulty Adjustment</button> */}
           
+          <div className = "controlContainer">
+            <button className = 'btn'>Difficulty Adjustment</button>
+            <div className = "controlWrapper">
+              <div className = "error"></div>
+              <div className = "controlPannel">
+                <div className = "controlCol">
+                  <p className = "controlTitle">Mines Number</p>
+                  <input type= "range" step = "1" min = "1" max = "80" defaultValue = "10"></input>
+                  <p className = "controlNum">10</p>
+                </div>
+                <div className = "controlCol">
+                  <p className = "controlTitle">Board Size (nxn)</p>
+                  <input type= "range" step = "1" min = "1" max = "20" defaultValue = "10"></input>
+                  <p className = "controlNum">10</p>
+                </div>
+              </div>
+            </div>
+          </div>
             {/* -- TODO 6-2 -- */}
             {/* Useful Hint: <input type = 'range' min = '...' max = '...' defaultValue = '...'> */}
             {/* Useful Hint: Error color: '#880000', default text color: '#0f0f4b', invisible color: 'transparent' */}
