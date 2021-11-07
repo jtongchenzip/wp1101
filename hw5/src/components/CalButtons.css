@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Martel+Sans:wght@700&family=Mohave&display=swap');
+
+button {
+  width: 70px;
+  height: 70px;
+  border-radius: 20px;
+  border: 2px solid white;
+  font-size: 2rem;
+  color: white;
+  font-family: 'Martel Sans', sans-serif;
+  background: #E69A8DFF;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:hover {
+  border: 3px solid #dfe6e9;
+  font-weight: 500;
+}
+  
