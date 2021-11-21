@@ -40,6 +40,7 @@
 open a differnet terminal  
 `cd ..`  
 `cd backend`  
+`yarn install`
 `yarn server`
 
 Open [http://localhost:3000](http://localhost:3000) to view the app in the browser.
