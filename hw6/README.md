@@ -32,7 +32,14 @@
 
 ## How to run the app
 `yarn install`  
+
+`cd frontend`   
+`yarn install`   
 `yarn start`  
-open a differnet terminal -> `yarn server`
+
+open a differnet terminal  
+`cd ..`  
+`cd backend`  
+`yarn server`
 
 Open [http://localhost:3000](http://localhost:3000) to view the app in the browser.
