@@ -1,10 +1,7 @@
 import express from 'express';
-import mongoose, { mongo } from 'mongoose';
-import dotenv from 'dotenv-defaults';
 import ScoreCard from '../ScoreCard';
 
 const router = express.Router()
-
 
 router.post('/create-card', async function (req, res) {
     const existing = await ScoreCard.findOne( {'name' : req.body.name, 'subject': req.body.subject} );
@@ -12,12 +9,12 @@ router.post('/create-card', async function (req, res) {
     if ( existing ) {
         console.log("exist")
         updateScoreCard(req.body.name, req.body.subject, req.body.score);
-        res.json( { message: `Updating (${req.body.name}, ${req.body.subject}, ${req.body.score})`, card: 1 })
+        res.json( { message: `Updating ( ${req.body.name}, ${req.body.subject}, ${req.body.score} )`, card: 1 })
     }
     else {
         console.log("not exist")
         addScoreCard(req.body.name, req.body.subject, req.body.score);
-        res.json( { message: `Adding (${req.body.name}, ${req.body.subject}, ${req.body.score})`, card: 1 })
+        res.json( { message: `Adding ( ${req.body.name}, ${req.body.subject}, ${req.body.score} )`, card: 1 })
     }
 })
 
