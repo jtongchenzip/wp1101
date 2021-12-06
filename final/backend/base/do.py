@@ -9,6 +9,8 @@ class Account:
     id: int
     username: str
     role: enums.RoleType
+    real_name: str
+    student_id: str
 
 
 @dataclass

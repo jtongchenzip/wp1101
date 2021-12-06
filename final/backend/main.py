@@ -38,5 +38,9 @@ async def app_shutdown():
     await pool_handler.close()
 
 
+import middleware.auth
+app.middleware('http')(middleware.auth.middleware)
+
+
 import processor.http
 processor.http.register_routers(app)
