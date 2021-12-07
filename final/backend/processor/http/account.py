@@ -48,7 +48,7 @@ async def add_account(data: AddAccountInput) -> AddAccountOutput:
 
 
 @router.get('/account/{account_id}')
-# @enveloped
+@enveloped
 async def read_account(account_id: int, request: Request) -> do.Account:
     if not (request.state.account.id is account_id or request.state.account.role is RoleType.TA):
         raise exc.NoPermission
