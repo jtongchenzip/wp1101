@@ -16,8 +16,6 @@ def pyformat2psql(query: str, named_args: Dict[str, Any]) -> Tuple[str, List[Any
     return formatted_query, positional_args
 
 
-from typing import Dict
-
 import asyncpg
 import asyncpg.exceptions
 
@@ -26,14 +24,10 @@ import exceptions as exc
 from . import pool_handler
 
 
-# Context managers for safe execution
-
 class SafeExecutor:
-    def __init__(self, sql: str, parameters: Dict = None, fetch: Union[int, str] = None, **kwparams):
+    def __init__(self, sql: str, fetch: Union[int, str] = None, **kwparams):
         self.fetch = fetch
-        if parameters is None:
-            parameters = {}
-        parameters.update(**kwparams)
+        parameters = {**kwparams}
         self._sql, self._parameters = pyformat2psql(query=sql, named_args=parameters)
 
     async def __aenter__(self) -> Optional[Union[asyncpg.Record, List[asyncpg.Record]]]:
