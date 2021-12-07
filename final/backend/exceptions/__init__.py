@@ -32,3 +32,9 @@ class UsernameExists(Exception):
     """
     duplicate username
     """
+
+
+class DuplicateStudentId(Exception):
+    """
+    Student Id is duplicate
+    """

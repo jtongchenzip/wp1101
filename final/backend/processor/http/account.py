@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from datetime import datetime
 
-from fastapi import APIRouter, responses, Header
+from fastapi import APIRouter, responses, Depends, Request
 from pydantic import BaseModel
 
-from security import decode_jwt, encode_jwt, verify_password, hash_password
+from security import encode_jwt, verify_password, hash_password
 from middleware.envelope import enveloped
+from middleware.headers import get_auth_token
 import persistence.database as db
 import exceptions as exc
 from base import do
@@ -14,12 +14,15 @@ from base.enums import RoleType
 router = APIRouter(
     tags=['Account'],
     default_response_class=responses.JSONResponse,
+    dependencies=[Depends(get_auth_token)]
 )
 
 
 class AddAccountInput(BaseModel):
     username: str
     password: str
+    real_name: str
+    student_id: str
 
 
 @dataclass
@@ -30,10 +33,14 @@ class AddAccountOutput:
 @router.post('/account')
 @enveloped
 async def add_account(data: AddAccountInput) -> AddAccountOutput:
+    if await db.account.is_duplicate_student_id(student_id=data.student_id):
+        raise exc.DuplicateStudentId
     try:
         account_id = await db.account.add(username=data.username,
                                           pass_hash=hash_password(data.password),
-                                          role=RoleType.student)
+                                          role=RoleType.student,
+                                          real_name=data.real_name,
+                                          student_id=data.student_id)
     except exc.UniqueViolationError:
         raise exc.UsernameExists
 
@@ -42,9 +49,8 @@ async def add_account(data: AddAccountInput) -> AddAccountOutput:
 
 @router.get('/account/{account_id}')
 @enveloped
-async def read_account(account_id: int, token: str = Header(None)) -> do.Account:
-    request = await decode_jwt(token, datetime.now())
-    if request.id is not account_id:
+async def read_account(account_id: int, request: Request) -> do.Account:
+    if not (request.state.account.id is account_id or request.state.account.role is RoleType.TA):
         raise exc.NoPermission
 
     account = await db.account.read(account_id)
@@ -66,11 +72,12 @@ class LoginOutput:
 @enveloped
 async def login(data: LoginInput) -> LoginOutput:
     try:
-        account_id, pass_hash = await db.account.read_by_username(data.username)
+        account_id, pass_hash, role = await db.account.read_by_username(data.username)
     except exc.NotFound:
         raise exc.LoginFailed
 
     if not verify_password(data.password, pass_hash):
         raise exc.LoginFailed
-    token = await encode_jwt(account_id=account_id)
+
+    token = encode_jwt(account_id=account_id, role=role)
     return LoginOutput(account_id=account_id, token=token)
