@@ -5,7 +5,7 @@ from .base import SafeExecutor
 
 async def add(username: str, pass_hash: str, role: enums.RoleType, real_name: str, student_id: str) -> int:
     async with SafeExecutor(
-            sql=fr"INSERT INTO account "
+            sql=fr"INSERT INTO account"
                 fr"            (username, pass_hash, role, real_name, student_id)"
                 fr"     VALUES (%(username)s, %(pass_hash)s, %(role)s, %(real_name)s, LOWER(%(student_id)s))"
                 fr"  RETURNING id",
