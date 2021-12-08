@@ -29,11 +29,10 @@ def marshal(obj) -> bytes:
 
 async def handle_report(directory_path: str, submission_id: int,
                         publish_func: Callable[[bytes, str], Coroutine[Any, Any, None]]):
-
+    print('start handling report')
     filenames = os.listdir(directory_path)
 
     for filename in filenames:
-
         with open(directory_path + '/' + filename, 'r', encoding='utf-8') as file:
             file = json.load(file)
             title = file['results'][0]['suites'][0]['title']
@@ -48,7 +47,11 @@ async def handle_report(directory_path: str, submission_id: int,
                                           total_failures=file['stats']['failures'], judge_cases=judge_cases)
 
             judge_report = marshal(judge_report)
+            print('report arranged, publishing...')
             await publish_func(judge_report, 'cypress_report')
+            print('report published')
+
+    print('finish handling report')
 
 
 async def receive_task(body: bytes, publish_func: Callable[[bytes, str], Coroutine[Any, Any, None]]):
