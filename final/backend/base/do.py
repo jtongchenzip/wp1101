@@ -1,3 +1,7 @@
+"""
+data objects
+"""
+
 from dataclasses import dataclass
 from typing import Optional, Sequence
 from datetime import datetime
@@ -19,6 +23,8 @@ class Account:
 class Problem:
     id: int
     title: str
+    description: str
+    testcase_file_uuid: UUID
     start_time: datetime
     end_time: datetime
 
