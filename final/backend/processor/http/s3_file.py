@@ -1,3 +1,5 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
-router = APIRouter(tags=['S3 File'])
+from middleware.headers import get_auth_token
+
+router = APIRouter(tags=['S3 File'], dependencies=[Depends(get_auth_token)])

@@ -2,10 +2,11 @@ from dataclasses import dataclass
 from typing import Optional
 from datetime import datetime
 
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Depends
 
 from middleware.envelope import enveloped
 from middleware.headers import get_auth_token
+from middleware.context import request
 from base.enums import RoleType
 import persistence.database as db
 
@@ -24,9 +25,9 @@ class ReadProblemOutput:
 
 @router.get('/problem/{problem_id}')
 @enveloped
-async def read_problem(problem_id: int, request: Request) -> ReadProblemOutput:
+async def read_problem(problem_id: int) -> ReadProblemOutput:
     problem = await db.problem.read(problem_id=problem_id)
-    is_publicized = request.state.account.role is RoleType.TA or datetime.now() > problem.start_time
+    is_publicized = request.account.role is RoleType.TA or request.time > datetime.now()
     return ReadProblemOutput(id=problem.id,
                              title=problem.title,
                              description=problem.description if is_publicized else None,

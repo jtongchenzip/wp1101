@@ -1,6 +1,8 @@
-from fastapi import APIRouter, responses
+from fastapi import APIRouter, responses, Depends
 
-router = APIRouter(tags=['Public'])
+from middleware.headers import get_auth_token
+
+router = APIRouter(tags=['Public'], dependencies=[Depends(get_auth_token)])
 
 
 @router.get("/", status_code=200, response_class=responses.HTMLResponse)
