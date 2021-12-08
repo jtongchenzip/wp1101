@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional, Sequence
+from datetime import datetime
+from uuid import UUID
 
 from base import enums
 
@@ -14,6 +16,25 @@ class Account:
 
 
 @dataclass
+class Problem:
+    id: int
+    title: str
+    start_time: datetime
+    end_time: datetime
+
+
+@dataclass
+class Submission:
+    id: int
+    problem_id: int
+    account_id: int
+    content_file_uuid: UUID
+    filename: str
+    total_pass: Optional[int]
+    total_fail: Optional[int]
+
+
+@dataclass
 class JudgeCase:
     id: int
     submission_id: int
@@ -21,6 +42,16 @@ class JudgeCase:
     description: str
     state: enums.JudgeCaseState
     error_message: Optional[str]
+
+
+@dataclass
+class S3File:
+    uuid: UUID
+    key: str
+    bucket: str
+
+
+# Judge related objects
 
 
 @dataclass
