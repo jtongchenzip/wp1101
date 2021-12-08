@@ -1,6 +1,7 @@
 from functools import wraps
 
 
+# decorator
 def enveloped(func):
     @wraps(func)
     async def wrapped(*args, **kwargs):
