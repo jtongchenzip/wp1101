@@ -16,7 +16,7 @@ async def main():
             login=amqp_config.username,
             password=amqp_config.password
         )
-
+    print('amqp connecting...')
     connection_pool = Pool(get_connection, max_size=2, loop=loop)
 
     async def get_channel() -> aio_pika.Channel:
@@ -25,6 +25,8 @@ async def main():
 
     channel_pool = Pool(get_channel, max_size=10, loop=loop)
     consume_name = "cypress"
+
+    print('amqp connected')
 
     async def consume():
         async with channel_pool.acquire() as channel:  # type: aio_pika.Channel
@@ -37,11 +39,13 @@ async def main():
             async with queue.iterator() as queue_iter:
                 async for message in queue_iter:
                     try:
+                        print('task received, handling')
                         await receive_task(message.body, publish_func=publish)
                     except Exception as e:
                         print('message nacked, exception=', e)
                         await message.nack(requeue=False)
                     else:
+                        print('task finished')
                         await message.ack()
 
     async def publish(message: bytes, queue_name: str) -> None:
@@ -51,10 +55,11 @@ async def main():
                 routing_key=queue_name,
             )
 
+    print('amqp consumer creating')
     async with connection_pool, channel_pool:
         task = loop.create_task(consume())
+        print('amqp consumer created, waiting for task...')
         await task
-
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
