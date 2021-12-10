@@ -48,4 +48,3 @@ app_config = AppConfig()
 jwt_config = JWTConfig()
 amqp_config = AMQPConfig()
 s3_config = S3Config()
-

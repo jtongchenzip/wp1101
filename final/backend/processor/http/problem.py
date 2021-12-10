@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Optional
 from datetime import datetime
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, responses
 
 from middleware.envelope import enveloped
 from middleware.headers import get_auth_token
@@ -10,8 +10,11 @@ from middleware.context import request
 from base.enums import RoleType
 import persistence.database as db
 
-
-router = APIRouter(tags=['Problem'], dependencies=[Depends(get_auth_token)])
+router = APIRouter(
+    tags=['Problem'],
+    default_response_class=responses.JSONResponse,
+    dependencies=[Depends(get_auth_token)]
+)
 
 
 @dataclass
