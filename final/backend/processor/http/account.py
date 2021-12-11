@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 
-from fastapi import APIRouter, responses, Depends, Request
+from fastapi import APIRouter, responses, Depends
 from pydantic import BaseModel
 
 from security import encode_jwt, verify_password, hash_password
 from middleware.envelope import enveloped
 from middleware.headers import get_auth_token
+from middleware.context import request
 import persistence.database as db
 import exceptions as exc
 from base import do
@@ -49,8 +50,8 @@ async def add_account(data: AddAccountInput) -> AddAccountOutput:
 
 @router.get('/account/{account_id}')
 @enveloped
-async def read_account(account_id: int, request: Request) -> do.Account:
-    if not (request.state.account.id is account_id or request.state.account.role is RoleType.TA):
+async def read_account(account_id: int) -> do.Account:
+    if not (request.account.role is RoleType.TA or request.account.id is account_id):
         raise exc.NoPermission
 
     account = await db.account.read(account_id)

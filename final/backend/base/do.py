@@ -81,5 +81,3 @@ class JudgeTask:
     problem_url: str
     submission_id: int
     submission_url: str
-
-

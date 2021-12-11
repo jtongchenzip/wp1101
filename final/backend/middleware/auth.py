@@ -1,15 +1,16 @@
 from datetime import datetime
 
 from fastapi import Request
+from starlette_context import context
 
 import security
-from security import AuthedAccount
 
 
 async def middleware(request: Request, call_next):
-    account = AuthedAccount
+    time = datetime.now()
+    account = None
     if auth_token := request.headers.get('auth-token', None):
-        account = security.decode_jwt(auth_token, time=datetime.now())
-
-    request.state.account = account
+        account = security.decode_jwt(auth_token, time=time)
+    context['account'] = account
+    context['time'] = time
     return await call_next(request)

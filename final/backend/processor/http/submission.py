@@ -1,3 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, responses
 
-router = APIRouter(tags=['Submission'])
+from middleware.headers import get_auth_token
+
+router = APIRouter(
+    tags=['Submission'],
+    default_response_class=responses.JSONResponse,
+    dependencies=[Depends(get_auth_token)])

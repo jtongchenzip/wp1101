@@ -41,6 +41,8 @@ async def app_shutdown():
 import middleware.auth
 app.middleware('http')(middleware.auth.middleware)
 
+import starlette_context.middleware
+app.add_middleware(starlette_context.middleware.RawContextMiddleware)
 
 import processor.http
 processor.http.register_routers(app)

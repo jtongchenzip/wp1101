@@ -1,6 +1,10 @@
 import collections
 import itertools
-from typing import Any, Dict, Tuple, List, Optional, Union
+from typing import Any, Dict, Tuple, List
+
+import exceptions as exc
+
+from . import pool_handler
 
 
 # https://github.com/MagicStack/asyncpg/issues/9#issuecomment-600659015
