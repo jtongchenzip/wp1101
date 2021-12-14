@@ -2,7 +2,7 @@ from base import do
 from base.enums import RoleType
 import exceptions as exc
 
-from .util import pyformat2psql, param_maker, Executor
+from .util import pyformat2psql, param_maker
 from . import pool_handler
 
 
