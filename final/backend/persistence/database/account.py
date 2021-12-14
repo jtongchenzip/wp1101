@@ -2,7 +2,7 @@ from base import do
 from base.enums import RoleType
 import exceptions as exc
 
-from .util import pyformat2psql, param_maker, Executor
+from .util import pyformat2psql, param_maker
 from . import pool_handler
 
 
@@ -21,28 +21,19 @@ async def add(username: str, pass_hash: str, role: RoleType, real_name: str, stu
 
 
 async def read(account_id: int) -> do.Account:
-    # sql = (
-    #     fr"SELECT id, username, role, student_id, real_name"
-    #     fr"  FROM account"
-    #     fr" WHERE id = %(account_id)s"
-    # )
-    # params = param_maker(account_id=account_id)
-    # sql, params = pyformat2psql(sql, params)
-    # try:
-    #     id_, username, role, student_id, real_name = await pool_handler.pool.fetchrow(sql, *params)
-    # except TypeError:
-    #     raise exc.NotFound
-    # return do.Account(id=id_, username=username, role=RoleType(role),
-    #                   student_id=student_id, real_name=real_name)
-    async with Executor(
-            sql=fr"SELECT id, username, role, student_id, real_name"
-                fr"  FROM account"
-                fr" WHERE id = %(account_id)s",
-            account_id=account_id,
-            fetch=1,
-    ) as (id_, username, role, student_id, real_name):
-        return do.Account(id=id_, username=username, role=RoleType(role),
-                          student_id=student_id, real_name=real_name)
+    sql = (
+        fr"SELECT id, username, role, student_id, real_name"
+        fr"  FROM account"
+        fr" WHERE id = %(account_id)s"
+    )
+    params = param_maker(account_id=account_id)
+    sql, params = pyformat2psql(sql, params)
+    try:
+        id_, username, role, student_id, real_name = await pool_handler.pool.fetchrow(sql, *params)
+    except TypeError:
+        raise exc.NotFound
+    return do.Account(id=id_, username=username, role=RoleType(role),
+                      student_id=student_id, real_name=real_name)
 
 
 async def read_by_username(username: str) -> tuple[int, str, RoleType]:

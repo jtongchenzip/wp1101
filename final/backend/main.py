@@ -37,6 +37,12 @@ async def app_shutdown():
     from persistence.database import pool_handler
     await pool_handler.close()
 
+    from persistence.s3 import s3_handler
+    await s3_handler.close()
+
+    from persistence.amqp_publisher import amqp_publish_handler
+    amqp_publish_handler.close()
+
 
 import middleware.auth
 app.middleware('http')(middleware.auth.middleware)
