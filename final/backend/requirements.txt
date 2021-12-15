@@ -3,6 +3,7 @@ uvicorn
 asyncpg
 databases~=0.4.3
 python-dotenv~=0.18.0
+starlette_context
 
 pyjwt
 pydantic
