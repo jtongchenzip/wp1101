@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+    backend:
+        container_name: cpj-backend
+        image: python:3.9
+        links: 
+            - "postgres:postgres"
+        restart: always
+        command: sh -c "cd /app && pip install -r requirements.txt && pip install uvicorn && uvicorn main:app --host 0.0.0.0 --port 8000"
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./backend:/app      
+        env_file: 
+            - ./backend/.env
+        networks:
+            - cpj
+
+    postgres:
+        image: postgres:latest
+        container_name: cpj_db
+        ports:
+            - 5432:5432
+        restart: always
+        environment:
+            - POSTGRES_PASSWORD=password
+        volumes: 
+            - db_data:/var/lib/postgres/db_data
+            - ./database/:/docker-entrypoint-initdb.d
+        networks:
+            - cpj
+
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+        container_name: cpj-rabbitmq
+        ports:
+            - 5672:5672
+            - 15672:15672
+        volumes:
+            - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+            - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+        networks:
+            - cpj
+
+    judgecore:
+        container_name: cpj-judgecore
+        image: python:3.9
+        restart: always
+        links: 
+            - "rabbitmq:rabbitmq"
+        command: sh -c "cd /app && pip install -r requirements.txt && python main.py"
+        volumes:
+            - ./judgecore:/app      
+        env_file: 
+            - ./judgecore/.env
+        networks:
+            - cpj
+
+volumes: 
+    db_data:
+
+networks:
+  cpj:
+    external:
+      name: cpj
+
