@@ -9,7 +9,6 @@ export default function Login() {
       <Header title="Hackthon Online Judge System" />
       <div
         style={{
-          // display: 'block',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
