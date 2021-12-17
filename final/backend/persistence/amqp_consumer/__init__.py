@@ -34,3 +34,4 @@ def make_consumer(amqp_config: AMQPConfig, consume_function: Callable[[bytes], C
                         await message.ack()
 
     return main
+
