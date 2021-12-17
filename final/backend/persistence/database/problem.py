@@ -19,3 +19,13 @@ async def read(problem_id: int) -> do.Problem:
         raise exc.NotFound
     return do.Problem(id=id_, title=title, testcase_file_uuid=testcase_file_uuid,
                       description=description, start_time=start_time, end_time=end_time)
+
+
+async def delete(problem_id: int) -> None:
+    sql = (
+        fr"DELETE FROM problem"
+        fr" WHERE id = %(problem_id)s"
+    )
+    params = param_maker(problem_id=problem_id)
+    sql, params = pyformat2psql(sql, params)
+    await pool_handler.pool.execute(sql, *params)
