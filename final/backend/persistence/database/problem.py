@@ -44,3 +44,13 @@ async def add(title: str, start_time: datetime, end_time: datetime,
     except asyncpg.exceptions.UniqueViolationError:
         raise exc.ProblemTitleExist
     return id_
+
+
+async def delete(problem_id: int) -> None:
+    sql = (
+        fr"DELETE FROM problem"
+        fr" WHERE id = %(problem_id)s"
+    )
+    params = param_maker(problem_id=problem_id)
+    sql, params = pyformat2psql(sql, params)
+    await pool_handler.pool.execute(sql, *params)

@@ -71,3 +71,12 @@ async def add_problem(title: str, start_time: datetime, end_time: datetime, desc
                                       testcase_file_uuid=s3_file_uuid)
 
     return AddProblemOutput(id=problem_id)
+
+
+@router.delete('/problem/{problem_id}')
+@enveloped
+async def delete_problem(problem_id: int) -> None:
+    if request.account.role is not RoleType.TA:
+        raise exc.NoPermission
+
+    return await db.problem.delete(problem_id=problem_id)

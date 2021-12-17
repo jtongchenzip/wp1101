@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from config import app_config
 
@@ -8,6 +9,18 @@ app = FastAPI(
     redoc_url=app_config.redoc_url,
 )
 
+origins = [
+    'http://localhost',
+    'http://localhost:3000'
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event('startup')
 async def app_startup():
@@ -41,7 +54,7 @@ async def app_shutdown():
     await s3_handler.close()
 
     from persistence.amqp_publisher import amqp_publish_handler
-    amqp_publish_handler.close()
+    await amqp_publish_handler.close()
 
 
 import middleware.auth
