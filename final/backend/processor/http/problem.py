@@ -4,11 +4,13 @@ from datetime import datetime
 
 from fastapi import APIRouter, Depends, responses
 
+import exceptions as exc
 from middleware.envelope import enveloped
 from middleware.headers import get_auth_token
 from middleware.context import request
 from base.enums import RoleType
 import persistence.database as db
+from persistence.s3 import s3_handler
 
 router = APIRouter(
     tags=['Problem'],
@@ -36,3 +38,12 @@ async def read_problem(problem_id: int) -> ReadProblemOutput:
                              description=problem.description if is_publicized else None,
                              start_time=problem.start_time,
                              end_time=problem.end_time)
+
+
+@router.delete('/problem/{problem_id}')
+@enveloped
+async def delete_problem(problem_id: int) -> None:
+    if request.account.role is not RoleType.TA:
+        raise exc.NoPermission
+
+    return await db.problem.delete(problem_id=problem_id)
