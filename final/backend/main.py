@@ -41,7 +41,7 @@ async def app_shutdown():
     await s3_handler.close()
 
     from persistence.amqp_publisher import amqp_publish_handler
-    amqp_publish_handler.close()
+    await amqp_publish_handler.close()
 
 
 import middleware.auth
