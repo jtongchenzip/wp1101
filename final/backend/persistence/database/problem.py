@@ -38,8 +38,9 @@ async def add(title: str, start_time: datetime, end_time: datetime,
               description: Optional[str], filename: str, testcase_file_uuid: UUID) -> int:
     sql = (
         fr"INSERT INTO problem"
-        fr"            (title, start_time, end_time, testcase_file_uuid, filename, description)"
-        fr"       VALUES (%(title)s, %(start_time)s, %(end_time)s, %(description)s, %(filename)s, %(s3_file_uuid)s)"
+        fr"            (title, start_time, end_time, filename, testcase_file_uuid, description)"
+        fr"     VALUES (%(title)s, %(start_time)s, %(end_time)s, %(filename)s, %(testcase_file_uuid)s, %(description)s)"
+        fr"  RETURNING id"
     )
 
     params = param_maker(title=title, start_time=start_time, end_time=end_time, description=description,

@@ -13,6 +13,7 @@ from base.enums import RoleType
 from base import do
 import persistence.database as db
 from persistence.s3 import s3_handler
+from processor.http.util import timezone_validate
 
 router = APIRouter(
     tags=['Problem'],
@@ -54,6 +55,8 @@ async def add_problem(title: str, start_time: datetime, end_time: datetime, desc
     if request.account.role is not RoleType.TA:
         raise exc.NoPermission
 
+    start_time = timezone_validate(start_time)
+    end_time = timezone_validate(end_time)
     if start_time > end_time:
         raise exc.IllegalInput
 
@@ -66,4 +69,5 @@ async def add_problem(title: str, start_time: datetime, end_time: datetime, desc
     problem_id = await db.problem.add(title=title, start_time=start_time, end_time=end_time,
                                       description=description, filename=filename,
                                       testcase_file_uuid=s3_file_uuid)
+
     return AddProblemOutput(id=problem_id)
