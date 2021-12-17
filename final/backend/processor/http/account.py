@@ -90,6 +90,5 @@ async def delete_account(account_id: int) -> None:
     if not (request.account.role is RoleType.TA):
         raise exc.NoPermission
 
-    await db.account.delete(account_id=account_id)
-    return None
+    return await db.account.delete(account_id=account_id)
 

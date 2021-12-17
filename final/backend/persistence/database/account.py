@@ -66,5 +66,5 @@ async def delete(account_id: int) -> None:
     )
     params = param_maker(account_id=account_id)
     sql, params = pyformat2psql(sql, params)
-    await pool_handler.pool.execute(sql, *params)
-    return None
+    return await pool_handler.pool.execute(sql, *params)
+
