@@ -27,13 +27,6 @@ async def read(problem_id: int) -> do.Problem:
                       description=description, start_time=start_time, end_time=end_time)
 
 
-"""
-fetchrow: 抓一筆 (read)
-fetch: 抓很多筆 (browse)
-execute: 不用抓資料 (edit, delete)
-"""
-
-
 async def add(title: str, start_time: datetime, end_time: datetime,
               description: Optional[str], filename: str, testcase_file_uuid: UUID) -> int:
     sql = (
