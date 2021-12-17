@@ -12,6 +12,7 @@ from base.enums import RoleType
 import exceptions as exc
 from persistence.s3 import s3_handler
 from persistence.amqp_publisher import send_judge
+from processor.http.util import timezone_validate
 
 router = APIRouter(
     tags=['Submission'],
@@ -28,7 +29,7 @@ class AddSubmissionOutput:
 @enveloped
 async def add_submission(problem_id: int, filename: str, content_file: UploadFile = File(...)) -> AddSubmissionOutput:
     problem = await db.problem.read(problem_id=problem_id)
-    if request.account.role is not RoleType.TA and request.time < problem.start_time:
+    if request.account.role is not RoleType.TA and timezone_validate(request.time) < problem.start_time:
         raise exc.NoPermission
 
     content_file_uuid = uuid4()
@@ -39,7 +40,7 @@ async def add_submission(problem_id: int, filename: str, content_file: UploadFil
 
     submission_id = await db.submission.add(account_id=request.account.id,
                                             problem_id=problem.id,
-                                            submit_time=request.time,
+                                            submit_time=timezone_validate(request.time),
                                             filename=filename,
                                             content_file_uuid=content_file_uuid)
 
