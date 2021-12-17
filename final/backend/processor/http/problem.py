@@ -42,7 +42,7 @@ async def read_problem(problem_id: int) -> ReadProblemOutput:
 
 @router.delete('/problem/{problem_id}')
 @enveloped
-async def delete_problem(problem_id: int):
+async def delete_problem(problem_id: int) -> None:
     if request.account.role is not RoleType.TA:
         raise exc.NoPermission
 
