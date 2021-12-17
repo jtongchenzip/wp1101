@@ -47,4 +47,3 @@ async def delete_problem(problem_id: int) -> None:
         raise exc.NoPermission
 
     return await db.problem.delete(problem_id=problem_id)
-
