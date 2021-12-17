@@ -66,9 +66,5 @@ async def delete(account_id: int) -> None:
     )
     params = param_maker(account_id=account_id)
     sql, params = pyformat2psql(sql, params)
-    try:
-        await pool_handler.pool.fetchrow(sql, *params)
-    except TypeError:
-        raise exc.NotFound
+    await pool_handler.pool.fetchrow(sql, *params)
     return
-
