@@ -84,22 +84,11 @@ async def login(data: LoginInput) -> LoginOutput:
     return LoginOutput(account_id=account_id, token=token)
 
 
-# @dataclass
-# class EditAccountInput(BaseModel):
-#     username: str = None
-#     real_name: str = None
-#     # student_id:
-#
-#
-# @router.patch('/account/{account_id}')
-# @enveloped
-# async def edit_account(account_id: int, data: EditAccountInput) -> None:
-#     try:
-#         account_id, data = await db.account.
-
-
 @router.delete('/account/{account_id}')
 @enveloped
 async def delete_account(account_id: int) -> None:
+    if not (request.account.role is RoleType.TA):
+        raise exc.NoPermission
+
     await db.account.delete(account_id=account_id)
 
