@@ -8,15 +8,12 @@ export default function Login() {
     <>
       <Header title="Hackthon Online Judge System" />
       <div
+        className='content-layout'
         style={{
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          position: 'absolute',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
         }}
       >
         <TextField hiddenLabel id="outlined-required" label="Username" variant="outlined" />
