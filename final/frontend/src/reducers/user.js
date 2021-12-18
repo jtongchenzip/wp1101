@@ -25,12 +25,18 @@ const user = (state = initialState, action) => {
         isAuthenticated: false,
         token: '',
         tokenExpired: false,
+        username: '',
+        real_name: '',
+        student_id: '',
       };
     case authConstants.TOKEN_EXPIRED:
       return {
         isAuthenticated: false,
         token: '',
         tokenExpired: true,
+        username: '',
+        real_name: '',
+        student_id: '',
       };
     default:
       return state;
