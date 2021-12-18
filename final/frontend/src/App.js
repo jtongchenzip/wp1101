@@ -4,16 +4,16 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import UIComponentUsage from './UIComponentUsage';
 import Login from './containers/auth/Login';
-import Student from './containers/page/Student';
 import theme from './theme';
 
+// Login page, Index for test student and TA page
 export default function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
         <Switch>
-          <Route exact path="/" component={Student} />
+          <Route exact path="/" component={Login} />
           <Route path="/ui-components" component={UIComponentUsage} />
         </Switch>
       </Router>

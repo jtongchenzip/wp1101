@@ -9,7 +9,7 @@ export default function Student() {
   const [progress, setProgress] = useState(60);
   return (
     <>
-      <Header title="Hackthon Online Judge System" />
+      {/* <Header title="Hackthon Online Judge System" /> */}
       <div
         style={{
           display: 'flex',
@@ -29,7 +29,7 @@ export default function Student() {
         <Button color="body1" variant="outlined" style={{ marginTop: 15 }}>Hack 2</Button>
         <Button color="body1" variant="outlined" style={{ marginTop: 15 }}>Hack 3</Button>
       </div>
-      <div style={{ 'margin-left': 220, 'margin-top': 60 }}>
+      <div style={{ 'margin-left': 180, 'margin-top': 60 }}>
         <ScoreTable />
         <div style={{ 'margin-left': 550, 'margin-top': 20 }}>
           <Typography variant="body1">Task Completed</Typography>
