@@ -1,9 +1,9 @@
+// eslint-disable-next-line import/prefer-default-export
 export const authConstants = {
   AUTH_START: 'AUTH_START',
   AUTH_SUCCESS: 'AUTH_SUCCESS',
   AUTH_FAIL: 'AUTH_FAIL',
 
-  AUTH_LOGIN_FAIL: 'AUTH_LOGIN_FAIL',
   AUTH_LOGOUT: 'AUTH_LOGOUT',
 
   SIGNUP_START: 'SIGNUP_START',

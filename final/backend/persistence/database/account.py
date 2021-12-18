@@ -57,3 +57,13 @@ async def is_duplicate_student_id(student_id: str) -> bool:
     sql, params = pyformat2psql(sql, params)
     count, = await pool_handler.pool.fetchrow(sql, *params)
     return count > 0
+
+
+async def delete(account_id: int) -> None:
+    sql = (
+        fr"DELETE FROM account"
+        fr" WHERE id = %(account_id)s"
+    )
+    params = param_maker(account_id=account_id)
+    sql, params = pyformat2psql(sql, params)
+    return await pool_handler.pool.execute(sql, *params)
