@@ -1,6 +1,6 @@
 import { authConstants } from '../../actions/user/constant';
 
-const initailState = {
+const initialState = {
   auth: null,
   login: null,
   logout: null,
@@ -8,17 +8,27 @@ const initailState = {
   fetchAccount: null,
 };
 
-export default function auth(state = initailState, action) {
+export default function auth(state = initialState, action) {
   switch (action.type) {
     case authConstants.AUTH_FAIL:
       return {
         ...state,
         login: action.error,
       };
+    case authConstants.AUTH_SUCCESS:
+      return {
+        ...state,
+        login: null,
+      };
     case authConstants.SIGNUP_FAIL:
       return {
         ...state,
         signup: false,
+      };
+    case authConstants.SIGNUP_SUCCESS:
+      return {
+        ...state,
+        signup: null,
       };
     default:
       return state;

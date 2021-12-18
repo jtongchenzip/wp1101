@@ -12,7 +12,6 @@ const initialState = {
 const user = (state = initialState, action) => {
   switch (action.type) {
     case authConstants.AUTH_SUCCESS:
-      console.log(action.user);
       return {
         isAuthenticated: true,
         token: action.user.token,

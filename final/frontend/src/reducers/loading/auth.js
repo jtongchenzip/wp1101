@@ -14,10 +14,6 @@ export default function auth(state = initialState, action) {
         readAccount: true,
       };
     case authConstants.AUTH_SUCCESS:
-      return {
-        ...state,
-        readAccount: false,
-      };
     case authConstants.AUTH_FAIL:
       return {
         ...state,
@@ -29,10 +25,6 @@ export default function auth(state = initialState, action) {
         signup: true,
       };
     case authConstants.SIGNUP_SUCCESS:
-      return {
-        ...state,
-        signup: false,
-      };
     case authConstants.SIGNUP_FAIL:
       return {
         ...state,

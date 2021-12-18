@@ -38,3 +38,15 @@ class DuplicateStudentId(Exception):
     """
     Student Id is duplicate
     """
+
+
+class ProblemTitleExist(Exception):
+    """
+    Problem title is duplicate
+    """
+
+
+class IllegalInput(Exception):
+    """
+    Input is not legal
+    """

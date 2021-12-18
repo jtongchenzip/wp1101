@@ -5,14 +5,13 @@ const logIn = (username, password) => async (dispatch) => {
   try {
     const res = await agent.post('/login', { username, password });
     const id = res.data.data.account_id;
-    const { token } = res.data.data;
+    const { account_id, token } = res.data.data;
     const config = {
       headers: {
         'auth-token': token,
       },
     };
     const res2 = await agent.get(`/account/${id}`, config);
-    console.log('res2', res2);
     dispatch({
       type: authConstants.AUTH_SUCCESS,
       user: {
