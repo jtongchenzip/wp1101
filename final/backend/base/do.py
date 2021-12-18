@@ -24,6 +24,7 @@ class Problem:
     id: int
     title: str
     description: str
+    filename: str
     testcase_file_uuid: UUID
     start_time: datetime
     end_time: datetime
