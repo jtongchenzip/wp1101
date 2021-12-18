@@ -1,6 +1,6 @@
 from datetime import datetime
 
-import pydantic
+import pydantic.datetime_parse
 
 
 def timezone_validate(time: datetime) -> datetime:
