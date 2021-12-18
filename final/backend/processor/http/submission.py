@@ -27,7 +27,7 @@ class AddSubmissionOutput:
 
 @router.post('/problem/{problem_id}/submission')
 @enveloped
-async def add_submission(problem_id: int, filename: str, content_file: UploadFile = File(...)) -> AddSubmissionOutput:
+async def submit(problem_id: int, filename: str, content_file: UploadFile = File(...)) -> AddSubmissionOutput:
     problem = await db.problem.read(problem_id=problem_id)
     if request.account.role is not RoleType.TA and timezone_validate(request.time) < problem.start_time:
         raise exc.NoPermission

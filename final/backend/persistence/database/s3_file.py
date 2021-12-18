@@ -9,7 +9,7 @@ async def add(s3_file: do.S3File) -> None:
     sql = (
         fr"INSERT INTO s3_file"
         fr"            (uuid, key, bucket)"
-        fr"VALUES (%(uuid)s, %(key)s, %(bucket)s)"
+        fr"     VALUES (%(uuid)s, %(key)s, %(bucket)s)"
     )
 
     params = param_maker(uuid=s3_file.uuid, key=s3_file.key, bucket=s3_file.bucket)

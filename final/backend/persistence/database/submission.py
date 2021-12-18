@@ -20,7 +20,7 @@ async def add(account_id: int, problem_id: int, submit_time: datetime, filename:
     sql = (
         fr"INSERT INTO submission"
         fr"            (account_id, problem_id, submit_time, filename, content_file_uuid)"
-        fr"     VALUES (%(account_id)s, %(problem_id)s, %(submit_time)s,%(filename)s, %(content_file_uuid)s)"
+        fr"     VALUES (%(account_id)s, %(problem_id)s, %(submit_time)s, %(filename)s, %(content_file_uuid)s)"
         fr"  RETURNING id"
     )
     params = param_maker(account_id=account_id, problem_id=problem_id, submit_time=submit_time,
