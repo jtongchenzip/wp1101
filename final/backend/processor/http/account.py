@@ -82,24 +82,3 @@ async def login(data: LoginInput) -> LoginOutput:
 
     token = encode_jwt(account_id=account_id, role=role)
     return LoginOutput(account_id=account_id, token=token)
-
-
-# @dataclass
-# class EditAccountInput(BaseModel):
-#     username: str = None
-#     real_name: str = None
-#     # student_id:
-#
-#
-# @router.patch('/account/{account_id}')
-# @enveloped
-# async def edit_account(account_id: int, data: EditAccountInput) -> None:
-#     try:
-#         account_id, data = await db.account.
-
-
-@router.delete('/account/{account_id}')
-@enveloped
-async def delete_account(account_id: int) -> None:
-    await db.account.delete(account_id=account_id)
-
