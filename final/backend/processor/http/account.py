@@ -91,4 +91,3 @@ async def delete_account(account_id: int) -> None:
         raise exc.NoPermission
 
     return await db.account.delete(account_id=account_id)
-

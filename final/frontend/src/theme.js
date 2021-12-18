@@ -283,7 +283,7 @@ const overrides = {
       padding: '7.5px 24px 9px 24px',
       borderColor: mono.gray,
       color: mono.gray,
-      borderRadius: '10px',
+      borderRadius: '20px',
       '&:hover': {
         backgroundColor: mono.darkGray,
       },

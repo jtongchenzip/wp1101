@@ -1,6 +1,6 @@
 import axios from 'axios';
 import store from '../store';
-import { authConstants } from './user/constants';
+import { authConstants } from './user/constant';
 
 const agent = axios.create({
   baseURL: process.env.REACT_APP_API_ROOT,
@@ -10,7 +10,7 @@ const { dispatch } = store;
 agent.interceptors.response.use(
   (res) => {
     // 2xx
-    if (!res.data.success) {
+    if (res.data.error) {
       console.log(`Response error: ${res.data.error}`);
       console.log(res);
 
