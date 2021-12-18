@@ -82,3 +82,12 @@ async def login(data: LoginInput) -> LoginOutput:
 
     token = encode_jwt(account_id=account_id, role=role)
     return LoginOutput(account_id=account_id, token=token)
+
+
+@router.delete('/account/{account_id}')
+@enveloped
+async def delete_account(account_id: int) -> None:
+    if not (request.account.role is RoleType.TA):
+        raise exc.NoPermission
+
+    return await db.account.delete(account_id=account_id)
