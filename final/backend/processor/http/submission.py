@@ -54,3 +54,14 @@ async def submit(problem_id: int, filename: str, content_file: UploadFile = File
                                   submission_url=content_file_url))
 
     return AddSubmissionOutput(id=submission_id)
+
+
+@router.get('/submission/{submission_id}')
+@enveloped
+async def read_submission(submission_id: int) -> do.Submission:
+    submission = await db.submission.read(submission_id=submission_id)
+    print(submission)
+    if request.account.id == submission.account_id:
+        return submission
+
+    raise exc.NoPermission
