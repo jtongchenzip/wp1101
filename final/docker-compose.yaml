@@ -6,7 +6,6 @@ services:
         image: python:3.9
         links: 
             - "postgres:postgres"
-        restart: always
         command: sh -c "cd /app && pip install -r requirements.txt && pip install uvicorn && uvicorn main:app --host 0.0.0.0 --port 8000"
         ports:
             - "8000:8000"
@@ -22,7 +21,6 @@ services:
         container_name: cpj_db
         ports:
             - 5432:5432
-        restart: always
         environment:
             - POSTGRES_PASSWORD=password
         volumes: 
@@ -46,7 +44,6 @@ services:
     judgecore:
         container_name: cpj-judgecore
         image: nikolaik/python-nodejs
-        restart: always
         links: 
             - "rabbitmq:rabbitmq"
         command: sh -c "cd /app && pip install -r requirements.txt && python main.py"
