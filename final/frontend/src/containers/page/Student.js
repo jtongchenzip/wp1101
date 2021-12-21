@@ -16,13 +16,10 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    width: 200,
+    width: '15%',
   },
   scoreTableGroup: {
-    // display: 'flex',
-    // flexDirection: 'column',
-    width: 1100,
-
+    width: '70%',
   },
   progressBarGroup: {
     display: 'flex',
@@ -32,8 +29,8 @@ const useStyles = makeStyles(() => ({
   rightSidebar: {
     display: 'flex',
     flexDirection: 'column',
-    width: 200,
-    marginLeft: 20,
+    alignItems: 'center',
+    width: '15%',
   },
 }));
 
@@ -47,7 +44,7 @@ export default function Student() {
         <div className={classes.leftSidebar}>
           <Avatar alt="Pdogs" style={{ height: '60px', width: '60px' }} src="/static/images/avatar.jpg" />
           <Typography color="primary" style={{ marginTop: 10 }} variant="h6">pdogs</Typography>
-          <Button variant="text" disabled size="small">student</Button>
+          <Button type="text" variant="contained" disabled size="small" style={{ height: 25 }}>student</Button>
           <Button variant="outlined" style={{ marginTop: 20 }}>Hack 1</Button>
           <Button variant="outlined" style={{ marginTop: 10 }}>Hack 2</Button>
           <Button variant="outlined" style={{ marginTop: 10 }}>Hack 3</Button>
