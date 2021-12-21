@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Avatar, Button, Typography } from '@material-ui/core';
@@ -54,6 +55,15 @@ export default function Student() {
         <Typography style={{ marginTop: 5 }} variant="h6">End Time : 12 : 10</Typography>
         <Button color="primary" variant="contained" style={{ marginTop: 15 }}>Submit</Button>
       </div>
+=======
+import React from 'react';
+import { Typography } from '@material-ui/core';
+
+export default function Student() {
+  return (
+    <>
+      <Typography>This is student page</Typography>
+>>>>>>> frontend/refactor
     </>
   );
 }

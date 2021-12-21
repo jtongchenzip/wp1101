@@ -77,7 +77,7 @@ export default function ScoreTable() {
 
   return (
     <>
-      <Paper style={{ width: '100%' }}>
+      <Paper style={{ width: '80%' }}>
         <Divider />
         <TableContainer>
           <Table>

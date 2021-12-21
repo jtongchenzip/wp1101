@@ -1,27 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Typography, TextField } from '@material-ui/core';
-import Header from '../../components/ui/Header';
+import {
+  Button, Typography, TextField, makeStyles,
+} from '@material-ui/core';
 import '../../App.css';
 
+const useStyles = makeStyles(() => ({
+  main: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: 140,
+  },
+  registerForm: {
+    marginBottom: 50,
+  },
+}));
+
 export default function Login() {
+  const classes = useStyles();
+
   return (
     <>
-      <Header title="Hackthon Online Judge System" />
-      <div
-        className="content-layout"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <TextField hiddenLabel id="outlined-required" label="Student ID" variant="outlined" />
-        <TextField hiddenLabel id="outlined-required" style={{ marginTop: 30 }} label="Email" variant="outlined" />
-        <TextField hiddenLabel id="outlined-required" style={{ marginTop: 30 }} label="Username" variant="outlined" />
-        <TextField hiddenLabel id="outlined-required" style={{ marginTop: 30 }} label="Password" variant="outlined" />
-        <Button color="primary" variant="contained" style={{ marginTop: 50 }}>Register</Button>
+      <div className={classes.main}>
+        <TextField id="outlined-required" className={classes.registerForm} label="Student ID" />
+        <TextField id="outlined-required" className={classes.registerForm} label="Email" />
+        <TextField id="outlined-required" className={classes.registerForm} label="Username" />
+        <TextField id="outlined-required" className={classes.registerForm} label="Password" />
+        <Button color="primary" variant="contained">Register</Button>
       </div>
     </>
   );
