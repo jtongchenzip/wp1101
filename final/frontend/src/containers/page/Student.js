@@ -1,69 +1,72 @@
-<<<<<<< HEAD
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Avatar, Button, Typography } from '@material-ui/core';
-import Header from '../../components/ui/Header';
+import {
+  Avatar, Button, Typography, makeStyles,
+} from '@material-ui/core';
 import ScoreTable from '../../components/ui/ScoreTable';
 import LinearProgressBar from '../../components/ui/LinearProgressBar';
 
-export default function Student() {
-  const [progress, setProgress] = useState(60);
-  return (
-    <>
-      {/* <Header title="Hackthon Online Judge System" /> */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'absolute',
-          left: '5%',
-          top: '20%',
-          transform: 'translate(-15%, -15%)',
-        }}
-      >
-        <Avatar alt="Pdogs" style={{ height: '60px', width: '60px' }} src="/static/images/avatar.jpg" />
-        <Typography color="primary" style={{ marginTop: 10 }} variant="h6">pdogs</Typography>
-        <Typography color="primary" style={{ marginTop: 5 }} variant="h7">student</Typography>
-        <Button color="body1" variant="outlined" style={{ marginTop: 50 }}>Hack 1</Button>
-        <Button color="body1" variant="outlined" style={{ marginTop: 15 }}>Hack 2</Button>
-        <Button color="body1" variant="outlined" style={{ marginTop: 15 }}>Hack 3</Button>
-      </div>
-      <div style={{ 'margin-left': 180, 'margin-top': 60 }}>
-        <ScoreTable />
-        <div style={{ 'margin-left': 550, 'margin-top': 20 }}>
-          <Typography variant="body1">Task Completed</Typography>
-          <LinearProgressBar value={progress} />
-        </div>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'left',
-          position: 'absolute',
-          left: '85%',
-          top: '20%',
-          transform: 'translate(15%, -15%)',
-        }}
-      >
-        <Typography variant="h4">Hackathon 1</Typography>
-        <Typography style={{ marginTop: 15 }} variant="h6">Date : 2022/01/01</Typography>
-        <Typography style={{ marginTop: 5 }} variant="h6">Start Time : 09 : 10</Typography>
-        <Typography style={{ marginTop: 5 }} variant="h6">End Time : 12 : 10</Typography>
-        <Button color="primary" variant="contained" style={{ marginTop: 15 }}>Submit</Button>
-      </div>
-=======
-import React from 'react';
-import { Typography } from '@material-ui/core';
+const useStyles = makeStyles(() => ({
+  main: {
+    display: 'flex',
+    alignItems: 'stretch',
+    marginTop: 50,
+  },
+  leftSidebar: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: 200,
+  },
+  scoreTableGroup: {
+    // display: 'flex',
+    // flexDirection: 'column',
+    width: 1100,
+
+  },
+  progressBarGroup: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginTop: 30,
+  },
+  rightSidebar: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: 200,
+    marginLeft: 20,
+  },
+}));
 
 export default function Student() {
+  const [progress, setProgress] = useState(60);
+  const classes = useStyles();
+
   return (
     <>
-      <Typography>This is student page</Typography>
->>>>>>> frontend/refactor
+      <div className={classes.main}>
+        <div className={classes.leftSidebar}>
+          <Avatar alt="Pdogs" style={{ height: '60px', width: '60px' }} src="/static/images/avatar.jpg" />
+          <Typography color="primary" style={{ marginTop: 10 }} variant="h6">pdogs</Typography>
+          <Button variant="text" disabled size="small">student</Button>
+          <Button variant="outlined" style={{ marginTop: 20 }}>Hack 1</Button>
+          <Button variant="outlined" style={{ marginTop: 10 }}>Hack 2</Button>
+          <Button variant="outlined" style={{ marginTop: 10 }}>Hack 3</Button>
+        </div>
+        <div className={classes.scoreTableGroup}>
+          <ScoreTable />
+          <div className={classes.progressBarGroup}>
+            <Typography style={{ marginRight: 10 }} variant="body1">Task Completed</Typography>
+            <LinearProgressBar value={progress} />
+          </div>
+        </div>
+        <div className={classes.rightSidebar}>
+          <Typography variant="h4">Hackathon 1</Typography>
+          <Typography style={{ marginTop: 15 }} variant="h6">Date : 2022/01/01</Typography>
+          <Typography style={{ marginTop: 5 }} variant="h6">Start Time : 09 : 10</Typography>
+          <Typography style={{ marginTop: 5 }} variant="h6">End Time : 12 : 10</Typography>
+          <Button color="primary" variant="contained" style={{ marginTop: 15 }}>Submit</Button>
+        </div>
+      </div>
     </>
   );
 }

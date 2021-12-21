@@ -7,7 +7,6 @@ import Student from './page/Student';
 import TA from './page/TA';
 import UIComponentUsage from '../UIComponentUsage';
 import '../App.css';
-import Student from './page/Student';
 
 // 基本底層畫面、route by user role
 // replace ScoreTable with student page or TA page
@@ -16,9 +15,6 @@ export default function index() {
     <div className="wrapper">
       <Header title="Hackthon Online Judge System" />
       <div className="content-layout">
-<<<<<<< HEAD
-        <Student />
-=======
         <Router>
           <Switch>
             <Route path="/login" component={Login} />
@@ -28,7 +24,6 @@ export default function index() {
             <TA path="/ta" component={TA} />
           </Switch>
         </Router>
->>>>>>> frontend/refactor
       </div>
     </div>
   );
