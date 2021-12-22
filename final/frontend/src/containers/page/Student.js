@@ -1,5 +1,10 @@
 import React from 'react';
+import { Typography } from '@material-ui/core';
 
 export default function Student() {
-  return <div></div>;
+  return (
+    <>
+      <Typography>This is student page</Typography>
+    </>
+  );
 }
