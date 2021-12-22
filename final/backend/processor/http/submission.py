@@ -60,8 +60,8 @@ async def submit(problem_id: int, filename: str, content_file: UploadFile = File
 @enveloped
 async def read_submission(submission_id: int) -> do.Submission:
     submission = await db.submission.read(submission_id=submission_id)
-    print(submission)
-    if request.account.id == submission.account_id:
-        return submission
+    if request.account.id != submission.account_id or request.account.role == RoleType.TA:
+        raise exc.NoPermission
 
-    raise exc.NoPermission
+    return submission
+

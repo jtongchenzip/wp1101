@@ -38,12 +38,9 @@ async def read(submission_id: int) -> do.Submission:
         fr" WHERE id = %(submission_id)s"
     )
     params = param_maker(submission_id=submission_id)
-    print(1)
     sql, params = pyformat2psql(sql, params)
-    print(2)
     account_id, problem_id, content_file_uuid, filename, total_pass, total_fail = \
         await pool_handler.pool.fetchrow(sql, *params)
-    print(3)
     return do.Submission(id=submission_id, problem_id=problem_id, account_id=account_id,
                          content_file_uuid=content_file_uuid, filename=filename,
                          total_pass=total_pass, total_fail=total_fail)
