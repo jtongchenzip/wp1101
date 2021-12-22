@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Typography, Button, TextField } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
 import LinearProgressBar from './components/ui/LinearProgressBar';
 import ScoreTable from './components/ui/ScoreTable';
 import Header from './components/ui/Header';
 import UploadButton from './components/ui/UploadButton';
 import DateTimePicker from './components/ui/DateTimePicker';
+import { readSubmission } from './actions/submission/submission';
+import { logIn } from './actions/user/auth';
 
 export default function App() {
   const [progress, setProgress] = useState(80);
   const [selectedDate, handleDateChange] = useState(new Date());
   const [uploadFile, setUpLoadFile] = useState([]);
-
   // useEffect(() => {
   //   const timer = setInterval(() => {
   //     setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
@@ -19,7 +21,10 @@ export default function App() {
   //     clearInterval(timer);
   //   };
   // }, []);
-
+  const dispatch = useDispatch();
+  const lllogin = () => {
+    dispatch(logIn('wsa', 'wsa'));
+  };
   return (
     <>
       <Header title="Hackthon Online Judge System" />
@@ -37,7 +42,10 @@ export default function App() {
         Button
       </Button>
       <Button color="primary" variant="contained" style={{ borderRadius: '15px' }}>
-        15px
+        login
+      </Button>
+      <Button color="primary" variant="contained" style={{ borderRadius: '15px' }}>
+        read submission
       </Button>
       <UploadButton setUpLoadFile={setUpLoadFile} />
       <TextField hiddenLabel id="outlined-required" label="Username" variant="outlined" />
