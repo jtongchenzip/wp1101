@@ -10,6 +10,7 @@ export default function App() {
   const [progress, setProgress] = useState(80);
   const [selectedDate, handleDateChange] = useState(new Date());
   const [uploadFile, setUpLoadFile] = useState([]);
+
   // useEffect(() => {
   //   const timer = setInterval(() => {
   //     setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
@@ -18,6 +19,7 @@ export default function App() {
   //     clearInterval(timer);
   //   };
   // }, []);
+
   return (
     <>
       <Header title="Hackthon Online Judge System" />
