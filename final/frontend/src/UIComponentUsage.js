@@ -5,8 +5,6 @@ import ScoreTable from './components/ui/ScoreTable';
 import Header from './components/ui/Header';
 import UploadButton from './components/ui/UploadButton';
 import DateTimePicker from './components/ui/DateTimePicker';
-import { readSubmission } from './actions/submission/submission';
-import { logIn } from './actions/user/auth';
 
 export default function App() {
   const [progress, setProgress] = useState(80);
@@ -37,10 +35,7 @@ export default function App() {
         Button
       </Button>
       <Button color="primary" variant="contained" style={{ borderRadius: '15px' }}>
-        login
-      </Button>
-      <Button color="primary" variant="contained" style={{ borderRadius: '15px' }}>
-        read submission
+        15px
       </Button>
       <UploadButton setUpLoadFile={setUpLoadFile} />
       <TextField hiddenLabel id="outlined-required" label="Username" variant="outlined" />
