@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Typography, Button, TextField } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
 import LinearProgressBar from './components/ui/LinearProgressBar';
 import ScoreTable from './components/ui/ScoreTable';
 import Header from './components/ui/Header';
@@ -21,10 +20,6 @@ export default function App() {
   //     clearInterval(timer);
   //   };
   // }, []);
-  const dispatch = useDispatch();
-  const lllogin = () => {
-    dispatch(logIn('wsa', 'wsa'));
-  };
   return (
     <>
       <Header title="Hackthon Online Judge System" />

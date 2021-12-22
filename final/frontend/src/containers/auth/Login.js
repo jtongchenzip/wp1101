@@ -8,7 +8,7 @@ export default function Login() {
     <>
       <Header title="Hackthon Online Judge System" />
       <div
-        className='content-layout'
+        className="content-layout"
         style={{
           display: 'flex',
           flexDirection: 'column',
