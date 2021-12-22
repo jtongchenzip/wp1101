@@ -4,8 +4,10 @@ from typing import Any, Tuple, List
 
 
 # modify from https://github.com/MagicStack/asyncpg/issues/9#issuecomment-600659015
-def pyformat2psql(sql: str, **params) -> Tuple[str, List[Any]]:
+def pyformat2psql(sql: str, parameters: dict[str, any] = None, **params) -> Tuple[str, List[Any]]:
     named_args = {**params}
+    if parameters:
+        named_args.update(parameters)
     positional_generator = itertools.count(1)
     positional_map = collections.defaultdict(lambda: '${}'.format(next(positional_generator)))
     formatted_query = sql % positional_map
