@@ -1,5 +1,4 @@
 import { submissionConstants } from '../../actions/submission/constant';
-import { browseJudgeCase } from '../../actions/submission/submission';
 
 const initialState = {
   addSubmission: null,
