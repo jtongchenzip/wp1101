@@ -65,3 +65,13 @@ async def browse_judge_case_under_submission(submission_id: int) -> Sequence[do.
         raise exc.NoPermission
 
     return await db.judge_case.browse(submission_id=submission_id)
+
+
+@router.get('/submission/{submission_id}')
+@enveloped
+async def read_submission(submission_id: int) -> do.Submission:
+    submission = await db.submission.read(submission_id=submission_id)
+    if not (request.account.id == submission.account_id or request.account.role == RoleType.TA):
+        raise exc.NoPermission
+
+    return submission
