@@ -49,5 +49,6 @@ async def delete(problem_id: int) -> None:
     sql, params = pyformat2psql(
         sql=fr"DELETE FROM problem"
             fr" WHERE id = %(problem_id)s",
-        problem_id=problem_id)
+        problem_id=problem_id
+    )
     await pool_handler.pool.execute(sql, *params)
