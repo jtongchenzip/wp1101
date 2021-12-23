@@ -58,7 +58,7 @@ services:
             - cpj
 
     minio:
-        image: minio/minio:latest
+        image: quay.io/minio/minio:latest
         container_name: cpj-minio
         ports:
             - 9000:9000
