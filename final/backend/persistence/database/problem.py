@@ -63,17 +63,16 @@ async def edit(problem_id: int, title: str = None, start_time: datetime = None, 
         to_updates['start_time'] = start_time
     if end_time:
         to_updates['end_time'] = end_time
-    if description:
-        to_updates['description'] = description
     if filename:
         to_updates['filename'] = filename
     if testcase_file_uuid:
         to_updates['testcase_file_uuid'] = testcase_file_uuid
+    to_updates['description'] = description
 
     if not to_updates:
         return
 
-    set_sql = ', '.join(fr"{field_name} = %(field_name)s" for field_name in to_updates)
+    set_sql = ', '.join(fr"{field_name} = %({field_name})s" for field_name in to_updates)
 
     sql, params = pyformat2psql(
         sql=fr"UPDATE problem"
@@ -81,4 +80,7 @@ async def edit(problem_id: int, title: str = None, start_time: datetime = None, 
             fr" WHERE id = %(problem_id)s",
         problem_id=problem_id, **to_updates,
     )
-    await pool_handler.pool.execute(sql, *params)
+    try:
+        await pool_handler.pool.execute(sql, *params)
+    except asyncpg.exceptions.UniqueViolationError:
+        raise exc.ProblemTitleExist

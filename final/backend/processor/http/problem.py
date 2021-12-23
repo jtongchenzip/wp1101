@@ -87,6 +87,7 @@ async def edit_problem(problem_id: int, title: str = None, start_time: datetime 
         raise exc.NoPermission
 
     s3_file_uuid = uuid4() if problem_file else None
+    filename = problem_file.filename if problem_file else None
 
     await db.problem.edit(problem_id=problem_id, title=title, start_time=start_time, end_time=end_time,
-                          description=description, filename=problem_file.filename, testcase_file_uuid=s3_file_uuid)
+                          description=description, filename=filename, testcase_file_uuid=s3_file_uuid)

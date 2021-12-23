@@ -2,6 +2,7 @@ from datetime import datetime
 from uuid import UUID
 
 from base import do
+import exceptions as exc
 
 from .util import pyformat2psql
 from . import pool_handler
@@ -37,8 +38,11 @@ async def read(submission_id: int) -> do.Submission:
             fr" WHERE id = %(submission_id)s",
             submission_id=submission_id
     )
-    account_id, problem_id, content_file_uuid, filename, total_pass, total_fail = \
-        await pool_handler.pool.fetchrow(sql, *params)
+    try:
+        account_id, problem_id, content_file_uuid, filename, total_pass, total_fail = \
+            await pool_handler.pool.fetchrow(sql, *params)
+    except TypeError:
+        raise exc.NotFound
     return do.Submission(id=submission_id, problem_id=problem_id, account_id=account_id,
                          content_file_uuid=content_file_uuid, filename=filename,
                          total_pass=total_pass, total_fail=total_fail)
