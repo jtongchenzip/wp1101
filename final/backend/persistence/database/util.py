@@ -8,10 +8,10 @@ from . import pool_handler
 
 
 # https://github.com/MagicStack/asyncpg/issues/9#issuecomment-600659015
-def pyformat2psql(query: str, named_args: Dict[str, Any]) -> Tuple[str, List[Any]]:
+def pyformat2psql(sql: str, named_args: Dict[str, Any]) -> Tuple[str, List[Any]]:
     positional_generator = itertools.count(1)
     positional_map = collections.defaultdict(lambda: '${}'.format(next(positional_generator)))
-    formatted_query = query % positional_map
+    formatted_query = sql % positional_map
     positional_items = sorted(
         positional_map.items(),
         key=lambda item: int(item[1].replace('$', '')),
