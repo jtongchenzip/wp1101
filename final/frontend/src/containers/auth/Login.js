@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
-  Button, Typography, TextField, makeStyles,
+  Button, Typography, TextField, makeStyles, Link,
 } from '@material-ui/core';
 import { logIn } from '../../actions/user/auth';
 
@@ -28,23 +28,32 @@ export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const history = useHistory();
   const user = useSelector((state) => state.user);
 
-  const handleLogIn = () => {
+  const handleLogIn = async () => {
     if (username.trim() !== '' && password.trim() !== '') {
-      dispatch(logIn(username.trim(), password.trim()));
+      await dispatch(logIn(username.trim(), password.trim()));
     }
   };
-
+  useEffect(() => {
+    if (user.isAuthenticated === true && user.role === 'TA') {
+      history.push('/ta');
+    } else if (user.isAuthenticated === true && user.role === 'STUDENT') {
+      history.push('/student');
+    }
+  }, [user.is_authenticated, user.token, user.id, user.role, history, user]);
   return (
     <>
       <div className={classes.main}>
         <TextField id="outlined-required" label="Username" onChange={(e) => setUsername(e.target.value)} />
         <TextField id="outlined-required" style={{ marginTop: 50 }} label="Password" onChange={(e) => setPassword(e.target.value)} />
         <div className={classes.buttonGroup}>
-          <Button color="primary" variant="outlined">
-            Register
-          </Button>
+          <Link to="/register" underline="none">
+            <Button color="primary" variant="outlined" onClick={() => { history.push('/register'); }}>
+              Register
+            </Button>
+          </Link>
           <Button color="primary" variant="contained" onClick={handleLogIn}>
             Login
           </Button>
