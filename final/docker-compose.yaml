@@ -44,7 +44,8 @@ services:
             - cpj
 
     judgecore:
-        image: nikolaik/python-nodejs
+        build:
+            context: ./judgecore
         container_name: cpj-judgecore
         restart: unless-stopped
         command: sh -c "cd /app && pip install -r requirements.txt && python main.py"

@@ -1,11 +1,24 @@
-FROM python:3.9
+FROM nikolaik/python-nodejs
 
-WORKDIR /app
+RUN apt-get -y update && apt-get install -y \
+    libgtk2.0-0 \
+    libgtk-3-0 \
+    libgbm-dev \
+    libnotify-dev \
+    libgconf-2-4 \
+    libnss3 \
+    libxss1 \
+    libasound2 \
+    libxtst6 \
+    xauth \
+    xvfb
+
+RUN yarn
+RUN yarn add create-react-app
+RUN yarn add cypress
 
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
-
-# ENV LANGUAGE_QUEUE_NAME 'python-3.9'
 
 COPY . .
 
