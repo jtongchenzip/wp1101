@@ -1,14 +1,13 @@
 import collections
 import itertools
-from typing import Any, Dict, Tuple, List
-
-import exceptions as exc
-
-from . import pool_handler
+from typing import Any, Tuple, List
 
 
-# https://github.com/MagicStack/asyncpg/issues/9#issuecomment-600659015
-def pyformat2psql(sql: str, named_args: Dict[str, Any]) -> Tuple[str, List[Any]]:
+# modify from https://github.com/MagicStack/asyncpg/issues/9#issuecomment-600659015
+def pyformat2psql(sql: str, parameters: dict[str, any] = None, **params) -> Tuple[str, List[Any]]:
+    named_args = {**params}
+    if parameters:
+        named_args.update(parameters)
     positional_generator = itertools.count(1)
     positional_map = collections.defaultdict(lambda: '${}'.format(next(positional_generator)))
     formatted_query = sql % positional_map
@@ -17,8 +16,5 @@ def pyformat2psql(sql: str, named_args: Dict[str, Any]) -> Tuple[str, List[Any]]
         key=lambda item: int(item[1].replace('$', '')),
     )
     positional_args = [named_args[named_arg] for named_arg, _ in positional_items]
+    print(formatted_query, positional_args)
     return formatted_query, positional_args
-
-
-def param_maker(**params):
-    return {**params}

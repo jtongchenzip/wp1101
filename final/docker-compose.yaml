@@ -4,25 +4,24 @@ services:
     backend:
         container_name: cpj-backend
         image: python:3.9
-        links: 
-            - "postgres:postgres"
-        restart: always
+        restart: unless-stopped
         command: sh -c "cd /app && pip install -r requirements.txt && pip install uvicorn && uvicorn main:app --host 0.0.0.0 --port 8000"
         ports:
-            - "8000:8000"
+            - 8000:8000
         volumes:
             - ./backend:/app      
         env_file: 
             - ./backend/.env
+        environment:
+            - TZ=Asia/Taipei
         networks:
             - cpj
 
     postgres:
         image: postgres:latest
-        container_name: cpj_db
+        container_name: cpj-db
         ports:
             - 5432:5432
-        restart: always
         environment:
             - POSTGRES_PASSWORD=password
         volumes: 
@@ -34,6 +33,7 @@ services:
     rabbitmq:
         image: rabbitmq:3-management-alpine
         container_name: cpj-rabbitmq
+        restart: unless-stopped
         ports:
             - 5672:5672
             - 15672:15672
@@ -44,11 +44,9 @@ services:
             - cpj
 
     judgecore:
-        container_name: cpj-judgecore
         image: nikolaik/python-nodejs
-        restart: always
-        links: 
-            - "rabbitmq:rabbitmq"
+        container_name: cpj-judgecore
+        restart: unless-stopped
         command: sh -c "cd /app && pip install -r requirements.txt && python main.py"
         volumes:
             - ./judgecore:/app      
