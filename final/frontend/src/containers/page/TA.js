@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Avatar, Button, Typography, makeStyles,
+  Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, TextField, Typography,
 } from '@material-ui/core';
 import CloudDownloadOutlined from '@material-ui/icons/CloudDownloadOutlined';
 import Settings from '@material-ui/icons/Settings';
-import ScoreTable from '../../components/ui/ScoreTable';
+
+import DateTimePicker from '../../components/ui/DateTimePicker';
 import LinearProgressBar from '../../components/ui/LinearProgressBar';
+import ScoreTable from '../../components/ui/ScoreTable';
+import UploadButton from '../../components/ui/UploadButton';
 
 const useStyles = makeStyles(() => ({
   main: {
@@ -42,14 +45,48 @@ const useStyles = makeStyles(() => ({
     marginTop: 30,
     marginBottom: 30,
   },
+  dialogContent: {
+    display: 'flex',
+    alignItems: 'baseline',
+    justifyContent: 'space-between',
+  },
 }));
 
 export default function TA() {
+  const [openProblemCard, setOpen] = useState(false);
   const [progress, setProgress] = useState(60);
+  const [uploadFile, setUpLoadFile] = useState([]);
   const classes = useStyles();
 
   return (
     <>
+      <Dialog
+        open={openProblemCard}
+        onClose={() => setOpen(false)}
+        maxWidth="md"
+      >
+        <DialogContent>
+          <div className={classes.dialogContent} style={{ marginTop: 0 }}>
+            <Typography variant="body1">Title</Typography>
+            <TextField id="outlined-required" label="Title" />
+          </div>
+          <div className={classes.dialogContent} style={{ marginTop: 20 }}>
+            <Typography variant="body1">Start Time</Typography>
+            <DateTimePicker />
+          </div>
+          <div className={classes.dialogContent} style={{ marginTop: 20 }}>
+            <Typography variant="body1">End Time</Typography>
+            <DateTimePicker />
+          </div>
+          <div className={classes.dialogContent} style={{ justifyContent: 'flex-start', marginTop: 10 }}>
+            <Typography style={{ marginRight: 90 }} variant="body1">Problem file</Typography>
+            <UploadButton setUpLoadFile={setUpLoadFile} />
+          </div>
+          <div className={classes.dialogContent} style={{ justifyContent: 'flex-end', marginTop: 0 }}>
+            <Button color="primary" variant="contained">Add</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
       <div className={classes.main}>
         <div className={classes.leftSidebar}>
           <Avatar alt="Pdogs" style={{ height: '60px', width: '60px' }} src="/static/images/avatar.jpg" />
@@ -59,7 +96,7 @@ export default function TA() {
           <Button color="primary" style={{ marginTop: 20 }} variant="text">Hack 1</Button>
           <Button color="primary" style={{ marginTop: 10 }} variant="text">Hack 2</Button>
           <Button color="primary" style={{ marginTop: 10 }} variant="text">Hack 3</Button>
-          <Button color="primary" style={{ marginTop: 10 }} variant="outlined">Add</Button>
+          <Button color="primary" style={{ marginTop: 10 }} variant="outlined" onClick={() => setOpen(true)}>Add</Button>
         </div>
         <div className={classes.scoreTableGroup}>
           <ScoreTable />
