@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import {
   Avatar, Button, Typography, makeStyles,
 } from '@material-ui/core';
-import { DownloadIcon } from '@material-ui/icons/Download';
+import CloudDownloadOutlined from '@material-ui/icons/CloudDownloadOutlined';
+import Settings from '@material-ui/icons/Settings';
 import ScoreTable from '../../components/ui/ScoreTable';
 import LinearProgressBar from '../../components/ui/LinearProgressBar';
 
@@ -30,8 +31,16 @@ const useStyles = makeStyles(() => ({
   rightSidebar: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
     width: '15%',
+    paddingLeft: 30,
+  },
+  hackAndIcon: {
+    display: 'flex',
+  },
+  stuAndIcon: {
+    display: 'flex',
+    marginTop: 30,
+    marginBottom: 30,
   },
 }));
 
@@ -46,10 +55,11 @@ export default function TA() {
           <Avatar alt="Pdogs" style={{ height: '60px', width: '60px' }} src="/static/images/avatar.jpg" />
           <Typography color="primary" style={{ marginTop: 10 }} variant="h6">pdogs</Typography>
           <Button type="text" variant="contained" disabled size="small" style={{ height: 25 }}>TA</Button>
-          <Button variant="outlined" style={{ marginTop: 20 }}>Hack 1</Button>
-          <Button variant="outlined" style={{ marginTop: 10 }}>Hack 2</Button>
-          <Button variant="outlined" style={{ marginTop: 10 }}>Hack 3</Button>
-          <Button color="primary" variant="outlined" style={{ marginTop: 10 }}>Add</Button>
+          {/* hack buttions need to change color to white */}
+          <Button color="primary" style={{ marginTop: 20 }} variant="text">Hack 1</Button>
+          <Button color="primary" style={{ marginTop: 10 }} variant="text">Hack 2</Button>
+          <Button color="primary" style={{ marginTop: 10 }} variant="text">Hack 3</Button>
+          <Button color="primary" style={{ marginTop: 10 }} variant="outlined">Add</Button>
         </div>
         <div className={classes.scoreTableGroup}>
           <ScoreTable />
@@ -59,13 +69,22 @@ export default function TA() {
           </div>
         </div>
         <div className={classes.rightSidebar}>
-          <Typography variant="h4">Hackathon 1</Typography>
-          <Typography style={{ marginTop: 15 }} variant="h6">Date : 2022/01/01</Typography>
-          <Typography style={{ marginTop: 5 }} variant="h6">Start Time : 09 : 10</Typography>
-          <Typography style={{ marginTop: 5 }} variant="h6">End Time : 12 : 10</Typography>
-          <Typography style={{ marginTop: 10 }} variant="h6">Student Score</Typography>
-          <DownloadIcon />
-          <Button color="primary" variant="contained" style={{ marginTop: 15 }}>Submit</Button>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left' }}>
+            <div className={classes.hackAndIcon}>
+              <Typography style={{ marginRight: 10 }} variant="h4">Hackathon 1</Typography>
+              <Settings htmlColor="grey" />
+            </div>
+            <Typography style={{ marginTop: 15 }} variant="body1">Date : 2022/01/01</Typography>
+            <Typography style={{ marginTop: 5 }} variant="body1">Start Time : 09 : 10</Typography>
+            <Typography style={{ marginTop: 5 }} variant="body1">End Time : 12 : 10</Typography>
+            <div className={classes.stuAndIcon}>
+              <Typography style={{ marginRight: 10 }} variant="body1">Student Score</Typography>
+              <CloudDownloadOutlined htmlColor="grey" />
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Button color="primary" variant="contained">Submit</Button>
+          </div>
         </div>
       </div>
     </>
