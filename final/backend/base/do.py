@@ -33,8 +33,9 @@ class Problem:
 @dataclass
 class Submission:
     id: int
-    problem_id: int
     account_id: int
+    problem_id: int
+    submit_time: datetime
     content_file_uuid: UUID
     filename: str
     total_pass: Optional[int]
