@@ -77,6 +77,7 @@ async def delete_problem(problem_id: int) -> None:
     return await db.problem.delete(problem_id=problem_id)
 
 
+
 @router.patch('/problem/{problem_id}')
 @enveloped
 async def edit_problem(problem_id: int, title: str = None, start_time: datetime = None,
@@ -91,3 +92,10 @@ async def edit_problem(problem_id: int, title: str = None, start_time: datetime 
 
     await db.problem.edit(problem_id=problem_id, title=title, start_time=start_time, end_time=end_time,
                           description=description, filename=filename, testcase_file_uuid=s3_file_uuid)
+
+
+@router.get('/problem/{problem_id}/last-submission')
+@enveloped
+async def read_last_submission(problem_id: int) -> do.Submission:
+    return await db.submission.read_last_submission(account_id=request.account.id, problem_id=problem_id)
+

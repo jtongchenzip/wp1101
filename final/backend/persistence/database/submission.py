@@ -33,16 +33,38 @@ async def add(account_id: int, problem_id: int, submit_time: datetime, filename:
 
 async def read(submission_id: int) -> do.Submission:
     sql, params = pyformat2psql(
-        sql=fr"SELECT problem_id, account_id, content_file_uuid, filename, total_pass, total_fail"
+        sql=fr"SELECT problem_id, account_id, content_file_uuid, filename, total_pass, total_fail, submit_time"
             fr"  FROM submission"
             fr" WHERE id = %(submission_id)s",
             submission_id=submission_id
     )
     try:
-        account_id, problem_id, content_file_uuid, filename, total_pass, total_fail = \
+        account_id, problem_id, content_file_uuid, filename, total_pass, total_fail, submit_time = \
             await pool_handler.pool.fetchrow(sql, *params)
     except TypeError:
         raise exc.NotFound
     return do.Submission(id=submission_id, problem_id=problem_id, account_id=account_id,
                          content_file_uuid=content_file_uuid, filename=filename,
+                         total_pass=total_pass, total_fail=total_fail, submit_time=submit_time)
+
+
+async def read_last_submission(account_id: int, problem_id: int) -> do.Submission:
+    sql, params = pyformat2psql(
+        sql=fr"SELECT id, account_id, problem_id, submit_time, content_file_uuid, filename, total_pass, total_fail"
+            fr"  FROM submission"
+            fr" WHERE account_id = %(account_id)s AND problem_id = %(problem_id)s"
+            fr" ORDER BY id DESC"
+            fr" LIMIT 1",
+        account_id=account_id,
+        problem_id=problem_id
+    )
+
+    try:
+        id_, account_id, problem_id, submit_time, content_file_uuid, filename, total_pass, total_fail = \
+            await pool_handler.pool.fetchrow(sql, *params)
+    except TypeError:
+        raise exc.NotFound
+
+    return do.Submission(id=id_, account_id=account_id, problem_id=problem_id,
+                         submit_time=submit_time, content_file_uuid=content_file_uuid, filename=filename,
                          total_pass=total_pass, total_fail=total_fail)
