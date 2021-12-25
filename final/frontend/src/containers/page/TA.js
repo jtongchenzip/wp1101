@@ -6,6 +6,7 @@ import {
 import CloudDownloadOutlined from '@material-ui/icons/CloudDownloadOutlined';
 import Settings from '@material-ui/icons/Settings';
 
+import theme from '../../theme';
 import DateTimePicker from '../../components/ui/DateTimePicker';
 import LinearProgressBar from '../../components/ui/LinearProgressBar';
 import ScoreTable from '../../components/ui/ScoreTable';
@@ -85,7 +86,7 @@ export default function TA() {
             <div className={classes.hackAndIcon}>
               <Typography style={{ marginRight: 10 }} variant="h4">Hackathon 1</Typography>
               <IconButton onClick={() => setEditCardOpen(true)}>
-                <Settings htmlColor="grey" />
+                <Settings htmlColor={theme.palette.grey[300]} />
               </IconButton>
             </div>
             <Typography style={{ marginTop: 15 }} variant="body1">Date : 2022/01/01</Typography>
@@ -93,7 +94,7 @@ export default function TA() {
             <Typography style={{ marginTop: 5 }} variant="body1">End Time : 12 : 10</Typography>
             <div className={classes.stuAndIcon}>
               <Typography style={{ marginRight: 10 }} variant="body1">Student Score</Typography>
-              <CloudDownloadOutlined htmlColor="grey" />
+              <CloudDownloadOutlined htmlColor={theme.palette.grey[300]} />
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
