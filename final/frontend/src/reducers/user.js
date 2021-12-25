@@ -7,6 +7,7 @@ const initialState = {
   username: '',
   real_name: '',
   student_id: '',
+  role: '',
 };
 
 const user = (state = initialState, action) => {
@@ -19,6 +20,7 @@ const user = (state = initialState, action) => {
         username: action.user.username,
         real_name: action.user.real_name,
         student_id: action.user.student_id,
+        role: action.user.role,
       };
     case authConstants.AUTH_LOGOUT:
       return {
@@ -28,6 +30,7 @@ const user = (state = initialState, action) => {
         username: '',
         real_name: '',
         student_id: '',
+        role: '',
       };
     case authConstants.TOKEN_EXPIRED:
       return {
@@ -37,6 +40,7 @@ const user = (state = initialState, action) => {
         username: '',
         real_name: '',
         student_id: '',
+        role: '',
       };
     default:
       return state;
