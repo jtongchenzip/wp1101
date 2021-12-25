@@ -7,7 +7,11 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "bootstrap": "^3.4.1",
+<<<<<<< HEAD
     "cypress": "9.2.0",
+=======
+    "cypress": "^4.0.1",
+>>>>>>> a05ea3fbe8223b5e36aa014b6543fc9dc44807c7
     "mochawesome": "^7.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -18,7 +22,11 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+<<<<<<< HEAD
     "test": "cypress run --spec cypress/integration/TodoTests/Todo5_*.js --reporter mochawesome --reporter-options reportDir=results,overwrite=true,html=false,json=true",
+=======
+    "test": "npx cypress run --spec cypress/integration/TodoTests/Todo5_Modal.js --reporter mochawesome --reporter-options reportDir=cypress/results,overwrite=false,html=false,json=true",
+>>>>>>> a05ea3fbe8223b5e36aa014b6543fc9dc44807c7
     "eject": "react-scripts eject",
     "cypress": "cypress open",
     "stop": "fuser -n tcp -k 3000"

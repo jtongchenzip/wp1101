@@ -28,7 +28,11 @@ async def save_report(body: bytes) -> None:
     await db.submission.edit(submission_id=report.submission_id,
                              total_pass=report.total_passes,
                              total_fail=report.total_failures)
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> a05ea3fbe8223b5e36aa014b6543fc9dc44807c7
     for judge_case in report.judge_cases:
         await db.judge_case.add(submission_id=report.submission_id,
                                 title=judge_case.title,
