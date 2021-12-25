@@ -51,11 +51,9 @@ export default function Login() {
         <TextField id="outlined-required" label="Username" onChange={(e) => setUsername(e.target.value)} />
         <TextField id="outlined-required" style={{ marginTop: 50 }} label="Password" onChange={(e) => setPassword(e.target.value)} />
         <div className={classes.buttonGroup}>
-          <Link to="/register" underline="none">
-            <Button color="primary" variant="outlined" onClick={() => { history.push('/register'); }}>
-              Register
-            </Button>
-          </Link>
+          <Button color="primary" variant="outlined" onClick={() => { history.push('/register'); }}>
+            Register
+          </Button>
           <Button color="primary" variant="contained" onClick={handleLogIn}>
             Login
           </Button>
