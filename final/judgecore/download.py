@@ -1,7 +1,6 @@
 import urllib.request
 import zipfile
 
-
 import do
 
 
@@ -11,5 +10,5 @@ def unzip(from_path, to_path):
 
 
 def download_task(task: do.JudgeTask):
-    urllib.request.urlretrieve(task.submission_url, '../temp/src.zip')
-    urllib.request.urlretrieve(task.problem_url, '../temp/cypress.zip')
+    urllib.request.urlretrieve(task.submission_url, 'temp/src.zip')
+    urllib.request.urlretrieve(task.problem_url, 'temp/cypress.zip')
