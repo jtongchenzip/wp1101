@@ -10,7 +10,6 @@ const submitCode = (problem_id, upload_file, token) => async (dispatch) => {
   };
   const formData = new FormData();
   formData.append('content_file', upload_file);
-  console.log(upload_file);
   try {
     dispatch({ type: submissionConstants.ADD_SUBMISSION_START });
     const res = await agent.post(`/problem/${problem_id}/submission`, formData, config);

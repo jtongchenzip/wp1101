@@ -6,7 +6,6 @@ import ScoreTable from './components/ui/ScoreTable';
 import Header from './components/ui/Header';
 import UploadButton from './components/ui/UploadButton';
 import DateTimePicker from './components/ui/DateTimePicker';
-import { submitCode } from './actions/submission/submission';
 
 export default function App() {
   const [progress, setProgress] = useState(80);
@@ -22,9 +21,6 @@ export default function App() {
   //     clearInterval(timer);
   //   };
   // }, []);
-  const testUploadSubmission = async () => {
-    await dispatch(submitCode(1, uploadFile, user.token));
-  };
   return (
     <>
       <Header title="Hackthon Online Judge System" />
@@ -41,7 +37,7 @@ export default function App() {
       <Button color="primary" variant="contained">
         Button
       </Button>
-      <Button color="primary" variant="contained" style={{ borderRadius: '15px' }} onClick={testUploadSubmission}>
+      <Button color="primary" variant="contained" style={{ borderRadius: '15px' }}>
         15px
       </Button>
       <UploadButton setUpLoadFile={setUpLoadFile} />
