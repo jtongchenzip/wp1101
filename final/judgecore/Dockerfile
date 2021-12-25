@@ -13,13 +13,10 @@ RUN apt-get -y update && apt-get install -y \
     xauth \
     xvfb
 
-RUN yarn
-RUN yarn add create-react-app
-RUN yarn add cypress
+COPY . ./app
+WORKDIR /app
 
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
-
-COPY . .
 
 CMD ["python", "main.py"]

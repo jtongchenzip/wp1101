@@ -64,18 +64,18 @@ async def receive_task(body: bytes, publish_func: Callable[[bytes, str], Corouti
 
         download_task(task)
 
-        unzip(from_path='../temp/src.zip', to_path='../hack1')
-        unzip(from_path='../temp/cypress.zip', to_path='../hack1')
+        unzip(from_path='../temp/src.zip', to_path='../app')
+        unzip(from_path='../temp/cypress.zip', to_path='../app')
 
-        if os.path.exists('../hack1/results'):
-            shutil.rmtree('../hack1/results')
-        os.mkdir('../hack1/results')
+        if os.path.exists('../app/hack1/results'):
+            shutil.rmtree('../app/hack1/results')
+        os.mkdir('../app/hack1/results')
 
         with Judge():
             pass
 
-        await handle_report(submission_id=task.submission_id, directory_path='../hack1/results', publish_func=publish_func)
+        await handle_report(submission_id=task.submission_id, directory_path='../app/hack1/results', publish_func=publish_func)
     finally:
         shutil.rmtree('../temp')
-        shutil.rmtree('../hack1/results')
+        shutil.rmtree('../app/hack1/results')
 

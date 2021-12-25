@@ -48,9 +48,7 @@ services:
             context: ./judgecore
         container_name: cpj-judgecore
         restart: unless-stopped
-        command: sh -c "cd /app && pip install -r requirements.txt && python main.py"
-        volumes:
-            - ./judgecore:/app      
+        command: sh -c "cd /app/hack1 && yarn && cd .. && python main.py"    
         env_file: 
             - ./judgecore/.env
         networks:
