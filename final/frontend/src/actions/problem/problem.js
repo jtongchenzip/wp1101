@@ -46,6 +46,29 @@ const addProblem = (title, start_time, end_time, file, description, token) => as
   }
 };
 
+const editProblem = (problem_id, title, start_time, end_time, file, description, token) => async (dispatch) => {
+  const config = {
+    headers: {
+      'auth-token': token,
+    },
+    params: {
+      title,
+      start_time,
+      end_time,
+      description,
+    },
+  };
+  const formData = new FormData();
+  formData.append('upload_file', file);
+  try {
+    dispatch({ type: problemConstants.EDIT_PROBLEM_START });
+    await agent.patch(`/problem/${problem_id}`, formData, config);
+    dispatch({ type: problemConstants.EDIT_PROBLEM_SUCCESS });
+  } catch (error) {
+    dispatch({ type: problemConstants.EDIT_PROBLEM_FAIL });
+  }
+};
+
 const readProblemLastSubmission = (problem_id, token) => async (dispatch) => {
   const config = {
     headers: {
@@ -61,4 +84,6 @@ const readProblemLastSubmission = (problem_id, token) => async (dispatch) => {
   }
 };
 
-export { readProblem, addProblem, readProblemLastSubmission };
+export {
+  readProblem, addProblem, editProblem, readProblemLastSubmission,
+};
