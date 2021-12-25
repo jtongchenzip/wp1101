@@ -80,3 +80,9 @@ async def delete_problem(problem_id: int) -> None:
         raise exc.NoPermission
 
     return await db.problem.delete(problem_id=problem_id)
+
+
+@router.get('/problem/{problem_id}/last-submission')
+@enveloped
+async def read_last_submission(problem_id: int) -> do.Submission:
+    return await db.submission.read_last_submission(account_id=request.account.id, problem_id=problem_id)
