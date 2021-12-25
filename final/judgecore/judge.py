@@ -12,7 +12,7 @@ class Judge:
             print('judge start, time:', datetime.now())
             subprocess.Popen('cd hack1 && yarn start', shell=True)
 
-            time.sleep(80)  # FIXME: buffer for build, need further discussion or modify implementation
+            time.sleep(40)  # FIXME: buffer for build, need further discussion or modify implementation
 
             subprocess.call('cd hack1 && yarn test', shell=True)
         except:
