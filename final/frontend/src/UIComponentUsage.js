@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { Typography, Button, TextField } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
 import LinearProgressBar from './components/ui/LinearProgressBar';
 import ScoreTable from './components/ui/ScoreTable';
 import Header from './components/ui/Header';
 import UploadButton from './components/ui/UploadButton';
 import DateTimePicker from './components/ui/DateTimePicker';
+import { submitCode } from './actions/submission/submission';
 
 export default function App() {
   const [progress, setProgress] = useState(80);
   const [selectedDate, handleDateChange] = useState(new Date());
   const [uploadFile, setUpLoadFile] = useState([]);
-
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   // useEffect(() => {
   //   const timer = setInterval(() => {
   //     setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
@@ -19,7 +22,9 @@ export default function App() {
   //     clearInterval(timer);
   //   };
   // }, []);
-
+  const testUploadSubmission = async () => {
+    await dispatch(submitCode(1, uploadFile, user.token));
+  };
   return (
     <>
       <Header title="Hackthon Online Judge System" />
@@ -36,7 +41,7 @@ export default function App() {
       <Button color="primary" variant="contained">
         Button
       </Button>
-      <Button color="primary" variant="contained" style={{ borderRadius: '15px' }}>
+      <Button color="primary" variant="contained" style={{ borderRadius: '15px' }} onClick={testUploadSubmission}>
         15px
       </Button>
       <UploadButton setUpLoadFile={setUpLoadFile} />

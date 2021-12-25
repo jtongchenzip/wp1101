@@ -24,26 +24,10 @@ export default function Login() {
 
   return (
     <>
-<<<<<<< HEAD
-      <Header title="Hackthon Online Judge System" />
-      <div
-        className="content-layout"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <TextField hiddenLabel id="outlined-required" label="Username" variant="outlined" />
-        <TextField hiddenLabel id="outlined-required" style={{ marginTop: 30 }} label="Password" variant="outlined" />
-        <div style={{ marginTop: 20 }}>
-=======
       <div className={classes.main}>
         <TextField id="outlined-required" label="Username" />
         <TextField id="outlined-required" style={{ marginTop: 50 }} label="Password" />
         <div className={classes.buttonGroup}>
->>>>>>> main
           <Button color="primary" variant="outlined">
             Register
           </Button>
