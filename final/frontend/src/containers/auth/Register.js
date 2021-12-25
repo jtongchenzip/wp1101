@@ -21,22 +21,26 @@ const useStyles = makeStyles(() => ({
 
 export default function Login() {
   const classes = useStyles();
+  const history = useHistory();
+  const dispatch = useDispatch();
+
   const [studentId, setStudentId] = useState('');
   const [realName, setRealName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [hasRequest, setHasRequest] = useState(false);
-  const history = useHistory();
-  const dispatch = useDispatch();
+
   const handleRegister = async () => {
     await dispatch(signUp(username, password, realName, studentId));
     setHasRequest(true);
   };
+
   useEffect(() => {
     if (hasRequest) {
       history.push('/login');
     }
   }, [hasRequest, history]);
+
   return (
     <>
       <div className={classes.main}>

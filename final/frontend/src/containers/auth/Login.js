@@ -24,25 +24,27 @@ const useStyles = makeStyles(() => ({
 export default function Login() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  const user = useSelector((state) => state.user);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-  const history = useHistory();
-  const user = useSelector((state) => state.user);
 
   const handleLogIn = async () => {
     if (username.trim() !== '' && password.trim() !== '') {
       await dispatch(logIn(username.trim(), password.trim()));
     }
   };
+
   useEffect(() => {
-    if (user.isAuthenticated === true && user.role === 'TA') {
+    if (user.isAuthenticated && user.role === 'TA') {
       history.push('/ta');
-    } else if (user.isAuthenticated === true && user.role === 'STUDENT') {
+    } else if (user.isAuthenticated && user.role === 'STUDENT') {
       history.push('/student');
     }
   }, [user.is_authenticated, user.token, user.id, user.role, history, user]);
+
   return (
     <>
       <div className={classes.main}>

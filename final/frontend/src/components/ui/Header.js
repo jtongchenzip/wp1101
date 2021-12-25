@@ -9,12 +9,15 @@ import { logout } from '../../actions/user/auth';
 
 // 看他是否登入，判斷要不要給 logout icon
 export default function Header({ title }) {
-  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const user = useSelector((state) => state.user);
+
   const handleLogout = () => {
     dispatch(logout(history));
   };
+
   return (
     <Box>
       <AppBar position="static" color="inherit" style={{ minHeight: '64px' }}>
