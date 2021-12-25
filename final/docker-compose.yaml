@@ -48,9 +48,13 @@ services:
             context: ./judgecore
         container_name: cpj-judgecore
         restart: unless-stopped
-        command: sh -c "cd /app && pip install -r requirements.txt && python main.py"
+        command: sh -c "cd /app && pip install -r requirements.txt && python -u main.py"
+        ports:
+            - 3000:3000
         volumes:
-            - ./judgecore:/app      
+            - ./judgecore:/app
+        environment:
+            - CYPRESS_CACHE_FOLDER=~/.cache/Cypress
         env_file: 
             - ./judgecore/.env
         networks:
