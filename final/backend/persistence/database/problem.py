@@ -52,25 +52,3 @@ async def delete(problem_id: int) -> None:
         problem_id=problem_id
     )
     await pool_handler.pool.execute(sql, *params)
-
-
-async def read_last_submission(account_id: int, problem_id: int) -> do.Submission:
-    sql, params = pyformat2psql(
-        sql=fr"SELECT id, account_id, problem_id, submit_time, content_file_uuid, filename, total_pass, total_fail"
-            fr"  FROM submission"
-            fr" WHERE account_id = %(account_id)s and problem_id = %(problem_id)s"
-            fr" ORDER BY id desc"
-            fr" LIMIT 1",
-        account_id=account_id,
-        problem_id=problem_id
-    )
-
-    try:
-        id_, account_id, problem_id, submit_time, content_file_uuid, filename, total_pass, total_fail = \
-            await pool_handler.pool.fetchrow(sql, *params)
-    except TypeError:
-        raise exc.NotFound
-
-    return do.Submission(id=id_, account_id=account_id, problem_id=problem_id,
-                         submit_time=submit_time, content_file_uuid=content_file_uuid, filename=filename,
-                         total_pass=total_pass, total_fail=total_fail)
