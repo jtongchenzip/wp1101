@@ -44,12 +44,13 @@ services:
             - cpj
 
     judgecore:
-        image: nikolaik/python-nodejs
+        build:
+            context: ./judgecore
         container_name: cpj-judgecore
         restart: unless-stopped
-        command: sh -c "cd /app && pip install -r requirements.txt && python main.py"
-        volumes:
-            - ./judgecore:/app      
+        command: sh -c "cd /app/hack1 && yarn && cd .. && python -u main.py"
+        ports:
+            - 3000:3000
         env_file: 
             - ./judgecore/.env
         networks:
@@ -78,4 +79,3 @@ networks:
   cpj:
     external:
       name: cpj
-

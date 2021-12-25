@@ -8,14 +8,17 @@ class Judge:
         pass
 
     def __enter__(self):
-        print('judge start, time:', datetime.now())
-        subprocess.Popen('cd ../hack1 && yarn start', shell=True)
+        try:
+            print('judge start, time:', datetime.now())
+            subprocess.Popen('cd hack1 && yarn start', shell=True)
 
-        time.sleep(20)  # FIXME: buffer for build, need further discussion or modify implementation
+            time.sleep(80)  # FIXME: buffer for build, need further discussion or modify implementation
 
-        subprocess.call('cd ../hack1 && yarn test', shell=True)
+            subprocess.call('cd hack1 && yarn test', shell=True)
+        except:
+            subprocess.call('cd hack1 && yarn stop', shell=True)
 
     def __exit__(self, exc_type, exc_value, traceback):
         print(f'{exc_type=}, {exc_value=}, {traceback=}')
-        subprocess.call('cd ../hack1 && yarn stop', shell=True)
+        subprocess.call('cd hack1 && yarn stop', shell=True)
         print('judge finished, time:', datetime.now())
