@@ -13,9 +13,9 @@ import '../App.css';
 export default function index() {
   return (
     <div className="wrapper">
-      <Header title="Hackthon Online Judge System" />
-      <div className="content-layout">
-        <Router>
+      <Router>
+        <Header title="Hackthon Online Judge System" />
+        <div className="content-layout">
           <Switch>
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
@@ -23,8 +23,8 @@ export default function index() {
             <Route path="/student" component={Student} />
             <TA path="/ta" component={TA} />
           </Switch>
-        </Router>
-      </div>
+        </div>
+      </Router>
     </div>
   );
 }
