@@ -1,5 +1,6 @@
 from base import do
 from dataclasses import dataclass
+from typing import Sequence
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, responses, UploadFile, File
@@ -54,3 +55,23 @@ async def submit(problem_id: int, filename: str, content_file: UploadFile = File
                                   submission_url=content_file_url))
 
     return AddSubmissionOutput(id=submission_id)
+
+
+@router.get('/submission/{submission_id}/judge-case')
+@enveloped
+async def browse_judge_case_under_submission(submission_id: int) -> Sequence[do.JudgeCase]:
+    submission = await db.submission.read(submission_id=submission_id)
+    if not (request.account.role is RoleType.TA or request.account.id is submission.account_id):
+        raise exc.NoPermission
+
+    return await db.judge_case.browse(submission_id=submission_id)
+
+
+@router.get('/submission/{submission_id}')
+@enveloped
+async def read_submission(submission_id: int) -> do.Submission:
+    submission = await db.submission.read(submission_id=submission_id)
+    if not (request.account.id == submission.account_id or request.account.role == RoleType.TA):
+        raise exc.NoPermission
+
+    return submission
