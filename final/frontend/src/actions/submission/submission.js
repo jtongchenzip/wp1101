@@ -48,7 +48,7 @@ const browseJudgeCase = (submission_id, token) => async (dispatch) => {
   };
   try {
     dispatch({ type: submissionConstants.BROWSE_JUDGE_CASE_START });
-    const res = await agent.get(`/submsision/${submission_id}/judge-case`, config);
+    const res = await agent.get(`/submission/${submission_id}/judge-case`, config);
     dispatch({
       type: submissionConstants.BROWSE_JUDGE_CASE_SUCCESS,
       payload: res.data,
