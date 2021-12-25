@@ -86,6 +86,6 @@ async def receive_task(body: bytes, publish_func: Callable[[bytes, str], Corouti
 
     finally:
         shutil.rmtree('app/temp')
-        shutil.rmtree('app/app/hack1/src')
-        shutil.rmtree('app/app/hack1/cypress')
-        shutil.rmtree('app/app/hack1/results')
+        shutil.rmtree('/app/hack1/src')
+        shutil.rmtree('/app/hack1/cypress')
+        shutil.rmtree('/app/hack1/results')
