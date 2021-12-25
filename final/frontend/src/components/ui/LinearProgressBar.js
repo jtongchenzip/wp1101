@@ -23,7 +23,7 @@ function LinearProgressWithLabel(props) {
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Box sx={{ width: '460px', minWidth: '200px', mr: 1 }}>
+      <Box sx={{ width: '320px', minWidth: '200', mr: 1 }}>
         <LinearProgress
           classes={{
             bar: classes.bar,
