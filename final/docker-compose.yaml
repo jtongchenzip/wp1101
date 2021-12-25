@@ -48,7 +48,9 @@ services:
             context: ./judgecore
         container_name: cpj-judgecore
         restart: unless-stopped
-        command: sh -c "cd /app/hack1 && yarn && cd .. && python main.py"    
+        command: sh -c "cd /app/hack1 && yarn && cd .. && python -u main.py"
+        ports:
+            - 3000:3000
         env_file: 
             - ./judgecore/.env
         networks:

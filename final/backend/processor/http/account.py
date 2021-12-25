@@ -97,7 +97,7 @@ from persistence.amqp_publisher import send_judge
 @router.post('/test')
 @enveloped
 async def test() -> None:
-    cypress_uuid = '575ccc19-cf23-4479-a249-05e1ad908cec'
+    cypress_uuid = 'bd5ee264-e499-4a1c-9073-7bd0ecc39e30'
     src_uuid = '6c4dd50a-e186-4109-9fcb-c850e0b61e47'
     cypress_url = await s3_handler.sign_url('temp', cypress_uuid, 'cypress.zip')
     src_url = await s3_handler.sign_url('temp', src_uuid, 'src.zip')

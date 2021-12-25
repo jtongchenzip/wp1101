@@ -59,13 +59,18 @@ async def receive_task(body: bytes, publish_func: Callable[[bytes, str], Corouti
     try:
         if os.path.exists('../temp'):
             shutil.rmtree('../temp')
+        print('making temp dir')
 
         os.mkdir('../temp')
 
+        print('downloading task file')
         download_task(task)
+        print('task file downloaded')
 
+        print('unzipping files')
         unzip(from_path='../temp/src.zip', to_path='../app')
         unzip(from_path='../temp/cypress.zip', to_path='../app')
+        print('files unzipped')
 
         if os.path.exists('../app/hack1/results'):
             shutil.rmtree('../app/hack1/results')
@@ -75,7 +80,13 @@ async def receive_task(body: bytes, publish_func: Callable[[bytes, str], Corouti
             pass
 
         await handle_report(submission_id=task.submission_id, directory_path='../app/hack1/results', publish_func=publish_func)
+    
+    except Exception as e:
+        print(e)
+
     finally:
         shutil.rmtree('../temp')
+        shutil.rmtree('../app/hack1/src')
+        shutil.rmtree('../app/hack1/cypress')
         shutil.rmtree('../app/hack1/results')
 
