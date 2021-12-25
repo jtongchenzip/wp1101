@@ -37,7 +37,7 @@ async def read(submission_id: int) -> do.Submission:
             fr" WHERE id = %(submission_id)s",
             submission_id=submission_id
     )
-    account_id, problem_id, content_file_uuid, filename, total_pass, total_fail = \
+    problem_id, account_id, content_file_uuid, filename, total_pass, total_fail = \
         await pool_handler.pool.fetchrow(sql, *params)
     return do.Submission(id=submission_id, problem_id=problem_id, account_id=account_id,
                          content_file_uuid=content_file_uuid, filename=filename,
