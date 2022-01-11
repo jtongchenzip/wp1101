@@ -51,24 +51,19 @@ class AddProblemOutput:
 
 @router.post('/problem/{problem_id}')
 @enveloped
-async def add_problem(title: str, start_time: datetime, end_time: datetime, description: Optional[str],
-                      filename: str, problem: UploadFile = File(...)) -> AddProblemOutput:
+async def add_problem(title: str, start_time: datetime, end_time: datetime,
+                      description: Optional[str] = None, problem_file: UploadFile = File(...)) -> AddProblemOutput:
     if request.account.role is not RoleType.TA:
         raise exc.NoPermission
 
-    start_time = timezone_validate(start_time)
-    end_time = timezone_validate(end_time)
-    if start_time > end_time:
-        raise exc.IllegalInput
-
     s3_file_uuid = uuid4()
-    await s3_handler.upload(problem.file, s3_file_uuid)
+    await s3_handler.upload(problem_file.file, s3_file_uuid)
     await db.s3_file.add(s3_file=do.S3File(key=str(s3_file_uuid),
                                            bucket='temp',
                                            uuid=s3_file_uuid))  # FIXME: bucket name
 
     problem_id = await db.problem.add(title=title, start_time=start_time, end_time=end_time,
-                                      description=description, filename=filename,
+                                      description=description, filename=problem_file.filename,
                                       testcase_file_uuid=s3_file_uuid)
 
     return AddProblemOutput(id=problem_id)
@@ -81,6 +76,23 @@ async def delete_problem(problem_id: int) -> None:
         raise exc.NoPermission
 
     return await db.problem.delete(problem_id=problem_id)
+
+
+
+@router.patch('/problem/{problem_id}')
+@enveloped
+async def edit_problem(problem_id: int, title: str = None, start_time: datetime = None,
+                       end_time: datetime = None, description: Optional[str] = None,
+                       problem_file: UploadFile = File(None)) -> None:
+
+    if request.account.role != RoleType.TA:
+        raise exc.NoPermission
+
+    s3_file_uuid = uuid4() if problem_file else None
+    filename = problem_file.filename if problem_file else None
+
+    await db.problem.edit(problem_id=problem_id, title=title, start_time=start_time, end_time=end_time,
+                          description=description, filename=filename, testcase_file_uuid=s3_file_uuid)
 
 
 @router.get('/problem/{problem_id}/last-submission')
