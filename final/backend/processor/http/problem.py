@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
 from datetime import datetime
+import io
 
 from fastapi import APIRouter, Depends, responses, UploadFile, File
 from uuid import uuid4
@@ -86,3 +87,33 @@ async def delete_problem(problem_id: int) -> None:
 @enveloped
 async def read_last_submission(problem_id: int) -> do.Submission:
     return await db.submission.read_last_submission(account_id=request.account.id, problem_id=problem_id)
+
+
+@dataclass
+class GetStudentScoreOutput:
+    url: str
+
+
+@router.get('/problem/{problem_id}/student-score')
+@enveloped
+async def get_student_score(problem_id: int) -> GetStudentScoreOutput:
+    if request.account.role is not RoleType.TA:
+        raise exc.NoPermission
+
+    accounts = await db.account.browse_by_role(role=RoleType.student)
+    student_score = 'student_id,total_pass,total_fail\n'
+
+    for account in accounts:
+        submission = await db.submission.read_last_submission(account_id=account.id, problem_id=problem_id)
+        if submission:
+            student_score += f"{account.student_id},{submission.total_pass},{submission.total_fail}\n"
+        else:
+            student_score += f"{account.student_id},,\n"
+
+    student_score = student_score.encode(encoding='utf-8')
+    with io.BytesIO(student_score) as file:
+        uuid_ = uuid4()
+        await s3_handler.upload(file, key=str(uuid_))
+        s3_url = await s3_handler.sign_url(bucket='temp', key=str(uuid_), filename='score.csv')
+
+    return GetStudentScoreOutput(url=s3_url)
