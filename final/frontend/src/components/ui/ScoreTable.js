@@ -10,7 +10,6 @@ import {
   Divider,
   makeStyles,
 } from '@material-ui/core';
-import { useSelector } from 'react-redux';
 import theme from '../../theme';
 
 const useStyles = makeStyles(() => ({
@@ -35,18 +34,18 @@ function createJudge(task, description, status, errorMsg = null) {
   };
 }
 
-// const data = [
-//   createJudge('TODO 1', 'This is a description from cypress. This is a description from cypress. ', 'Pass'),
-//   createJudge(
-//     'TODO 2',
-//     'This is a description from cypress.',
-//     'Fail',
-//     'This is a description from cypress. This is a description from cypress. This is a description from cypress. This is a description from cypress. This is a description from cypress.',
-//   ),
-//   createJudge('TODO 3', 'This is a description from cypress.', 'Fail'),
-//   createJudge('TODO 4', 'This is a description from cypress.', 'Pass'),
-//   createJudge('TODO 5', 'This is a description from cypress.', 'Pass'),
-// ];
+const data = [
+  createJudge('TODO 1', 'This is a description from cypress. This is a description from cypress. ', 'Pass'),
+  createJudge(
+    'TODO 2',
+    'This is a description from cypress.',
+    'Fail',
+    'This is a description from cypress. This is a description from cypress. This is a description from cypress. This is a description from cypress. This is a description from cypress.',
+  ),
+  createJudge('TODO 3', 'This is a description from cypress.', 'Fail'),
+  createJudge('TODO 4', 'This is a description from cypress.', 'Pass'),
+  createJudge('TODO 5', 'This is a description from cypress.', 'Pass'),
+];
 
 const columns = [
   {
@@ -72,13 +71,8 @@ const columns = [
   },
 ];
 
-export default function ScoreTable(input) {
+export default function ScoreTable() {
   const classes = useStyles();
-  console.log();
-  if (input.length === 0) {
-    return <></>;
-  }
-  const data = input.map((dt) => createJudge(dt.title, dt.description, dt.status, dt.error_message));
   return (
     <>
       <Paper style={{ width: '100%' }}>
