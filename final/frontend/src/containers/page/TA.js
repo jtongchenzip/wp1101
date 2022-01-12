@@ -65,14 +65,21 @@ export default function TA() {
     <>
       <div className={classes.main}>
         <div className={classes.leftSidebar}>
-          <Avatar alt="Pdogs" style={{ height: '60px', width: '60px' }} src="/static/images/avatar.jpg" />
-          <Typography color="primary" style={{ marginTop: 10 }} variant="h6">pdogs</Typography>
-          <Button type="text" variant="contained" disabled size="small" style={{ height: 25 }}>TA</Button>
-          {/* hack buttions need to change color to white */}
-          <Button color="primary" style={{ marginTop: 20 }} variant="text">Hack 1</Button>
-          <Button color="primary" style={{ marginTop: 10 }} variant="text">Hack 2</Button>
-          <Button color="primary" style={{ marginTop: 10 }} variant="text">Hack 3</Button>
-          <Button color="primary" style={{ marginTop: 10 }} variant="outlined" onClick={() => setAddCardOpen(true)}>Add</Button>
+          <Avatar alt="Pdogs" style={{ height: '64px', width: '64px' }} src="/static/images/avatar.jpg" />
+          <Typography color="primary" style={{ marginTop: 10 }} variant="h4">pdogs</Typography>
+          <Button
+            variant="contained"
+            disabled
+            style={{
+              height: 26, width: 84, fontSize: 14, color: theme.palette.grey[300], backgroundColor: theme.palette.grey.A400,
+            }}
+          >
+            TA
+          </Button>
+          <Button variant="initial">Hack 1</Button>
+          <Button variant="initial">Hack 2</Button>
+          <Button variant="initial">Hack 3</Button>
+          <Button variant="outlined" color="primary">Add</Button>
         </div>
         <div className={classes.scoreTableGroup}>
           <ScoreTable />
