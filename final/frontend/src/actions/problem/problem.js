@@ -110,21 +110,18 @@ const downloadStudentScore = (problem_id, token) => async (dispatch) => {
   try {
     dispatch({ type: problemConstants.DOWNLOAD_STUDENT_SCORE_START });
     const res = agent.get(`/problem/${problem_id}/student-score`, config);
-
-    const config2 = {
-      headers: {
-        'auth-token': token,
-      },
-      params: {
-        filename: 'score.csv',
-        as_attachment: true,
-      },
-    };
+    fetch(res.data.data.url).then((t) => t.blob().then((b) => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(b);
+      a.setAttribute('download', 'score.csv');
+      a.click();
+    }));
+    dispatch({ type: problemConstants.DOWNLOAD_STUDENT_SCORE_SUCCESS });
   } catch (error) {
     dispatch({ type: problemConstants.DOWNLOAD_STUDENT_SCORE_FAIL, error });
   }
 };
 
 export {
-  readProblem, addProblem, editProblem, readProblemLastSubmission, deleteProblem,
+  readProblem, addProblem, editProblem, readProblemLastSubmission, deleteProblem, downloadStudentScore,
 };
