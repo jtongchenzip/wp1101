@@ -84,6 +84,47 @@ const readProblemLastSubmission = (problem_id, token) => async (dispatch) => {
   }
 };
 
+const deleteProblem = (problem_id, token) => async (dispatch) => {
+  const config = {
+    headers: {
+      'auth-token': token,
+    },
+  };
+  try {
+    dispatch({ type: problemConstants.DELETE_PROBLEM_START });
+    await agent.delete(`/problem/${problem_id}`, config);
+    dispatch({
+      type: problemConstants.DELETE_PROBLEM_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({ type: problemConstants.DELETE_PROBLEM_FAIL, error });
+  }
+};
+
+const downloadStudentScore = (problem_id, token) => async (dispatch) => {
+  const config = {
+    headers: {
+      'auth-token': token,
+    },
+  };
+  try {
+    dispatch({ type: problemConstants.DOWNLOAD_STUDENT_SCORE_START });
+    const res = agent.get(`/problem/${problem_id}/student-score`, config);
+
+    const config2 = {
+      headers: {
+        'auth-token': token,
+      },
+      params: {
+        filename: 'score.csv',
+        as_attachment: true,
+      },
+    };
+  } catch (error) {
+    dispatch({ type: problemConstants.DOWNLOAD_STUDENT_SCORE_FAIL, error });
+  }
+};
+
 export {
-  readProblem, addProblem, editProblem, readProblemLastSubmission,
+  readProblem, addProblem, editProblem, readProblemLastSubmission, deleteProblem,
 };
