@@ -43,7 +43,7 @@ const signUp = (username, password, real_name, student_id) => async (dispatch) =
   }
 };
 
-const readAccount = (id, token) => async (dispatch) => {
+const readAccount = (token, id) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,

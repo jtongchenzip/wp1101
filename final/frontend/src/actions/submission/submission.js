@@ -1,7 +1,7 @@
 import agent from '../agent';
 import { submissionConstants } from './constant';
 
-const submitCode = (problem_id, upload_file, token) => async (dispatch) => {
+const submitCode = (token, problem_id, upload_file) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -19,7 +19,7 @@ const submitCode = (problem_id, upload_file, token) => async (dispatch) => {
   }
 };
 
-const readSubmission = (submission_id, token) => async (dispatch) => {
+const readSubmission = (token, submission_id) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -40,7 +40,7 @@ const readSubmission = (submission_id, token) => async (dispatch) => {
   }
 };
 
-const browseJudgeCase = (submission_id, token) => async (dispatch) => {
+const browseJudgeCase = (token, submission_id) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
