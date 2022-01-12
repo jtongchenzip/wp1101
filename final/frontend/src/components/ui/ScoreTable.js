@@ -25,7 +25,6 @@ const useStyles = makeStyles(() => ({
     height: '60px',
   },
 }));
-
 function createJudge(task, description, status, errorMsg = null) {
   return {
     task,
@@ -74,7 +73,6 @@ const columns = [
 
 export default function ScoreTable() {
   const classes = useStyles();
-
   return (
     <>
       <Paper style={{ width: '100%' }}>
