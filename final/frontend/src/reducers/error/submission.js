@@ -1,9 +1,11 @@
 import { submissionConstants } from '../../actions/submission/constant';
+import { problemConstants } from '../../actions/problem/constant';
 
 const initialState = {
   addSubmission: null,
   fetchSubmission: null,
   browseJudgeCase: null,
+  fetchLastSubmission: null,
 };
 
 export default function submission(state = initialState, action) {
@@ -37,6 +39,16 @@ export default function submission(state = initialState, action) {
       return {
         ...state,
         browseJudgeCase: null,
+      };
+    case problemConstants.FETCH_LAST_SUBMISSION_FAIL:
+      return {
+        ...state,
+        fetchLastSubmission: action.error,
+      };
+    case problemConstants.FETCH_LAST_SUBMISSION_SUCCESS:
+      return {
+        ...state,
+        fetchLastSubmission: null,
       };
     default:
       return state;
