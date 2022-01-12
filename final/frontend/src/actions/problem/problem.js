@@ -9,7 +9,7 @@ const readProblem = (id, token) => async (dispatch) => {
   };
   try {
     dispatch({ type: problemConstants.FETCH_PROBLEM_START });
-    const res = await agent.post(`/problem/${id}`, config);
+    const res = await agent.get(`/problem/${id}`, config);
     dispatch({ type: problemConstants.FETCH_PROBLEM_SUCCESS, payload: res.data.data });
   } catch (error) {
     dispatch({
@@ -101,6 +101,21 @@ const deleteProblem = (problem_id, token) => async (dispatch) => {
   }
 };
 
+const browseProblem = (token) => async (dispatch) => {
+  const config = {
+    headers: {
+      'auth-token': token,
+    },
+  };
+  try {
+    dispatch({ type: problemConstants.BROWSE_PROBLEM_START });
+    const res = await agent.get('/problem', config);
+    dispatch({ type: problemConstants.BROWSE_PROBLEM_SUCCESS, payload: res.data });
+  } catch (error) {
+    dispatch({ type: problemConstants.BROWSE_PROBLEM_FAIL, error });
+  }
+};
+
 const downloadStudentScore = (problem_id, token) => async (dispatch) => {
   const config = {
     headers: {
@@ -109,7 +124,8 @@ const downloadStudentScore = (problem_id, token) => async (dispatch) => {
   };
   try {
     dispatch({ type: problemConstants.DOWNLOAD_STUDENT_SCORE_START });
-    const res = agent.get(`/problem/${problem_id}/student-score`, config);
+    const res = await agent.get(`/problem/${problem_id}/student-score`, config);
+    console.log('heelo', res);
     fetch(res.data.data.url).then((t) => t.blob().then((b) => {
       const a = document.createElement('a');
       a.href = URL.createObjectURL(b);
@@ -123,5 +139,5 @@ const downloadStudentScore = (problem_id, token) => async (dispatch) => {
 };
 
 export {
-  readProblem, addProblem, editProblem, readProblemLastSubmission, deleteProblem, downloadStudentScore,
+  readProblem, addProblem, editProblem, readProblemLastSubmission, deleteProblem, downloadStudentScore, browseProblem,
 };
