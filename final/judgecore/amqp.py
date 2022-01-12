@@ -68,8 +68,8 @@ async def receive_task(body: bytes, publish_func: Callable[[bytes, str], Corouti
         print('task file downloaded')
 
         print('unzipping files')
-        unzip(from_path='/app/temp/src.zip', to_path='/app')
-        unzip(from_path='/app/temp/cypress.zip', to_path='/app')
+        unzip(from_path='/app/temp/src.zip', to_path='/app/hack1')
+        unzip(from_path='/app/temp/cypress.zip', to_path='/app/hack1')
         print('files unzipped')
 
         if os.path.exists('/app/hack1/results'):

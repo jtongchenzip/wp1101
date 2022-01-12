@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
 from datetime import datetime
+import io
 
 from fastapi import APIRouter, Depends, responses, UploadFile, File
 from uuid import uuid4
@@ -90,6 +91,11 @@ async def edit_problem(problem_id: int, title: str = None, start_time: datetime 
     s3_file_uuid = uuid4() if problem_file else None
     filename = problem_file.filename if problem_file else None
 
+    await s3_handler.upload(problem_file.file, s3_file_uuid)
+    await db.s3_file.add(s3_file=do.S3File(key=str(s3_file_uuid),
+                                           bucket='temp',
+                                           uuid=s3_file_uuid))  # FIXME: bucket name
+
     await db.problem.edit(problem_id=problem_id, title=title, start_time=start_time, end_time=end_time,
                           description=description, filename=filename, testcase_file_uuid=s3_file_uuid)
 
@@ -99,3 +105,32 @@ async def edit_problem(problem_id: int, title: str = None, start_time: datetime 
 async def read_last_submission(problem_id: int) -> do.Submission:
     return await db.submission.read_last_submission(account_id=request.account.id, problem_id=problem_id)
 
+
+@dataclass
+class GetStudentScoreOutput:
+    url: str
+
+
+@router.get('/problem/{problem_id}/student-score')
+@enveloped
+async def get_student_score(problem_id: int) -> GetStudentScoreOutput:
+    if request.account.role is not RoleType.TA:
+        raise exc.NoPermission
+
+    accounts = await db.account.browse_by_role(role=RoleType.student)
+    student_score = 'student_id,total_pass,total_fail\n'
+
+    for account in accounts:
+        submission = await db.submission.read_last_submission(account_id=account.id, problem_id=problem_id)
+        if submission:
+            student_score += f"{account.student_id},{submission.total_pass},{submission.total_fail}\n"
+        else:
+            student_score += f"{account.student_id},,\n"
+
+    student_score = student_score.encode(encoding='utf-8')
+    with io.BytesIO(student_score) as file:
+        uuid_ = uuid4()
+        await s3_handler.upload(file, key=str(uuid_))
+        s3_url = await s3_handler.sign_url(bucket='temp', key=str(uuid_), filename='score.csv')
+
+    return GetStudentScoreOutput(url=s3_url)
