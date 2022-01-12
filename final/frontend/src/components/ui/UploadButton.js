@@ -21,8 +21,8 @@ export default function UploadButtons({ setUpLoadFile }) {
           accept="zip/*"
           onChange={(e) => handleUploadFile(e.target.files)}
         />
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Button variant="outlined" component="span">
+        <div>
+          <Button variant="outlined" style={{ borderRadius: 15 }}>
             Upload
           </Button>
           <Typography variant="body1" style={{ marginLeft: '20px' }}>

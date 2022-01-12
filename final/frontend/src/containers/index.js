@@ -17,7 +17,7 @@ export default function index() {
         <Header title="Hackthon Online Judge System" />
         <div className="content-layout">
           <Switch>
-            <Route path="/login" component={Login} />
+            <Route exact path="/" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/ui-components" component={UIComponentUsage} />
             <Route path="/student" component={Student} />
