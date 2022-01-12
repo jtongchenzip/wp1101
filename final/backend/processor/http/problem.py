@@ -14,7 +14,7 @@ from base.enums import RoleType
 from base import do
 import persistence.database as db
 from persistence.s3 import s3_handler
-from processor.http.util import timezone_validate
+from util import timezone_validate
 
 router = APIRouter(
     tags=['Problem'],
