@@ -30,8 +30,9 @@ const useStyles = makeStyles(() => ({
   rightSidebar: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
     width: '15%',
+    paddingLeft: 40,
+    paddingRight: 15,
   },
 }));
 
@@ -67,11 +68,23 @@ export default function Student() {
           </div>
         </div>
         <div className={classes.rightSidebar}>
-          <Typography variant="h4">Hackathon 1</Typography>
-          <Typography style={{ marginTop: 15 }} variant="h6">Date : 2022/01/01</Typography>
-          <Typography style={{ marginTop: 5 }} variant="h6">Start Time : 09 : 10</Typography>
-          <Typography style={{ marginTop: 5 }} variant="h6">End Time : 12 : 10</Typography>
-          <Button color="primary" variant="contained" style={{ marginTop: 15 }}>Submit</Button>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left' }}>
+            <div className={classes.hackAndIcon}>
+              <Typography style={{ marginRight: 10 }} variant="h4">Hackathon 1</Typography>
+            </div>
+            <Typography style={{ marginTop: 15 }} variant="body1">Date : 2022/01/01</Typography>
+            <Typography style={{ marginTop: 5 }} variant="body1">Start Time : 09 : 10</Typography>
+            <Typography style={{ marginTop: 5 }} variant="body1">End Time : 12 : 10</Typography>
+          </div>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            marginTop: 20,
+          }}
+          >
+            <Button color="primary" variant="contained">Submit</Button>
+          </div>
         </div>
       </div>
     </>
