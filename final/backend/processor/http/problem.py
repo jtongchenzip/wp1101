@@ -133,7 +133,7 @@ async def get_student_score(problem_id: int) -> GetStudentScoreOutput:
         await s3_handler.upload(file, key=str(uuid_))
         s3_url = await s3_handler.sign_url(bucket='temp', key=str(uuid_), filename='score.csv')
 
-    return GetStudentScoreOutput(url=s3_url)
+    return GetStudentScoreOutput(url=s3_url.replace('minio:', 'localhost:'))  # FIXME: hardcode for minio host
 
 
 @dataclass
