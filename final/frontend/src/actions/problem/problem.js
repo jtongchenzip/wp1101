@@ -1,7 +1,7 @@
 import agent from '../agent';
 import { problemConstants } from './constant';
 
-const readProblem = (id, token) => async (dispatch) => {
+const readProblem = (token, id) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -19,7 +19,7 @@ const readProblem = (id, token) => async (dispatch) => {
   }
 };
 
-const addProblem = (title, start_time, end_time, file, token) => async (dispatch) => {
+const addProblem = (token, title, start_time, end_time, file) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -45,7 +45,7 @@ const addProblem = (title, start_time, end_time, file, token) => async (dispatch
   }
 };
 
-const editProblem = (problem_id, title, start_time, end_time, file, token) => async (dispatch) => {
+const editProblem = (token, problem_id, title, start_time, end_time, file) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -67,7 +67,7 @@ const editProblem = (problem_id, title, start_time, end_time, file, token) => as
   }
 };
 
-const readProblemLastSubmission = (problem_id, token) => async (dispatch) => {
+const readProblemLastSubmission = (token, problem_id) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -82,7 +82,7 @@ const readProblemLastSubmission = (problem_id, token) => async (dispatch) => {
   }
 };
 
-const deleteProblem = (problem_id, token) => async (dispatch) => {
+const deleteProblem = (token, problem_id) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -114,7 +114,7 @@ const browseProblem = (token) => async (dispatch) => {
   }
 };
 
-const downloadStudentScore = (problem_id, token) => async (dispatch) => {
+const downloadStudentScore = (token, problem_id) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
