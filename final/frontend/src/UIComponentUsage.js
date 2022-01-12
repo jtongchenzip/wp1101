@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Typography, Button, TextField } from '@material-ui/core';
 import LinearProgressBar from './components/ui/LinearProgressBar';
 import ScoreTable from './components/ui/ScoreTable';
@@ -19,6 +19,7 @@ export default function App() {
   //     clearInterval(timer);
   //   };
   // }, []);
+
   return (
     <>
       <Header title="Hackthon Online Judge System" />
