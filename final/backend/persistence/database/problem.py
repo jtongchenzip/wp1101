@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Sequence
 from uuid import UUID
 
 import asyncpg
@@ -84,3 +84,15 @@ async def edit(problem_id: int, title: str = None, start_time: datetime = None, 
         await pool_handler.pool.execute(sql, *params)
     except asyncpg.exceptions.UniqueViolationError:
         raise exc.ProblemTitleExist
+
+
+async def browse() -> Sequence[do.Problem]:
+    sql, params = pyformat2psql(
+        sql=fr"SELECT id, title, testcase_file_uuid, description, start_time, end_time, filename"
+            fr"  FROM problem"
+            fr" ORDER BY id ASC",
+    )
+    problems = await pool_handler.pool.fetch(sql, *params)
+    return [do.Problem(id=id_, title=title, testcase_file_uuid=testcase_file_uuid, description=description,
+                       start_time=start_time, end_time=end_time, filename=filename)
+            for id_, title, testcase_file_uuid, description, start_time, end_time, filename in problems]

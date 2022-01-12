@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Sequence
 from datetime import datetime
 import io
 
@@ -134,3 +134,25 @@ async def get_student_score(problem_id: int) -> GetStudentScoreOutput:
         s3_url = await s3_handler.sign_url(bucket='temp', key=str(uuid_), filename='score.csv')
 
     return GetStudentScoreOutput(url=s3_url)
+
+
+@dataclass
+class BrowseProblemOutput:
+    problems: Sequence[ReadProblemOutput]
+
+
+@router.get('/problem')
+@enveloped
+async def browse_problems() -> BrowseProblemOutput:
+    problems = await db.problem.browse()
+    is_ta = request.account.role is RoleType.TA
+    time = request.time
+    return BrowseProblemOutput(
+        problems=[ReadProblemOutput(
+            id=problem.id,
+            title=problem.title,
+            start_time=problem.start_time,
+            end_time=problem.end_time,
+            description=problem.description if (time >= problem.start_time or is_ta) else None,
+        ) for problem in problems]
+    )
