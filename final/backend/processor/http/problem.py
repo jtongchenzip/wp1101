@@ -91,6 +91,11 @@ async def edit_problem(problem_id: int, title: str = None, start_time: datetime 
     s3_file_uuid = uuid4() if problem_file else None
     filename = problem_file.filename if problem_file else None
 
+    await s3_handler.upload(problem_file.file, s3_file_uuid)
+    await db.s3_file.add(s3_file=do.S3File(key=str(s3_file_uuid),
+                                           bucket='temp',
+                                           uuid=s3_file_uuid))  # FIXME: bucket name
+
     await db.problem.edit(problem_id=problem_id, title=title, start_time=start_time, end_time=end_time,
                           description=description, filename=filename, testcase_file_uuid=s3_file_uuid)
 
