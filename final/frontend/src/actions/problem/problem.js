@@ -19,7 +19,7 @@ const readProblem = (id, token) => async (dispatch) => {
   }
 };
 
-const addProblem = (title, start_time, end_time, file, description, token) => async (dispatch) => {
+const addProblem = (title, start_time, end_time, file, token) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -29,7 +29,6 @@ const addProblem = (title, start_time, end_time, file, description, token) => as
       title,
       start_time,
       end_time,
-      description,
     },
   };
   const formData = new FormData();
@@ -46,7 +45,7 @@ const addProblem = (title, start_time, end_time, file, description, token) => as
   }
 };
 
-const editProblem = (problem_id, title, start_time, end_time, file, description, token) => async (dispatch) => {
+const editProblem = (problem_id, title, start_time, end_time, file, token) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -55,7 +54,6 @@ const editProblem = (problem_id, title, start_time, end_time, file, description,
       title,
       start_time,
       end_time,
-      description,
     },
   };
   const formData = new FormData();
