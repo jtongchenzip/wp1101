@@ -10,7 +10,6 @@ const problem = (state = {}, action) => {
         },
       };
     case problemConstants.BROWSE_PROBLEM_SUCCESS:
-      console.log('hello', action.payload.data.problems);
       return action.payload.data.problems.reduce((acc, item) => (
         { ...acc, [item.id]: { ...item } }), state);
     default:
