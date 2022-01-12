@@ -1,5 +1,6 @@
 from base import do
 from base.enums import RoleType
+from typing import Sequence
 import exceptions as exc
 
 from .util import pyformat2psql
@@ -62,3 +63,16 @@ async def delete(account_id: int) -> None:
         account_id=account_id
     )
     return await pool_handler.pool.execute(sql, *params)
+
+
+async def browse_by_role(role: RoleType) -> Sequence[do.Account]:
+    sql, params = pyformat2psql(
+        sql=fr"SELECT id, username, role, student_id, real_name"
+            fr"  FROM account"
+            fr" WHERE role = %(role)s"
+            fr" ORDER BY id ASC",
+        role=role.value,
+    )
+    records = await pool_handler.pool.fetch(sql, *params)
+    return [do.Account(id=id_, username=username, role=RoleType(role), real_name=real_name, student_id=student_id)
+            for id_, username, role, real_name, student_id in records]

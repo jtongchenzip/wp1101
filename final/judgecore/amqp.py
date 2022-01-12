@@ -57,25 +57,35 @@ async def handle_report(directory_path: str, submission_id: int,
 async def receive_task(body: bytes, publish_func: Callable[[bytes, str], Coroutine[Any, Any, None]]):
     task = unmarshal_task(body)
     try:
-        if os.path.exists('../temp'):
-            shutil.rmtree('../temp')
+        if os.path.exists('/app/temp'):
+            shutil.rmtree('/app/temp')
+        print('making temp dir')
 
-        os.mkdir('../temp')
+        os.mkdir('/app/temp')
 
+        print('downloading task file')
         download_task(task)
+        print('task file downloaded')
 
-        unzip(from_path='../temp/src.zip', to_path='../hack1')
-        unzip(from_path='../temp/cypress.zip', to_path='../hack1')
+        print('unzipping files')
+        unzip(from_path='/app/temp/src.zip', to_path='/app/hack1')
+        unzip(from_path='/app/temp/cypress.zip', to_path='/app/hack1')
+        print('files unzipped')
 
-        if os.path.exists('../hack1/results'):
-            shutil.rmtree('../hack1/results')
-        os.mkdir('../hack1/results')
+        if os.path.exists('/app/hack1/results'):
+            shutil.rmtree('/app/hack1/results')
+        os.mkdir('/app/hack1/results')
 
         with Judge():
             pass
 
-        await handle_report(submission_id=task.submission_id, directory_path='../hack1/results', publish_func=publish_func)
-    finally:
-        shutil.rmtree('../temp')
-        shutil.rmtree('../hack1/results')
+        await handle_report(submission_id=task.submission_id, directory_path='/app/hack1/results', publish_func=publish_func)
+    
+    except Exception as e:
+        print(e)
 
+    finally:
+        shutil.rmtree('/app/temp')
+        shutil.rmtree('/app/hack1/src')
+        shutil.rmtree('/app/hack1/cypress')
+        shutil.rmtree('/app/hack1/results')

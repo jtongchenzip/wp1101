@@ -44,14 +44,31 @@ services:
             - cpj
 
     judgecore:
-        image: nikolaik/python-nodejs
+        build:
+            context: ./judgecore
         container_name: cpj-judgecore
         restart: unless-stopped
-        command: sh -c "cd /app && pip install -r requirements.txt && python main.py"
-        volumes:
-            - ./judgecore:/app      
+        command: sh -c "cd /app/hack1 && yarn && cd .. && python -u main.py"
+        ports:
+            - 3000:3000
         env_file: 
             - ./judgecore/.env
+        networks:
+            - cpj
+
+    minio:
+        image: quay.io/minio/minio:latest
+        container_name: cpj-minio
+        ports:
+            - 9000:9000
+            - 9001:9001
+        volumes:
+            - ~/minio/data:/data
+        restart: unless-stopped
+        environment:
+            MINIO_ROOT_USER: cpj_minio
+            MINIO_ROOT_PASSWORD: wp175wp175
+        command: server /data --console-address ":9001"
         networks:
             - cpj
 
@@ -62,4 +79,3 @@ networks:
   cpj:
     external:
       name: cpj
-

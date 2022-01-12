@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import ScoreTable from '../../components/ui/ScoreTable';
 import LinearProgressBar from '../../components/ui/LinearProgressBar';
+import theme from '../../theme';
 
 const useStyles = makeStyles(() => ({
   main: {
@@ -42,12 +43,21 @@ export default function Student() {
     <>
       <div className={classes.main}>
         <div className={classes.leftSidebar}>
-          <Avatar alt="Pdogs" style={{ height: '60px', width: '60px' }} src="/static/images/avatar.jpg" />
-          <Typography color="primary" style={{ marginTop: 10 }} variant="h6">pdogs</Typography>
-          <Button type="text" variant="contained" disabled size="small" style={{ height: 25 }}>student</Button>
-          <Button variant="outlined" style={{ marginTop: 20 }}>Hack 1</Button>
-          <Button variant="outlined" style={{ marginTop: 10 }}>Hack 2</Button>
-          <Button variant="outlined" style={{ marginTop: 10 }}>Hack 3</Button>
+          <Avatar alt="Pdogs" style={{ height: '64px', width: '64px' }} src="/static/images/avatar.jpg" />
+          <Typography color="primary" style={{ marginTop: 10 }} variant="h4">pdogs</Typography>
+          <Button
+            variant="contained"
+            disabled
+            style={{
+              height: 26, width: 84, fontSize: 14, color: theme.palette.grey[300], backgroundColor: theme.palette.grey.A400,
+            }}
+          >
+            student
+          </Button>
+          <Button variant="initial" style={{ marginTop: 20 }}>Hack 1</Button>
+          <Button variant="initial" style={{ marginTop: 10 }}>Hack 2</Button>
+          <Button variant="initial" style={{ marginTop: 10 }}>Hack 3</Button>
+          <Button variant="outlined" color="primary">Add</Button>
         </div>
         <div className={classes.scoreTableGroup}>
           <ScoreTable />

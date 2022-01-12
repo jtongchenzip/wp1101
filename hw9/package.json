@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "antd": "^4.17.2"
+  },
+  "scripts": {
+    "start": "cd frontend && yarn start",
+    "server": "cd backend && yarn server"
+  }
+}

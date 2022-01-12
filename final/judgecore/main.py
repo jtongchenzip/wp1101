@@ -7,6 +7,7 @@ from aio_pika.pool import Pool
 
 
 async def main():
+
     loop = asyncio.get_event_loop()
 
     async def get_connection():
@@ -14,7 +15,8 @@ async def main():
             host=amqp_config.host,
             port=amqp_config.port,
             login=amqp_config.username,
-            password=amqp_config.password
+            password=amqp_config.password,
+            timeout=300,
         )
     print('amqp connecting...')
     connection_pool = Pool(get_connection, max_size=2, loop=loop)
