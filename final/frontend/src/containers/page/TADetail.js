@@ -50,7 +50,6 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     alignItems: 'center',
     marginTop: 30,
-    marginBottom: 30,
   },
   dialogContent: {
     display: 'flex',
@@ -60,6 +59,12 @@ const useStyles = makeStyles(() => ({
   noSubmissionText: {
     display: 'flex',
     justifyContent: 'center',
+    marginTop: 30,
+  },
+  submitBtn: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     marginTop: 30,
   },
 }));
@@ -104,6 +109,8 @@ export default function TADetail() {
   const [title, setTitle] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  const [newStartTime, setNewStartTime] = useState('');
+  const [newEndTime, setNewEndTime] = useState('');
   const [uploadFile, setUploadFile] = useState(null);
   const [submitFile, setSubmitFile] = useState(null);
 
@@ -132,6 +139,8 @@ export default function TADetail() {
       setTitle(problems[problemId].title);
       setStartTime(moment(problems[problemId].start_time).format('YYYY-MM-DD HH:mm'));
       setEndTime(moment(problems[problemId].end_time).format('YYYY-MM-DD HH:mm'));
+      setNewStartTime(problems[problemId].start_time);
+      setNewEndTime(problems[problemId].end_time);
     }
   }, [problemId, problems]);
 
@@ -151,20 +160,25 @@ export default function TADetail() {
     setTitle(problems[problemId].title);
     setStartTime(moment(problems[problemId].start_time).format('YYYY-MM-DD HH:mm'));
     setEndTime(moment(problems[problemId].end_time).format('YYYY-MM-DD HH:mm'));
+    setNewStartTime(problems[problemId].start_time);
+    setNewEndTime(problems[problemId].end_time);
     setUploadFile(null);
     setOpenEditCard(false);
   };
   const handleEditProblem = () => {
-    if (title.trim() === '') {
+    if (title === '') {
       setShowSnackbar(true);
       setSnackbarText("Title can't be empty");
     } else if (moment(startTime).isAfter(endTime) || moment(startTime).isSame(endTime)) {
       setShowSnackbar(true);
       setSnackbarText('Start time is not before end time');
     } else {
-      dispatch(editProblem(token, problemId, title.trim(), startTime, endTime, uploadFile, handleCloseEditCard));
+      const start = moment(newStartTime).format('YYYY-MM-DD HH:mm');
+      const end = moment(newEndTime).format('YYYY-MM-DD HH:mm');
+      dispatch(editProblem(token, problemId, title, start, end, uploadFile, handleCloseEditCard));
     }
   };
+
   // submit code
   const handleCloseSubmitCard = () => {
     setSubmitFile(null);
@@ -176,12 +190,12 @@ export default function TADetail() {
     }
   };
   // download student score
-  const handleDonwloadError = (text) => {
+  const handleDownloadError = (text) => {
     setShowSnackbar(true);
     setSnackbarText(text);
   };
   const handleDownloadScore = () => {
-    dispatch(downloadStudentScore(token, problemId, handleDonwloadError));
+    dispatch(downloadStudentScore(token, problemId, handleDownloadError));
   };
 
   return (
@@ -227,7 +241,7 @@ export default function TADetail() {
             )}
           </div>
           {/* TA can submit whenever the problem is created */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div className={classes.submitBtn}>
             <Button color="primary" variant="contained" onClick={() => setOpenSubmitCard(true)}>Submit</Button>
           </div>
         </div>
@@ -246,20 +260,20 @@ export default function TADetail() {
           </div>
           <div className={classes.dialogContent} style={{ marginTop: 15 }}>
             <Typography variant="body1">Title</Typography>
-            <TextField id="outlined-required" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <TextField value={title} onChange={(e) => setTitle(e.target.value.trim())} />
           </div>
           <div className={classes.dialogContent} style={{ marginTop: 15 }}>
             <Typography variant="body1">Start Time</Typography>
             <DateTimePicker
-              selectedDate={startTime}
-              setSelectedDate={setStartTime}
+              selectedDate={newStartTime}
+              setSelectedDate={setNewStartTime}
             />
           </div>
           <div className={classes.dialogContent} style={{ marginTop: 15 }}>
             <Typography variant="body1">End Time</Typography>
             <DateTimePicker
-              selectedDate={endTime}
-              setSelectedDate={setEndTime}
+              selectedDate={newEndTime}
+              setSelectedDate={setNewEndTime}
             />
           </div>
           <div className={classes.dialogContent} style={{ justifyContent: 'flex-start', marginTop: 10 }}>

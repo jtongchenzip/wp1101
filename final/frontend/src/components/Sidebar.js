@@ -53,6 +53,13 @@ export default function Sidebar() {
     }
   }, [dispatch, token, loading.addProblem]);
 
+  const handleCloseAddCard = () => {
+    setTitle('');
+    setStartTime(moment().toDate());
+    setEndTime(moment().toDate());
+    setUploadFile(null);
+    setAddCardOpen(false);
+  };
   const handleAddProblem = () => {
     if (title.trim() === '') {
       setShowSnackbar(true);
@@ -67,14 +74,8 @@ export default function Sidebar() {
       const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss');
       const end = moment(endTime).format('YYYY-MM-DD HH:mm:ss');
       dispatch(addProblem(token, title.trim(), start, end, uploadFile, history));
+      handleCloseAddCard();
     }
-  };
-  const handleCloseAddCard = () => {
-    setTitle('');
-    setStartTime(moment().toDate());
-    setEndTime(moment().toDate());
-    setUploadFile(null);
-    setAddCardOpen(false);
   };
 
   const handleProblemBtnClick = (problemId) => {
