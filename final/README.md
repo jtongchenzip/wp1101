@@ -19,7 +19,7 @@ This project is can judge your hackathon result with cypress online. It also giv
     yarn start
     ```
 2. `backend` and `judgecore`  
-    (1) copy `.env.example` in `/backend`, rename it to `.env` and modify it  
+    (1) copy `.env.local.example` in `/backend`, rename it to `.env` and modify it  
     (2) copy `.env.example` in `/judgecore`, rename it to `.env` and modify it     
     (3) run the following commands at the root
     ``` shell
@@ -34,9 +34,13 @@ This project is can judge your hackathon result with cypress online. It also giv
    * 前端靜態頁面
    * 後端 API
    * deploy
+   * design db schema
 * 侯維書 b09705005 
    * 前端架構
    * 後端 API
+   * design db schema
 * 王紹安 b09705017 
    * 前端串接資料
    * 後端架構
+   * Judge core
+   * design db schema
