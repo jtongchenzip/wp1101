@@ -96,7 +96,7 @@ export default function Sidebar() {
         >
           {user.role}
         </Button>
-        <Button variant="outlined" color="primary" style={{ marginTop: 30 }} onClick={() => setAddCardOpen(true)}>Add</Button>
+        {user.role === 'TA' && (<Button variant="outlined" color="primary" style={{ marginTop: 30 }} onClick={() => setAddCardOpen(true)}>Add</Button>)}
         {problemIds.length !== 0 && problemIds.map((id) => (
           <Button
             variant="text"
