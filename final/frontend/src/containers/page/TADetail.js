@@ -63,7 +63,7 @@ export default function TADetail() {
   const { problemId } = useParams();
 
   const token = useSelector((state) => state.user.token);
-  const problems = useSelector((state) => state.problem);
+  const problems = useSelector((state) => state.problem.byId);
   const submission = useSelector((state) => state.submission);
 
   const [title, setTitle] = useState(problems ? problems.title : '');
@@ -140,6 +140,7 @@ export default function TADetail() {
             </div>
             )}
           </div>
+          {/* TA can submit whenever the problem is created */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Button color="primary" variant="contained" onClick={() => setOpenSubmitCard(true)}>Submit</Button>
           </div>

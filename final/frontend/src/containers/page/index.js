@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Switch, Route } from 'react-router-dom';
 
 import StudentHome from './StudentHome';
@@ -15,20 +15,19 @@ const ACCOUNT_ID = 'account-id';
 export default function Pages() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  // const user = useSelector((state) => state.user);
 
   const token = localStorage.getItem(AUTH_TOKEN);
   const account_id = localStorage.getItem(ACCOUNT_ID);
 
-  if (!token) {
-    history.push('/login');
-  }
-
   useEffect(() => {
-    dispatch(
-      readAccount(token, account_id),
-    );
-  }, [account_id, dispatch, token]);
+    if (!token) {
+      history.push('/login');
+    } else {
+      dispatch(readAccount(token, account_id));
+    }
+  }, [account_id, dispatch, history, token]);
+
   return (
     <Switch>
       <Route path="/student" component={StudentHome} />

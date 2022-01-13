@@ -32,7 +32,8 @@ export default function Sidebar() {
 
   const token = useSelector((state) => state.user.token);
   const user = useSelector((state) => state.user);
-  const problems = useSelector((state) => state.problem);
+  const problems = useSelector((state) => state.problem.byId);
+  const problemIds = useSelector((state) => state.problem.allIds);
   const loading = useSelector((state) => state.loading.problem);
 
   const [title, setTitle] = useState('');
@@ -84,14 +85,14 @@ export default function Sidebar() {
           {user.role}
         </Button>
         <Button variant="outlined" color="primary" style={{ marginTop: 30 }} onClick={() => setAddCardOpen(true)}>Add</Button>
-        {problems.length !== 0 && problems.map((problem) => (
+        {problemIds.length !== 0 && problemIds.map((id) => (
           <Button
             variant="text"
             style={{ marginTop: 15 }}
-            key={problem.id}
-            onClick={() => handleProblemBtnClick(problem.id)}
+            key={id}
+            onClick={() => handleProblemBtnClick(id)}
           >
-            {problem.title}
+            {problems[id].title}
 
           </Button>
         ))}
