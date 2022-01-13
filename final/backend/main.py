@@ -23,6 +23,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.on_event('startup')
 async def app_startup():
     from config import db_config
