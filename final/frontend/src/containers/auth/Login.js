@@ -32,20 +32,27 @@ export default function Login() {
   const history = useHistory();
 
   const user = useSelector((state) => state.user);
+  const loginLoading = useSelector((state) => state.loading.auth);
+  const loginError = useSelector((state) => state.error.auth);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({
+    username: false,
+    password: false,
+  });
+  const [errorTexts, setErrorTexts] = useState({
+    username: '',
+    password: '',
+  });
 
-  const handleLogIn = async () => {
-    if (username.trim() !== '' && password.trim() !== '') {
-      await dispatch(logIn(username.trim(), password.trim()));
+  useEffect(() => {
+    if (!loginLoading.readAccount && loginError.readAccount !== null) {
+      setErrors({ username: true, password: true });
+      setErrorTexts((err) => ({ ...err, password: 'Incorrect username or password' }));
     }
-  };
-
-  const handleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+  }, [loginLoading.readAccount, loginError.readAccount]);
 
   useEffect(() => {
     console.log(user);
@@ -56,14 +63,51 @@ export default function Login() {
     }
   }, [user.is_authenticated, user.token, user.id, user.role, history, user]);
 
+  const handleLogIn = () => {
+    if (username === '') {
+      setErrors((err) => ({ ...err, username: true }));
+      setErrorTexts((err) => ({ ...err, username: 'Can\'t be empty' }));
+    }
+    if (password === '') {
+      setErrors((err) => ({ ...err, password: true }));
+      setErrorTexts((err) => ({ ...err, password: 'Can\'t be empty' }));
+    }
+    if (username !== '' && password !== '') {
+      dispatch(logIn(username, password));
+    }
+  };
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+  const usernameChange = (e) => {
+    setErrors((err) => ({ ...err, username: false }));
+    setErrorTexts((err) => ({ ...err, username: '' }));
+    setUsername(e.target.value.trim());
+  };
+  const passwordChange = (e) => {
+    setErrors((err) => ({ ...err, password: false }));
+    setErrorTexts((err) => ({ ...err, password: '' }));
+    setPassword(e.target.value.trim());
+  };
+
   return (
     <>
       <div className={classes.main}>
-        <TextField label="Username" onChange={(e) => setUsername(e.target.value)} />
+        <TextField
+          label="Username"
+          value={username}
+          error={errors.username}
+          helperText={errorTexts.username}
+          onChange={(e) => usernameChange(e)}
+        />
         <TextField
           label="Password"
-          style={{ marginTop: 50 }}
+          value={password}
           type={showPassword ? 'text' : 'password'}
+          style={{ marginTop: 50 }}
+          error={errors.password}
+          helperText={errorTexts.password}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -73,7 +117,7 @@ export default function Login() {
               </InputAdornment>
             ),
           }}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => passwordChange(e)}
         />
         <div className={classes.buttonGroup}>
           <Button color="primary" variant="outlined" onClick={() => { history.push('/register'); }}>
