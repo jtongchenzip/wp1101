@@ -85,8 +85,6 @@ export default function Sidebar() {
     }
   };
 
-  console.log(startTime, endTime);
-
   return (
     <>
       <div className={classes.leftSidebar}>
