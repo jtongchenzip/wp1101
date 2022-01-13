@@ -32,7 +32,7 @@ const addProblem = (token, title, start_time, end_time, file, history) => async 
     },
   };
   const formData = new FormData();
-  formData.append('upload_file', file);
+  formData.append('problem_file', file[0]);
   try {
     dispatch({ type: problemConstants.ADD_PROBLEM_START });
     const res = await agent.post('/problem', formData, config);
