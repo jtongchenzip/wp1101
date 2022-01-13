@@ -7,7 +7,6 @@ import {
 import LogoutIcon from '@material-ui/icons/ExitToAppRounded';
 import { logout } from '../../actions/user/auth';
 
-// 看他是否登入，判斷要不要給 logout icon
 export default function Header({ title }) {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -26,12 +25,14 @@ export default function Header({ title }) {
         <Toolbar style={{ justifyContent: 'space-between', alignItems: 'center', margin: '5px 12px' }}>
           <Typography variant="h4">{title}</Typography>
           {user.isAuthenticated && (
-          <IconButton size="medium" edge="end" aria-label="menu" onClick={handleLogout}>
-            <div style={{ marginRight: 20, cursor: 'default' }}>
+          <>
+            <div style={{ display: 'flex', alignItems: 'center', cursor: 'default' }}>
               <Typography variant="h4">{user.student_id}</Typography>
+              <IconButton size="medium" edge="end" aria-label="menu" onClick={handleLogout}>
+                <LogoutIcon />
+              </IconButton>
             </div>
-            <LogoutIcon />
-          </IconButton>
+          </>
           )}
         </Toolbar>
       </AppBar>
