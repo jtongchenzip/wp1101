@@ -33,8 +33,14 @@ export default function Index() {
       } else {
         history.push('/login');
       }
+    } else if (user.role === 'TA') {
+      // dispatch(readAccount(token, account_id));
+      // history.push('/ta');
+    } else if (user.role === 'STUDENT') {
+      // dispatch(readAccount(token, account_id));
+      // history.push('/student');
     }
-  }, [account_id, dispatch, history, token, user.isAuthenticated, user.tokenExpired]);
+  }, [account_id, dispatch, history, token, user.isAuthenticated, user.role, user.tokenExpired]);
 
   return (
     <div className="wrapper">

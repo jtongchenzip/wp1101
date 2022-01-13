@@ -33,6 +33,7 @@ export default function Sidebar() {
   const token = localStorage.getItem('auth-token');
 
   const user = useSelector((state) => state.user);
+
   const problems = useSelector((state) => state.problem.byId);
   const problemIds = useSelector((state) => state.problem.allIds);
   const loading = useSelector((state) => state.loading.problem);

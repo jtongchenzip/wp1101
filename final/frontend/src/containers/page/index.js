@@ -18,10 +18,10 @@ export default function Pages() {
   useEffect(() => {
     if (!token) {
       history.push('/login');
-    } else if (user.role === 'TA') {
-      history.push('/ta');
-    } else if (user.role === 'STUDENT') {
-      history.push('/student');
+    // } else if (user.role === 'TA') {
+    //   history.push('/ta');
+    // } else if (user.role === 'STUDENT') {
+    //   history.push('/student');
     } else {
       dispatch(browseProblem(token));
     }
