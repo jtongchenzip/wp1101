@@ -1,6 +1,7 @@
 import { authConstants } from '../actions/user/constant';
 
 const initialState = {
+  id: '',
   isAuthenticated: false,
   token: '',
   tokenExpired: false,
@@ -14,6 +15,7 @@ const user = (state = initialState, action) => {
   switch (action.type) {
     case authConstants.AUTH_SUCCESS:
       return {
+        id: action.user.id,
         isAuthenticated: true,
         token: action.user.token,
         tokenExpired: false,
@@ -24,6 +26,7 @@ const user = (state = initialState, action) => {
       };
     case authConstants.AUTH_LOGOUT:
       return {
+        id: '',
         isAuthenticated: false,
         token: '',
         tokenExpired: false,
@@ -34,6 +37,7 @@ const user = (state = initialState, action) => {
       };
     case authConstants.TOKEN_EXPIRED:
       return {
+        id: '',
         isAuthenticated: false,
         token: '',
         tokenExpired: true,
