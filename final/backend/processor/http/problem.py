@@ -49,7 +49,7 @@ class AddProblemOutput:
     id: int
 
 
-@router.post('/problem/{problem_id}')
+@router.post('/problem')
 @enveloped
 async def add_problem(title: str, start_time: datetime, end_time: datetime,
                       description: Optional[str] = None, problem_file: UploadFile = File(...)) -> AddProblemOutput:
