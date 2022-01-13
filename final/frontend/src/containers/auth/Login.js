@@ -6,6 +6,9 @@ import {
 } from '@material-ui/core';
 import { logIn } from '../../actions/user/auth';
 
+const AUTH_TOKEN = 'auth-token';
+const ACCOUNT_ID = 'account-id';
+
 const useStyles = makeStyles(() => ({
   main: {
     display: 'flex',
@@ -38,10 +41,15 @@ export default function Login() {
   };
 
   useEffect(() => {
+    console.log(user);
     if (user.isAuthenticated && user.role === 'TA') {
       history.push('/ta');
+      localStorage.setItem(AUTH_TOKEN, user.token);
+      localStorage.setItem(ACCOUNT_ID, user.id);
     } else if (user.isAuthenticated && user.role === 'STUDENT') {
       history.push('/student');
+      localStorage.setItem(AUTH_TOKEN, user.token);
+      localStorage.setItem(ACCOUNT_ID, user.id);
     }
   }, [user.is_authenticated, user.token, user.id, user.role, history, user]);
 
