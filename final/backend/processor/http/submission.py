@@ -61,7 +61,7 @@ async def submit(problem_id: int, filename: str, content_file: UploadFile = File
 @enveloped
 async def browse_judge_case_under_submission(submission_id: int) -> Sequence[do.JudgeCase]:
     submission = await db.submission.read(submission_id=submission_id)
-    if not (request.account.role is RoleType.TA or request.account.id is submission.account_id):
+    if not (request.account.role is RoleType.TA or request.account.id == submission.account_id):
         raise exc.NoPermission
 
     return await db.judge_case.browse(submission_id=submission_id)
