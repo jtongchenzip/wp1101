@@ -39,7 +39,7 @@ async def read(submission_id: int) -> do.Submission:
             submission_id=submission_id
     )
     try:
-        account_id, problem_id, content_file_uuid, filename, total_pass, total_fail, submit_time = \
+        problem_id, account_id, content_file_uuid, filename, total_pass, total_fail, submit_time = \
             await pool_handler.pool.fetchrow(sql, *params)
     except TypeError:
         raise exc.NotFound
