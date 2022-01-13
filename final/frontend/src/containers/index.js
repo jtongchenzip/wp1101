@@ -1,31 +1,43 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import {
-  useHistory, BrowserRouter as Router, Switch, Route,
-} from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory, Switch, Route } from 'react-router-dom';
 import Header from '../components/ui/Header';
 import Login from './auth/Login';
 import Register from './auth/Register';
 import UIComponentUsage from '../UIComponentUsage';
 import Pages from './page';
+import { readAccount } from '../actions/user/auth';
 import '../App.css';
+
+const AUTH_TOKEN = 'auth-token';
+const ACCOUNT_ID = 'account-id';
 
 export default function Index() {
   const history = useHistory();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
+  const token = localStorage.getItem(AUTH_TOKEN);
+  const account_id = localStorage.getItem(ACCOUNT_ID);
+
   useEffect(() => {
-    if (!user.isAuthenticated || user.tokenExpired) {
-      localStorage.clear();
-      history.push('/login');
-    } else {
-      history.push('/');
+    if (!user.isAuthenticated) {
+      if (token && account_id) {
+        if (user.tokenExpired) {
+          localStorage.clear();
+          console.log('localStorage cleared');
+          history.push('/login');
+        } else {
+          dispatch(readAccount(token, account_id));
+        }
+      } else {
+        history.push('/login');
+      }
     }
-  }, [history, user.isAuthenticated, user.tokenExpired]);
+  }, [account_id, dispatch, history, token, user.isAuthenticated, user.tokenExpired]);
 
   return (
     <div className="wrapper">
-      {/* <Router> */}
       <Header title="Hackathon Online Judge System" />
       <div className="content-layout">
         <Switch>
@@ -35,7 +47,6 @@ export default function Index() {
           <Route path="/" component={Pages} />
         </Switch>
       </div>
-      {/* </Router> */}
     </div>
   );
 }

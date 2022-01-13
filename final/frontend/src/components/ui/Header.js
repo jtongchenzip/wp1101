@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
@@ -15,6 +15,8 @@ export default function Header({ title }) {
   const user = useSelector((state) => state.user);
 
   const handleLogout = () => {
+    localStorage.clear();
+    console.log('localStorage cleared');
     dispatch(logout(history));
   };
 

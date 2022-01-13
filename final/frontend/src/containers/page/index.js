@@ -7,26 +7,22 @@ import StudentDetail from './StudentDetail';
 import TAHome from './TAHome';
 import TADetail from './TADetail';
 
-import { readAccount } from '../../actions/user/auth';
-
-const AUTH_TOKEN = 'auth-token';
-const ACCOUNT_ID = 'account-id';
-
 export default function Pages() {
   const history = useHistory();
   const dispatch = useDispatch();
-  // const user = useSelector((state) => state.user);
 
-  const token = localStorage.getItem(AUTH_TOKEN);
-  const account_id = localStorage.getItem(ACCOUNT_ID);
+  const token = useSelector((state) => state.user.token);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     if (!token) {
       history.push('/login');
-    } else {
-      dispatch(readAccount(token, account_id));
+    } else if (user.role === 'TA') {
+      history.push('/ta');
+    } else if (user.role === 'STUDENT') {
+      history.push('/student');
     }
-  }, [account_id, dispatch, history, token]);
+  }, [dispatch, history, token, user.role]);
 
   return (
     <Switch>
