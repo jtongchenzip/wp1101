@@ -79,7 +79,13 @@ const readProblemLastSubmission = (token, problem_id) => async (dispatch) => {
   try {
     dispatch({ type: problemConstants.FETCH_LAST_SUBMISSION_START });
     const res = await agent.get(`/problem/${problem_id}/last-submission`, config);
-    dispatch({ type: problemConstants.FETCH_LAST_SUBMISSION_SUCCESS, payload: res.data });
+    console.log(res);
+    const { id } = res.data.data;
+    const res2 = await agent.get(`/submission/${id}/judge-case`, config);
+    dispatch({
+      type: problemConstants.FETCH_LAST_SUBMISSION_SUCCESS,
+      payload: { data: res.data.data, judgecase: res2.data.data },
+    });
   } catch (error) {
     dispatch({ type: problemConstants.FETCH_LAST_SUBMISSION_FAIL, error });
   }

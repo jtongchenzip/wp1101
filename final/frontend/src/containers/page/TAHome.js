@@ -17,7 +17,6 @@ export default function TAHome() {
     <>
       <div className={classes.main}>
         <Sidebar />
-        <p>hello</p>
       </div>
     </>
   );

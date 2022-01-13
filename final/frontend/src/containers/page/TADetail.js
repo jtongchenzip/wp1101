@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {
-  Button, Dialog, DialogActions, DialogContent, IconButton, makeStyles, TextField, Typography,
+  Button, Dialog, DialogActions, DialogContent, IconButton, makeStyles, TextField, Typography, Snackbar,
 } from '@material-ui/core';
 import CloudDownloadOutlined from '@material-ui/icons/CloudDownloadOutlined';
 import Settings from '@material-ui/icons/Settings';
@@ -12,8 +12,10 @@ import LinearProgressBar from '../../components/ui/LinearProgressBar';
 import ScoreTable from '../../components/ui/ScoreTable';
 import UploadButton from '../../components/ui/UploadButton';
 import theme from '../../theme';
-import { readProblem, editProblem, downloadStudentScore } from '../../actions/problem/problem';
-import { submitCode, browseJudgeCase } from '../../actions/submission/submission';
+import {
+  editProblem, downloadStudentScore, browseProblem, readProblemLastSubmission,
+} from '../../actions/problem/problem';
+import { submitCode } from '../../actions/submission/submission';
 import Sidebar from '../../components/Sidebar';
 
 const useStyles = makeStyles(() => ({
@@ -36,8 +38,8 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     // width: '15%',
     width: 'fit-content',
-    paddingLeft: '3%',
-    // paddingRight: '2%',
+    paddingLeft: '2.5%',
+    paddingRight: '2%',
   },
   hackAndIcon: {
     display: 'flex',
@@ -55,44 +57,110 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  noSubmissionText: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: 30,
+  },
 }));
+
+const columns = [
+  {
+    id: 'task',
+    label: 'Task',
+    align: 'center',
+    minWidth: 50,
+    width: 100,
+  },
+  {
+    id: 'description',
+    label: 'Description',
+    align: 'left',
+    minWidth: 400,
+    width: 800,
+  },
+  {
+    id: 'status',
+    label: 'Status',
+    align: 'center',
+    minWidth: 50,
+    width: 100,
+  },
+];
 
 export default function TADetail() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { problemId } = useParams();
 
-  const token = useSelector((state) => state.user.token);
-  const problems = useSelector((state) => state.problem.byId);
-  const submission = useSelector((state) => state.submission);
+  const token = localStorage.getItem('auth-token');
 
-  const [title, setTitle] = useState(problems ? problems.title : '');
-  const [startTime, setStartTime] = useState(problems ? problems.start_time : '');
-  const [endTime, setEndTime] = useState(problems ? problems.start_end : '');
+  const problems = useSelector((state) => state.problem.byId);
+  const problemIds = useSelector((state) => state.problem.allIds);
+  const problemLoading = useSelector((state) => state.loading.problem);
+  const submission = useSelector((state) => state.submission);
+  const submissionLoading = useSelector((state) => state.loading.submission);
+
+  const [title, setTitle] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
   const [uploadFile, setUploadFile] = useState(null);
   const [submitFile, setSubmitFile] = useState(null);
 
-  const [openEditCard, setEditCardOpen] = useState(false);
+  const [openEditCard, setOpenEditCard] = useState(false);
   const [openSubmitCard, setOpenSubmitCard] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarText, setSnackbarText] = useState('');
 
-  const [progress, setProgress] = useState(60);
+  const [progress, setProgress] = useState(0);
+
+  const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    dispatch(readProblem(token, problemId));
-  }, [dispatch, problemId, token]);
+    dispatch(readProblemLastSubmission(token, problemId));
+    setProgress(((submission.total_pass / (submission.total_pass + submission.total_fail)) * 100));
+  }, [dispatch, problemId, submission.total_fail, submission.total_pass, token]);
 
+  // useEffect(() => {
+  //   if (!problemLoading.editProblem) {
+  //     dispatch(browseProblem(token));
+  //     setTitle(problems[problemId].title);
+  //     setStartTime(moment(problems[problemId].start_time).format('YYYY-MM-DD HH:mm'));
+  //     setEndTime(moment(problems[problemId].end_time).format('YYYY-MM-DD HH:mm'));
+  //   }
+  // }, [dispatch, problemId, problemLoading.editProblem, problems, token]);
+
+  useEffect(() => {
+    if (!submissionLoading.browseJudgeCase) {
+      setTableData(submission.judgecases.map((item) => ({
+        task: item.title.split(':')[0],
+        description: item.description,
+        errorMsg: item.error_message,
+        status: item.state,
+      })));
+    }
+  }, [submissionLoading.browseJudgeCase, submission.judgecases]);
+
+  // edit problem
   const handleCloseEditCard = () => {
     setTitle('');
-    setStartTime(moment().toDate());
-    setEndTime(moment().toDate());
+    setStartTime('');
+    setEndTime('');
     setUploadFile(null);
+    setOpenEditCard(false);
   };
   const handleEditProblem = () => {
-    if (title !== '' && moment(startTime).isBefore(endTime)) {
-      dispatch(editProblem(token, problemId, title, startTime, endTime, uploadFile, handleCloseEditCard));
+    if (title.trim() === '') {
+      setShowSnackbar(true);
+      setSnackbarText("Title can't be empty");
+    } else if (moment(startTime).isAfter(endTime) || moment(startTime).isSame(endTime)) {
+      setShowSnackbar(true);
+      setSnackbarText('Start time is not before end time');
+    } else {
+      dispatch(editProblem(token, problemId, title.trim(), startTime, endTime, uploadFile, handleCloseEditCard));
     }
   };
-
+  // submit code
   const handleCloseSubmitCard = () => {
     setSubmitFile(null);
     setOpenSubmitCard(false);
@@ -102,7 +170,7 @@ export default function TADetail() {
       dispatch(submitCode(token, problemId, submitFile, handleCloseSubmitCard));
     }
   };
-
+  // download student score
   const handleDownloadScore = () => {
     dispatch(downloadStudentScore(token, problemId));
   };
@@ -112,26 +180,33 @@ export default function TADetail() {
       <div className={classes.main}>
         <Sidebar />
         <div className={classes.scoreTableGroup}>
-          <ScoreTable />
-          <div className={classes.progressBarGroup}>
-            <Typography style={{ marginRight: 10 }} variant="body1">Task Completed</Typography>
-            <LinearProgressBar value={progress} />
-          </div>
+          {submission.judgecases.length === 0
+            ? (<Typography variant="h4" className={classes.noSubmissionText}>No submission yet.</Typography>)
+            : (
+              <>
+                <ScoreTable data={tableData} columns={columns} />
+                <div className={classes.progressBarGroup}>
+                  <Typography style={{ marginRight: 10 }} variant="body1">Task Completed</Typography>
+                  <LinearProgressBar value={progress} />
+                </div>
+              </>
+            )}
         </div>
+        {problemIds.length !== 0 && (
         <div className={classes.rightSidebar}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left' }}>
             <div className={classes.hackAndIcon}>
-              <Typography style={{ marginRight: 5 }} variant="h4">{problems[problemId].title}</Typography>
-              <IconButton onClick={() => setEditCardOpen(true)}>
+              <Typography variant="h4">{title}</Typography>
+              <IconButton onClick={() => setOpenEditCard(true)}>
                 <Settings htmlColor={theme.palette.grey[300]} />
               </IconButton>
             </div>
             <Typography style={{ marginTop: 15 }} variant="body1">Start Time</Typography>
-            <Typography style={{ marginTop: 5 }} variant="body1">{problems[problemId].start_time}</Typography>
+            <Typography style={{ marginTop: 5 }} variant="body1">{startTime}</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">End Time</Typography>
-            <Typography style={{ marginTop: 5 }} variant="body1">{problems[problemId].end_time}</Typography>
+            <Typography style={{ marginTop: 5 }} variant="body1">{endTime}</Typography>
 
-            {moment(moment().toDate()).isAfter(problems[problemId].end_time) && (
+            {moment(moment().toDate()).isAfter(endTime) && (
             <div className={classes.stuAndIcon}>
               <Typography style={{ marginRight: 10 }} variant="body1">Student Score</Typography>
               <IconButton onClick={handleDownloadScore}>
@@ -145,6 +220,7 @@ export default function TADetail() {
             <Button color="primary" variant="contained" onClick={() => setOpenSubmitCard(true)}>Submit</Button>
           </div>
         </div>
+        )}
       </div>
 
       {/* edit problem */}
@@ -159,7 +235,7 @@ export default function TADetail() {
           </div>
           <div className={classes.dialogContent} style={{ marginTop: 15 }}>
             <Typography variant="body1">Title</Typography>
-            <TextField id="outlined-required" label="Title" onChange={(e) => setTitle(e.target.value)} />
+            <TextField id="outlined-required" value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div className={classes.dialogContent} style={{ marginTop: 15 }}>
             <Typography variant="body1">Start Time</Typography>
@@ -171,8 +247,8 @@ export default function TADetail() {
           <div className={classes.dialogContent} style={{ marginTop: 15 }}>
             <Typography variant="body1">End Time</Typography>
             <DateTimePicker
-              selectedDate={startTime}
-              setSelectedDate={setStartTime}
+              selectedDate={endTime}
+              setSelectedDate={setEndTime}
             />
           </div>
           <div className={classes.dialogContent} style={{ justifyContent: 'flex-start', marginTop: 10 }}>
@@ -201,6 +277,12 @@ export default function TADetail() {
           <Button color="primary" style={{ borderRadius: 10 }} onClick={handleSubmit}>Submit</Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar
+        open={showSnackbar}
+        onClose={() => setShowSnackbar(false)}
+        message={snackbarText}
+      />
     </>
   );
 }

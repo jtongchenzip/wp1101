@@ -4,6 +4,7 @@ import { Button, Typography } from '@material-ui/core';
 // set accept file type
 export default function UploadButtons({ setUpLoadFile }) {
   const [fileName, setFileName] = useState('');
+
   const handleUploadFile = (file) => {
     const newFile = Object.keys(file).map((key) => file[key]);
     setUpLoadFile(newFile);

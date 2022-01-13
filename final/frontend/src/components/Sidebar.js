@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
-  Avatar, Typography, Button, Dialog, DialogContent, TextField, makeStyles,
+  Avatar, Typography, Button, Dialog, DialogContent, TextField, makeStyles, Snackbar,
 } from '@material-ui/core';
 import moment from 'moment';
 import DateTimePicker from './ui/DateTimePicker';
@@ -30,7 +30,8 @@ export default function Sidebar() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const token = useSelector((state) => state.user.token);
+  const token = localStorage.getItem('auth-token');
+
   const user = useSelector((state) => state.user);
   const problems = useSelector((state) => state.problem.byId);
   const problemIds = useSelector((state) => state.problem.allIds);
@@ -42,6 +43,9 @@ export default function Sidebar() {
   const [uploadFile, setUploadFile] = useState(null);
   const [openAddCard, setAddCardOpen] = useState(false);
 
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarText, setSnackbarText] = useState('');
+
   useEffect(() => {
     if (!loading.addProblem) {
       dispatch(browseProblem(token));
@@ -49,8 +53,17 @@ export default function Sidebar() {
   }, [dispatch, token, loading.addProblem]);
 
   const handleAddProblem = () => {
-    if (title !== '' && moment(startTime).isBefore(endTime) && uploadFile !== null) {
-      dispatch(addProblem(token, title, startTime, endTime, uploadFile, history));
+    if (title.trim() === '') {
+      setShowSnackbar(true);
+      setSnackbarText("Title can't be empty");
+    } else if (moment(startTime).isAfter(endTime) || moment(startTime).isSame(endTime)) {
+      setShowSnackbar(true);
+      setSnackbarText('Start time is not before end time');
+    } else if (uploadFile === null) {
+      setShowSnackbar(true);
+      setSnackbarText("Upload file can't be empty");
+    } else {
+      dispatch(addProblem(token, title.trim(), startTime, endTime, uploadFile, history));
     }
   };
   const handleCloseAddCard = () => {
@@ -62,7 +75,6 @@ export default function Sidebar() {
   };
 
   const handleProblemBtnClick = (problemId) => {
-    console.log(problemId);
     if (user.role === 'TA') {
       history.push(`/ta/problem/${problemId}`);
     } else if (user.role === 'STUDENT') {
@@ -135,6 +147,11 @@ export default function Sidebar() {
         </DialogContent>
       </Dialog>
 
+      <Snackbar
+        open={showSnackbar}
+        onClose={() => setShowSnackbar(false)}
+        message={snackbarText}
+      />
     </>
   );
 }
