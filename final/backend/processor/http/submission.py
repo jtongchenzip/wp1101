@@ -28,7 +28,7 @@ class AddSubmissionOutput:
 
 @router.post('/problem/{problem_id}/submission')
 @enveloped
-async def submit(problem_id: int, filename: str, content_file: UploadFile = File(...)) -> AddSubmissionOutput:
+async def submit(problem_id: int, content_file: UploadFile = File(...)) -> AddSubmissionOutput:
     problem = await db.problem.read(problem_id=problem_id)
     if request.account.role is not RoleType.TA and timezone_validate(request.time) < problem.start_time:
         raise exc.NoPermission
@@ -42,14 +42,14 @@ async def submit(problem_id: int, filename: str, content_file: UploadFile = File
     submission_id = await db.submission.add(account_id=request.account.id,
                                             problem_id=problem.id,
                                             submit_time=timezone_validate(request.time),
-                                            filename=filename,
+                                            filename=content_file.filename,
                                             content_file_uuid=content_file_uuid)
 
     problem_url = await s3_handler.sign_url(bucket='temp',
                                             key=str(problem.testcase_file_uuid),
                                             filename=problem.filename)
 
-    content_file_url = await s3_handler.sign_url(bucket='temp', key=str(content_file_uuid), filename=filename)
+    content_file_url = await s3_handler.sign_url(bucket='temp', key=str(content_file_uuid), filename=content_file.filename)
     await send_judge(do.JudgeTask(problem_url=problem_url,
                                   submission_id=submission_id,
                                   submission_url=content_file_url))
