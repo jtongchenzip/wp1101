@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory, Switch, Route } from 'react-router-dom';
+import {
+  useHistory, Switch, Route, useLocation,
+} from 'react-router-dom';
 import Header from '../components/ui/Header';
 import Login from './auth/Login';
 import Register from './auth/Register';
@@ -14,6 +16,7 @@ const ACCOUNT_ID = 'account-id';
 
 export default function Index() {
   const history = useHistory();
+  const location = useLocation();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
 
@@ -33,14 +36,18 @@ export default function Index() {
       } else {
         history.push('/login');
       }
-    } else if (user.role === 'TA') {
-      // dispatch(readAccount(token, account_id));
-      // history.push('/ta');
-    } else if (user.role === 'STUDENT') {
-      // dispatch(readAccount(token, account_id));
-      // history.push('/student');
     }
   }, [account_id, dispatch, history, token, user.isAuthenticated, user.role, user.tokenExpired]);
+
+  useEffect(() => {
+    if (user.isAuthenticated && location.pathname === '/') {
+      if (user.role === 'TA') {
+        history.push('/ta');
+      } else if (user.role === 'STUDENT') {
+        history.push('/student');
+      }
+    }
+  });
 
   return (
     <div className="wrapper">

@@ -64,7 +64,9 @@ export default function Sidebar() {
       setShowSnackbar(true);
       setSnackbarText("Upload file can't be empty");
     } else {
-      dispatch(addProblem(token, title.trim(), startTime, endTime, uploadFile, history));
+      const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss');
+      const end = moment(endTime).format('YYYY-MM-DD HH:mm:ss');
+      dispatch(addProblem(token, title.trim(), start, end, uploadFile, history));
     }
   };
   const handleCloseAddCard = () => {
@@ -82,6 +84,8 @@ export default function Sidebar() {
       history.push(`/student/problem/${problemId}`);
     }
   };
+
+  console.log(startTime, endTime);
 
   return (
     <>

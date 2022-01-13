@@ -52,7 +52,7 @@ export default function Login() {
     if (user.isAuthenticated) {
       localStorage.setItem(AUTH_TOKEN, user.token);
       localStorage.setItem(ACCOUNT_ID, user.id);
-      history.push('/ta');
+      history.push('/');
     }
   }, [user.is_authenticated, user.token, user.id, user.role, history, user]);
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import Sidebar from '../../components/Sidebar';
 
 const useStyles = makeStyles(() => ({
@@ -7,6 +7,12 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     alignItems: 'stretch',
     marginTop: 30,
+  },
+  noProblemText: {
+    width: '70%',
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: 100,
   },
 }));
 
@@ -17,6 +23,7 @@ export default function StudentHome() {
     <>
       <div className={classes.main}>
         <Sidebar />
+        <Typography variant="h4" className={classes.noProblemText}>Please select or add a problem.</Typography>
       </div>
     </>
   );
