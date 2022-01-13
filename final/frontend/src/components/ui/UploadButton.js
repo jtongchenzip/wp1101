@@ -12,27 +12,6 @@ export default function UploadButtons({ setUpLoadFile }) {
     console.log(newFile);
   };
 
-  // <label htmlFor="upload-file">
-  //   <input
-  //     style={{ display: 'none' }}
-  //     id="upload-file"
-  //     name="upload-file"
-  //     type="file"
-  //     accept={fileAcceptFormat}
-  //     onChange={(e) => handleUploadFile(e)}
-  //     multiple={multipleFiles}
-  //   />
-  //   <Button
-  //     className={classes.browseButton}
-  //     variant="outlined"
-  //     color="primary"
-  //     component="span"
-  //     startIcon={<Icon.Folder />}
-  //   >
-  //     Browse
-  //   </Button>
-  // </label>;
-
   return (
     <>
       <label htmlFor="upload-file">
