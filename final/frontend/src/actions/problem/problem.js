@@ -79,7 +79,6 @@ const readProblemLastSubmission = (token, problem_id) => async (dispatch) => {
   try {
     dispatch({ type: problemConstants.FETCH_LAST_SUBMISSION_START });
     const res = await agent.get(`/problem/${problem_id}/last-submission`, config);
-    console.log(res);
     const { id } = res.data.data;
     const res2 = await agent.get(`/submission/${id}/judge-case`, config);
     dispatch({
@@ -119,12 +118,11 @@ const browseProblem = (token) => async (dispatch) => {
     const res = await agent.get('/problem', config);
     dispatch({ type: problemConstants.BROWSE_PROBLEM_SUCCESS, payload: res.data });
   } catch (error) {
-    console.log('action', error);
     dispatch({ type: problemConstants.BROWSE_PROBLEM_FAIL, error });
   }
 };
 
-const downloadStudentScore = (token, problem_id) => async (dispatch) => {
+const downloadStudentScore = (token, problem_id, onError) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -141,6 +139,7 @@ const downloadStudentScore = (token, problem_id) => async (dispatch) => {
     }));
     dispatch({ type: problemConstants.DOWNLOAD_STUDENT_SCORE_SUCCESS });
   } catch (error) {
+    onError(error);
     dispatch({ type: problemConstants.DOWNLOAD_STUDENT_SCORE_FAIL, error });
   }
 };

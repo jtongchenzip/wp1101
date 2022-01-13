@@ -121,14 +121,19 @@ export default function TADetail() {
     setProgress(((submission.total_pass / (submission.total_pass + submission.total_fail)) * 100));
   }, [dispatch, problemId, submission.total_fail, submission.total_pass, token]);
 
-  // useEffect(() => {
-  //   if (!problemLoading.editProblem) {
-  //     dispatch(browseProblem(token));
-  //     setTitle(problems[problemId].title);
-  //     setStartTime(moment(problems[problemId].start_time).format('YYYY-MM-DD HH:mm'));
-  //     setEndTime(moment(problems[problemId].end_time).format('YYYY-MM-DD HH:mm'));
-  //   }
-  // }, [dispatch, problemId, problemLoading.editProblem, problems, token]);
+  useEffect(() => {
+    if (!problemLoading.editProblem) {
+      dispatch(browseProblem(token));
+    }
+  }, [dispatch, problemLoading.editProblem, token]);
+
+  useEffect(() => {
+    if (problems[problemId] !== undefined) {
+      setTitle(problems[problemId].title);
+      setStartTime(moment(problems[problemId].start_time).format('YYYY-MM-DD HH:mm'));
+      setEndTime(moment(problems[problemId].end_time).format('YYYY-MM-DD HH:mm'));
+    }
+  }, [problemId, problems]);
 
   useEffect(() => {
     if (!submissionLoading.browseJudgeCase) {
@@ -143,9 +148,9 @@ export default function TADetail() {
 
   // edit problem
   const handleCloseEditCard = () => {
-    setTitle('');
-    setStartTime('');
-    setEndTime('');
+    setTitle(problems[problemId].title);
+    setStartTime(moment(problems[problemId].start_time).format('YYYY-MM-DD HH:mm'));
+    setEndTime(moment(problems[problemId].end_time).format('YYYY-MM-DD HH:mm'));
     setUploadFile(null);
     setOpenEditCard(false);
   };
@@ -171,8 +176,12 @@ export default function TADetail() {
     }
   };
   // download student score
+  const handleDonwloadError = (text) => {
+    setShowSnackbar(true);
+    setSnackbarText(text);
+  };
   const handleDownloadScore = () => {
-    dispatch(downloadStudentScore(token, problemId));
+    dispatch(downloadStudentScore(token, problemId, handleDonwloadError));
   };
 
   return (
@@ -197,9 +206,11 @@ export default function TADetail() {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left' }}>
             <div className={classes.hackAndIcon}>
               <Typography variant="h4">{title}</Typography>
+              {moment(moment().toDate()).isBefore(startTime) && (
               <IconButton onClick={() => setOpenEditCard(true)}>
                 <Settings htmlColor={theme.palette.grey[300]} />
               </IconButton>
+              )}
             </div>
             <Typography style={{ marginTop: 15 }} variant="body1">Start Time</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">{startTime}</Typography>
@@ -268,6 +279,9 @@ export default function TADetail() {
         maxWidth="md"
       >
         <DialogContent>
+          <div className={classes.dialogContent} style={{ marginTop: 0 }}>
+            <Typography variant="h4">Submit Code</Typography>
+          </div>
           <div className={classes.dialogContent} style={{ justifyContent: 'flex-start', marginTop: 10 }}>
             <Typography style={{ marginRight: 30 }} variant="body1">Select file (.zip)</Typography>
             <UploadButton setUpLoadFile={setSubmitFile} />

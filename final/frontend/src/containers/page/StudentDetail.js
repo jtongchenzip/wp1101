@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import {
-  Avatar, Button, Dialog, DialogActions, DialogContent, makeStyles, TextField, Typography,
+  Button, Dialog, DialogActions, DialogContent, makeStyles, Typography,
 } from '@material-ui/core';
-
 import moment from 'moment';
-import theme from '../../theme';
-import DateTimePicker from '../../components/ui/DateTimePicker';
 import LinearProgressBar from '../../components/ui/LinearProgressBar';
 import ScoreTable from '../../components/ui/ScoreTable';
 import UploadButton from '../../components/ui/UploadButton';
-import ric from '../../asset/ric.png';
+import Sidebar from '../../components/Sidebar';
+import { browseProblem, readProblemLastSubmission } from '../../actions/problem/problem';
+import { submitCode } from '../../actions/submission/submission';
 
 const useStyles = makeStyles(() => ({
   main: {
@@ -35,7 +36,6 @@ const useStyles = makeStyles(() => ({
   rightSidebar: {
     display: 'flex',
     flexDirection: 'column',
-    // width: '15%',
     width: 'fit-content',
     paddingLeft: 30,
     paddingRight: 15,
@@ -45,99 +45,156 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  noSubmissionText: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: 30,
+  },
 }));
 
+const columns = [
+  {
+    id: 'task',
+    label: 'Task',
+    align: 'center',
+    minWidth: 50,
+    width: 100,
+  },
+  {
+    id: 'description',
+    label: 'Description',
+    align: 'left',
+    minWidth: 400,
+    width: 800,
+  },
+  {
+    id: 'status',
+    label: 'Status',
+    align: 'center',
+    minWidth: 50,
+    width: 100,
+  },
+];
+
 export default function Student() {
-  const [openSubmitCard, setOpenSubmitCard] = useState(false);
-  const [openEditCard, setEditCardOpen] = useState(false);
-  const [progress, setProgress] = useState(60);
-  const [uploadFile, setUpLoadFile] = useState([]);
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { problemId } = useParams();
+
+  const token = localStorage.getItem('auth-token');
+
+  const problems = useSelector((state) => state.problem.byId);
+  const problemLoading = useSelector((state) => state.loading.problem);
+  const submissions = useSelector((state) => state.submission);
+  const submitLoading = useSelector((state) => state.loading.submission);
+
+  const [title, setTitle] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [tableData, setTableData] = useState([]);
+
+  const [openSubmitCard, setOpenSubmitCard] = useState(false);
+  const [submitFile, setSubmitFile] = useState(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    dispatch(readProblemLastSubmission(token, problemId));
+    setProgress(((submissions.total_pass / (submissions.total_pass + submissions.total_fail)) * 100));
+  }, [dispatch, problemId, submissions.total_fail, submissions.total_pass, token]);
+
+  useEffect(() => {
+    if (!problemLoading.editProblem) {
+      dispatch(browseProblem(token));
+    }
+  }, [dispatch, problemLoading.editProblem, token]);
+
+  useEffect(() => {
+    if (problems[problemId] !== undefined) {
+      setTitle(problems[problemId].title);
+      setStartTime(moment(problems[problemId].start_time).format('YYYY-MM-DD HH:mm'));
+      setEndTime(moment(problems[problemId].end_time).format('YYYY-MM-DD HH:mm'));
+    }
+  }, [problemId, problems]);
+
+  useEffect(() => {
+    if (!submitLoading.browseJudgeCase) {
+      setTableData(submissions.judgecases.map((item) => ({
+        task: item.title.split(':')[0],
+        description: item.description,
+        errorMsg: item.error_message,
+        status: item.state,
+      })));
+    }
+  }, [submissions.judgecases, submitLoading.browseJudgeCase]);
+
+  // submit code
+  const handleCloseSubmitCard = () => {
+    setSubmitFile(null);
+    setOpenSubmitCard(false);
+  };
+  const handleSubmit = () => {
+    if (submitFile !== null) {
+      dispatch(submitCode(token, problemId, submitFile, handleCloseSubmitCard));
+    }
+  };
+
+  console.log(submissions);
 
   return (
     <>
       <div className={classes.main}>
-        <div className={classes.leftSidebar}>
-          <Avatar alt="Pdogs" style={{ height: '70px', width: '70px' }} src={ric} />
-          <Typography color="primary" style={{ marginTop: 10 }} variant="h4">pdogsss</Typography>
-          <Button
-            variant="contained"
-            disabled
-            style={{
-              height: 26, width: 84, fontSize: 14, color: theme.palette.grey[300], backgroundColor: theme.palette.grey.A400,
-            }}
-          >
-            Student
-          </Button>
-          <Button variant="initial" style={{ marginTop: 20 }}>Hack 1</Button>
-          <Button variant="initial" style={{ marginTop: 10 }}>Hack 2</Button>
-          <Button variant="initial" style={{ marginTop: 10 }}>Hack 3</Button>
-        </div>
+        <Sidebar />
         <div className={classes.scoreTableGroup}>
-          <ScoreTable />
-          <div className={classes.progressBarGroup}>
-            <Typography style={{ marginRight: 10 }} variant="body1">Task Completed</Typography>
-            <LinearProgressBar value={progress} />
-          </div>
+          {submissions.judgecases.length === 0
+            ? (<Typography variant="h4" className={classes.noSubmissionText}>No submission yet.</Typography>)
+            : (
+              <>
+                <ScoreTable data={tableData} columns={columns} />
+                <div className={classes.progressBarGroup}>
+                  <Typography style={{ marginRight: 10 }} variant="body1">Task Completed</Typography>
+                  <LinearProgressBar value={progress} />
+                </div>
+              </>
+            )}
         </div>
+        {problems[problemId] !== undefined && (
         <div className={classes.rightSidebar}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left' }}>
-            <div className={classes.hackAndIcon}>
-              <Typography variant="h4">Hackathon 1</Typography>
-            </div>
-            <Typography style={{ marginTop: 15 }} variant="body1">Date : 2022/01/01</Typography>
-            <Typography style={{ marginTop: 5 }} variant="body1">Start Time : 09 : 10</Typography>
-            <Typography style={{ marginTop: 5 }} variant="body1">End Time : 12 : 10</Typography>
+            <Typography variant="h4">{title}</Typography>
+            <Typography style={{ marginTop: 15 }} variant="body1">Start Time</Typography>
+            <Typography style={{ marginTop: 5 }} variant="body1">{startTime}</Typography>
+            <Typography style={{ marginTop: 5 }} variant="body1">End Time</Typography>
+            <Typography style={{ marginTop: 5 }} variant="body1">{endTime}</Typography>
           </div>
-          {/* {moment(moment().toDate()).isAfter(problems[problemId].start_time) && (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          {/* submit only after start time */}
+          {moment(moment().toDate()).isBetween(problems[problemId].start_time, problems[problemId].end_time) && (
+          <div style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 30,
+          }}
+          >
             <Button color="primary" variant="contained" onClick={() => setOpenSubmitCard(true)}>Submit</Button>
           </div>
-          )} */}
+          )}
         </div>
+        )}
       </div>
 
       <Dialog
-        open={openEditCard}
-        onClose={() => setEditCardOpen(false)}
+        open={openSubmitCard}
+        onClose={handleCloseSubmitCard}
         maxWidth="md"
       >
         <DialogContent>
           <div className={classes.dialogContent} style={{ marginTop: 0 }}>
-            <Typography variant="body1">Title</Typography>
-            <TextField id="outlined-required" label="Title" />
-          </div>
-          <div className={classes.dialogContent} style={{ marginTop: 20 }}>
-            <Typography variant="body1">Start Time</Typography>
-            <DateTimePicker />
-          </div>
-          <div className={classes.dialogContent} style={{ marginTop: 20 }}>
-            <Typography variant="body1">End Time</Typography>
-            <DateTimePicker />
+            <Typography variant="h4">Submit Code</Typography>
           </div>
           <div className={classes.dialogContent} style={{ justifyContent: 'flex-start', marginTop: 10 }}>
-            <Typography style={{ marginRight: 76 }} variant="body1">Problem file</Typography>
-            <UploadButton setUpLoadFile={setUpLoadFile} />
-          </div>
-          <div className={classes.dialogContent} style={{ justifyContent: 'flex-end', marginTop: 0 }}>
-            <Button color="primary" variant="contained">Save</Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog
-        open={openSubmitCard}
-        onClose={() => setOpenSubmitCard(false)}
-        maxWidth="md"
-      >
-        <DialogContent>
-          <div className={classes.dialogContent} style={{ justifyContent: 'flex-start', marginTop: 10 }}>
-            <Typography style={{ marginRight: 76 }} variant="body1">Select file</Typography>
-            <UploadButton setUpLoadFile={setUpLoadFile} />
+            <Typography style={{ marginRight: 30 }} variant="body1">Select file (.zip)</Typography>
+            <UploadButton setUpLoadFile={setSubmitFile} />
           </div>
         </DialogContent>
         <DialogActions>
-          <Button color="primary" style={{ borderRadius: 10 }}>Submit</Button>
+          <Button color="primary" style={{ borderRadius: 10 }} onClick={handleSubmit}>Submit</Button>
         </DialogActions>
       </Dialog>
     </>

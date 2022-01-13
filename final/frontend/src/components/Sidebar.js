@@ -91,7 +91,7 @@ export default function Sidebar() {
           variant="contained"
           disabled
           style={{
-            height: 26, width: 84, fontSize: 14, color: theme.palette.grey[300], backgroundColor: theme.palette.grey.A400,
+            height: 26, width: 85, fontSize: 14, color: theme.palette.grey[300], backgroundColor: theme.palette.grey.A400,
           }}
         >
           {user.role}

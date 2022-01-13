@@ -15,17 +15,17 @@ export default function Pages() {
   const token = localStorage.getItem('auth-token');
   const user = useSelector((state) => state.user);
 
-  // useEffect(() => {
-  //   if (!token) {
-  //     history.push('/login');
-  //   } else if (user.role === 'TA') {
-  //     history.push('/ta');
-  //   } else if (user.role === 'STUDENT') {
-  //     history.push('/student');
-  //   } else {
-  //     dispatch(browseProblem(token));
-  //   }
-  // }, [dispatch, history, token, user.role]);
+  useEffect(() => {
+    if (!token) {
+      history.push('/login');
+    } else if (user.role === 'TA') {
+      history.push('/ta');
+    } else if (user.role === 'STUDENT') {
+      history.push('/student');
+    } else {
+      dispatch(browseProblem(token));
+    }
+  }, [dispatch, history, token, user.role]);
 
   return (
     <Switch>
