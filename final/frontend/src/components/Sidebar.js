@@ -60,6 +60,15 @@ export default function Sidebar() {
     setAddCardOpen(false);
   };
 
+  const handleProblemBtnClick = (problemId) => {
+    console.log(problemId);
+    if (user.role === 'TA') {
+      history.push(`/ta/problem/${problemId}`);
+    } else if (user.role === 'STUDENT') {
+      history.push(`/student/problem/${problemId}`);
+    }
+  };
+
   return (
     <>
       <div className={classes.leftSidebar}>
@@ -76,7 +85,15 @@ export default function Sidebar() {
         </Button>
         <Button variant="outlined" color="primary" style={{ marginTop: 30 }} onClick={() => setAddCardOpen(true)}>Add</Button>
         {problems.length !== 0 && problems.map((problem) => (
-          <Button variant="text" style={{ marginTop: 15 }} key={problem.id}>{problem.title}</Button>
+          <Button
+            variant="text"
+            style={{ marginTop: 15 }}
+            key={problem.id}
+            onClick={() => handleProblemBtnClick(problem.id)}
+          >
+            {problem.title}
+
+          </Button>
         ))}
       </div>
 

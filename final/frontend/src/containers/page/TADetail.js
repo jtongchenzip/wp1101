@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {
@@ -12,7 +12,7 @@ import LinearProgressBar from '../../components/ui/LinearProgressBar';
 import ScoreTable from '../../components/ui/ScoreTable';
 import UploadButton from '../../components/ui/UploadButton';
 import theme from '../../theme';
-import { editProblem, downloadStudentScore } from '../../actions/problem/problem';
+import { readProblem, editProblem, downloadStudentScore } from '../../actions/problem/problem';
 import { submitCode, browseJudgeCase } from '../../actions/submission/submission';
 import Sidebar from '../../components/Sidebar';
 
@@ -77,6 +77,10 @@ export default function TADetail() {
 
   const [progress, setProgress] = useState(60);
 
+  useEffect(() => {
+    dispatch(readProblem(token, problemId));
+  }, [dispatch, problemId, token]);
+
   const handleCloseEditCard = () => {
     setTitle('');
     setStartTime(moment().toDate());
@@ -103,10 +107,6 @@ export default function TADetail() {
     dispatch(downloadStudentScore(token, problemId));
   };
 
-  // dispatch(browseJudgeCase(token, 1));
-
-  // console.log(submission);
-
   return (
     <>
       <div className={classes.main}>
@@ -121,20 +121,24 @@ export default function TADetail() {
         <div className={classes.rightSidebar}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left' }}>
             <div className={classes.hackAndIcon}>
-              <Typography style={{ marginRight: 5 }} variant="h4">Hackathon 1</Typography>
+              <Typography style={{ marginRight: 5 }} variant="h4">{problems[problemId].title}</Typography>
               <IconButton onClick={() => setEditCardOpen(true)}>
                 <Settings htmlColor={theme.palette.grey[300]} />
               </IconButton>
             </div>
-            <Typography style={{ marginTop: 15 }} variant="body1">Date : 2022/01/01</Typography>
-            <Typography style={{ marginTop: 5 }} variant="body1">Start Time : 09 : 10</Typography>
-            <Typography style={{ marginTop: 5 }} variant="body1">End Time : 12 : 10</Typography>
+            <Typography style={{ marginTop: 15 }} variant="body1">Start Time</Typography>
+            <Typography style={{ marginTop: 5 }} variant="body1">{problems[problemId].start_time}</Typography>
+            <Typography style={{ marginTop: 5 }} variant="body1">End Time</Typography>
+            <Typography style={{ marginTop: 5 }} variant="body1">{problems[problemId].end_time}</Typography>
+
+            {moment(moment().toDate()).isAfter(problems[problemId].end_time) && (
             <div className={classes.stuAndIcon}>
               <Typography style={{ marginRight: 10 }} variant="body1">Student Score</Typography>
               <IconButton onClick={handleDownloadScore}>
                 <CloudDownloadOutlined htmlColor={theme.palette.grey[300]} />
               </IconButton>
             </div>
+            )}
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Button color="primary" variant="contained" onClick={() => setOpenSubmitCard(true)}>Submit</Button>

@@ -19,8 +19,8 @@ export default function Pages() {
     <Switch>
       <Route path="/student" component={StudentHome} />
       <Route path="/student/problem/:problemId" component={StudentDetail} />
-      <Route path="/ta" component={TADetail} />
-      {/* <Route path="/ta/problem/:problemId" component={TADetail} /> */}
+      <Route path="/ta" component={TAHome} />
+      <Route path="/ta/problem/:problemId" component={TADetail} />
     </Switch>
   );
 }

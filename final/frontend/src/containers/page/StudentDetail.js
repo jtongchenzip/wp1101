@@ -3,6 +3,7 @@ import {
   Avatar, Button, Dialog, DialogActions, DialogContent, makeStyles, TextField, Typography,
 } from '@material-ui/core';
 
+import moment from 'moment';
 import theme from '../../theme';
 import DateTimePicker from '../../components/ui/DateTimePicker';
 import LinearProgressBar from '../../components/ui/LinearProgressBar';
@@ -88,12 +89,11 @@ export default function Student() {
             <Typography style={{ marginTop: 5 }} variant="body1">Start Time : 09 : 10</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">End Time : 12 : 10</Typography>
           </div>
-          <div style={{
-            display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 35,
-          }}
-          >
+          {/* {moment(moment().toDate()).isAfter(problems[problemId].start_time) && (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Button color="primary" variant="contained" onClick={() => setOpenSubmitCard(true)}>Submit</Button>
           </div>
+          )} */}
         </div>
       </div>
 
