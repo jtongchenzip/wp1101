@@ -58,13 +58,13 @@ export default function Login() {
             Login
           </Button>
         </div>
-        <Typography color="primary" style={{ marginTop: 20 }} variant="h8">
+        <Typography color="primary" style={{ marginTop: 20 }} variant="body1">
           Cypress Online Judge System
         </Typography>
-        <Typography align="center" color="primary" variant="h8">
+        <Typography align="center" color="primary" variant="body1">
           Department of Information Management
         </Typography>
-        <Typography color="primary" variant="h8">
+        <Typography color="primary" variant="body1">
           National Taiwan University
         </Typography>
       </div>
