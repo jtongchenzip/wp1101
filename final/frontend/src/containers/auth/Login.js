@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
-  Button, Typography, TextField, makeStyles, Link,
+  Button, Typography, TextField, makeStyles,
 } from '@material-ui/core';
 import { logIn } from '../../actions/user/auth';
 

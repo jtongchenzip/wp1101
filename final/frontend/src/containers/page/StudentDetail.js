@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import {
-  Avatar, Button, Dialog, DialogActions, DialogContent, IconButton, makeStyles, TextField, Typography,
+  Avatar, Button, Dialog, DialogActions, DialogContent, makeStyles, TextField, Typography,
 } from '@material-ui/core';
-import CloudDownloadOutlined from '@material-ui/icons/CloudDownloadOutlined';
-import Settings from '@material-ui/icons/Settings';
 
-import moment from 'moment';
 import theme from '../../theme';
 import DateTimePicker from '../../components/ui/DateTimePicker';
 import LinearProgressBar from '../../components/ui/LinearProgressBar';
@@ -43,17 +39,6 @@ const useStyles = makeStyles(() => ({
     paddingLeft: 30,
     paddingRight: 15,
   },
-  hackAndIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  stuAndIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    marginTop: 30,
-    marginBottom: 30,
-  },
   dialogContent: {
     display: 'flex',
     alignItems: 'center',
@@ -61,27 +46,19 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function TA() {
-  const classes = useStyles();
-
-  const problems = useSelector((state) => state.problem);
-
-  const [title, setTitle] = useState('');
-  const [startTime, setStartTime] = useState(moment().toDate());
-  const [endTime, setEndTime] = useState(moment().toDate());
+export default function Student() {
+  const [openSubmitCard, setOpenSubmitCard] = useState(false);
+  const [openEditCard, setEditCardOpen] = useState(false);
   const [progress, setProgress] = useState(60);
   const [uploadFile, setUpLoadFile] = useState([]);
-
-  const [openAddCard, setAddCardOpen] = useState(false);
-  const [openEditCard, setEditCardOpen] = useState(false);
-  const [openSubmitCard, setOpenSubmitCard] = useState(false);
+  const classes = useStyles();
 
   return (
     <>
       <div className={classes.main}>
         <div className={classes.leftSidebar}>
           <Avatar alt="Pdogs" style={{ height: '70px', width: '70px' }} src={ric} />
-          <Typography color="primary" style={{ marginTop: 10 }} variant="h4">pdogs</Typography>
+          <Typography color="primary" style={{ marginTop: 10 }} variant="h4">pdogsss</Typography>
           <Button
             variant="contained"
             disabled
@@ -89,12 +66,11 @@ export default function TA() {
               height: 26, width: 84, fontSize: 14, color: theme.palette.grey[300], backgroundColor: theme.palette.grey.A400,
             }}
           >
-            TA
+            Student
           </Button>
-          <Button variant="text" style={{ marginTop: 20 }}>Hack 1</Button>
-          <Button variant="text" style={{ marginTop: 10 }}>Hack 2</Button>
-          <Button variant="text" style={{ marginTop: 10 }}>Hack 3</Button>
-          <Button variant="outlined" color="primary" onClick={() => setAddCardOpen(true)}>Add</Button>
+          <Button variant="initial" style={{ marginTop: 20 }}>Hack 1</Button>
+          <Button variant="initial" style={{ marginTop: 10 }}>Hack 2</Button>
+          <Button variant="initial" style={{ marginTop: 10 }}>Hack 3</Button>
         </div>
         <div className={classes.scoreTableGroup}>
           <ScoreTable />
@@ -106,63 +82,21 @@ export default function TA() {
         <div className={classes.rightSidebar}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left' }}>
             <div className={classes.hackAndIcon}>
-              <Typography style={{ marginRight: 8 }} variant="h4">Hackathon 1</Typography>
-              <IconButton onClick={() => setEditCardOpen(true)}>
-                <Settings htmlColor={theme.palette.grey[300]} />
-              </IconButton>
+              <Typography variant="h4">Hackathon 1</Typography>
             </div>
             <Typography style={{ marginTop: 15 }} variant="body1">Date : 2022/01/01</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">Start Time : 09 : 10</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">End Time : 12 : 10</Typography>
-            <div className={classes.stuAndIcon}>
-              <Typography style={{ marginRight: 10 }} variant="body1">Student Score</Typography>
-              <IconButton>
-                <CloudDownloadOutlined htmlColor={theme.palette.grey[300]} />
-              </IconButton>
-            </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 35,
+          }}
+          >
             <Button color="primary" variant="contained" onClick={() => setOpenSubmitCard(true)}>Submit</Button>
           </div>
         </div>
       </div>
 
-      {/* add problem */}
-      <Dialog
-        open={openAddCard}
-        onClose={() => setAddCardOpen(false)}
-        maxWidth="md"
-      >
-        <DialogContent>
-          <div className={classes.dialogContent} style={{ marginTop: 0 }}>
-            <Typography variant="body1">Title</Typography>
-            <TextField label="Title" onChange={(e) => setTitle(e.target.value)} />
-          </div>
-          <div className={classes.dialogContent} style={{ marginTop: 20 }}>
-            <Typography variant="body1">Start Time</Typography>
-            <DateTimePicker
-              selectedDate={startTime}
-              setSelectedDate={setStartTime}
-            />
-          </div>
-          <div className={classes.dialogContent} style={{ marginTop: 20 }}>
-            <Typography variant="body1">End Time</Typography>
-            <DateTimePicker
-              selectedDate={endTime}
-              setSelectedDate={setEndTime}
-            />
-          </div>
-          <div className={classes.dialogContent} style={{ justifyContent: 'flex-start', marginTop: 10 }}>
-            <Typography style={{ marginRight: 76 }} variant="body1">Problem file</Typography>
-            <UploadButton setUpLoadFile={setUpLoadFile} />
-          </div>
-          <div className={classes.dialogContent} style={{ justifyContent: 'flex-end', marginTop: 0 }}>
-            <Button color="primary" variant="contained" style={{ borderRadius: 10 }}>Add</Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* edit problem */}
       <Dialog
         open={openEditCard}
         onClose={() => setEditCardOpen(false)}
@@ -185,13 +119,12 @@ export default function TA() {
             <Typography style={{ marginRight: 76 }} variant="body1">Problem file</Typography>
             <UploadButton setUpLoadFile={setUpLoadFile} />
           </div>
-          <div className={classes.dialogContent} style={{ justifyContent: 'flex-end', marginTop: 0, borderRadius: 10 }}>
-            <Button color="primary" variant="contained" style={{ borderRadius: 10 }}>Save</Button>
+          <div className={classes.dialogContent} style={{ justifyContent: 'flex-end', marginTop: 0 }}>
+            <Button color="primary" variant="contained">Save</Button>
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* submit */}
       <Dialog
         open={openSubmitCard}
         onClose={() => setOpenSubmitCard(false)}
@@ -199,7 +132,7 @@ export default function TA() {
       >
         <DialogContent>
           <div className={classes.dialogContent} style={{ justifyContent: 'flex-start', marginTop: 10 }}>
-            <Typography style={{ marginRight: 30 }} variant="body1">Select file (.zip)</Typography>
+            <Typography style={{ marginRight: 76 }} variant="body1">Select file</Typography>
             <UploadButton setUpLoadFile={setUpLoadFile} />
           </div>
         </DialogContent>

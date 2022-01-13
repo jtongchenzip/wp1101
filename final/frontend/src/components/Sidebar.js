@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
@@ -9,7 +9,7 @@ import DateTimePicker from './ui/DateTimePicker';
 import UploadButton from './ui/UploadButton';
 import theme from '../theme';
 import ric from '../asset/ric.png';
-import { addProblem } from '../actions/problem/problem';
+import { browseProblem, addProblem } from '../actions/problem/problem';
 
 const useStyles = makeStyles(() => ({
   leftSidebar: {
@@ -33,16 +33,22 @@ export default function Sidebar() {
   const token = useSelector((state) => state.user.token);
   const user = useSelector((state) => state.user);
   const problems = useSelector((state) => state.problem);
+  const loading = useSelector((state) => state.loading.problem);
 
   const [title, setTitle] = useState('');
   const [startTime, setStartTime] = useState(moment().toDate());
   const [endTime, setEndTime] = useState(moment().toDate());
-  const [uploadFile, setUpLoadFile] = useState(null);
+  const [uploadFile, setUploadFile] = useState(null);
   const [openAddCard, setAddCardOpen] = useState(false);
+
+  useEffect(() => {
+    if (!loading.addProblem) {
+      dispatch(browseProblem(token));
+    }
+  }, [dispatch, token, loading.addProblem]);
 
   const handleAddProblem = () => {
     if (title !== '' && moment(startTime).isBefore(endTime) && uploadFile !== null) {
-      // TODO: addProblem action history
       dispatch(addProblem(token, title, startTime, endTime, uploadFile, history));
     }
   };
@@ -50,7 +56,7 @@ export default function Sidebar() {
     setTitle('');
     setStartTime(moment().toDate());
     setEndTime(moment().toDate());
-    setUpLoadFile(null);
+    setUploadFile(null);
     setAddCardOpen(false);
   };
 
@@ -68,13 +74,10 @@ export default function Sidebar() {
         >
           {user.role}
         </Button>
-        {problems !== undefined && problems.map((problem) => (
-          <Button variant="text" style={{ marginTop: 20 }} key={problem.id}>{problem.title}</Button>
+        <Button variant="outlined" color="primary" style={{ marginTop: 30 }} onClick={() => setAddCardOpen(true)}>Add</Button>
+        {problems.length !== 0 && problems.map((problem) => (
+          <Button variant="text" style={{ marginTop: 15 }} key={problem.id}>{problem.title}</Button>
         ))}
-        {/* <Button variant="text" style={{ marginTop: 20 }}>Hack 1</Button>
-        <Button variant="text" style={{ marginTop: 10 }}>Hack 2</Button>
-        <Button variant="text" style={{ marginTop: 10 }}>Hack 3</Button> */}
-        <Button variant="outlined" color="primary" onClick={() => setAddCardOpen(true)}>Add</Button>
       </div>
 
       <Dialog
@@ -84,17 +87,20 @@ export default function Sidebar() {
       >
         <DialogContent>
           <div className={classes.dialogContent} style={{ marginTop: 0 }}>
-            <Typography variant="body1">Title</Typography>
-            <TextField label="Title" onChange={(e) => setTitle(e.target.value)} />
+            <Typography variant="h4">Add Problem</Typography>
           </div>
-          <div className={classes.dialogContent} style={{ marginTop: 20 }}>
+          <div className={classes.dialogContent} style={{ marginTop: 25 }}>
+            <Typography variant="body1">Title</Typography>
+            <TextField onChange={(e) => setTitle(e.target.value)} />
+          </div>
+          <div className={classes.dialogContent} style={{ marginTop: 15 }}>
             <Typography variant="body1">Start Time</Typography>
             <DateTimePicker
               selectedDate={startTime}
               setSelectedDate={setStartTime}
             />
           </div>
-          <div className={classes.dialogContent} style={{ marginTop: 20 }}>
+          <div className={classes.dialogContent} style={{ marginTop: 15 }}>
             <Typography variant="body1">End Time</Typography>
             <DateTimePicker
               selectedDate={endTime}
@@ -103,7 +109,7 @@ export default function Sidebar() {
           </div>
           <div className={classes.dialogContent} style={{ justifyContent: 'flex-start', marginTop: 10 }}>
             <Typography style={{ marginRight: 76 }} variant="body1">Problem file</Typography>
-            <UploadButton setUpLoadFile={setUpLoadFile} />
+            <UploadButton setUpLoadFile={setUploadFile} />
           </div>
           <div className={classes.dialogContent} style={{ justifyContent: 'flex-end', marginTop: 0 }}>
             <Button color="primary" style={{ borderRadius: 10 }} onClick={handleAddProblem}>Add</Button>
