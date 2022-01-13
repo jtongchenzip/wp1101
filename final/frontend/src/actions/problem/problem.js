@@ -1,7 +1,7 @@
 import agent from '../agent';
 import { problemConstants } from './constant';
 
-const readProblem = (token, id) => async (dispatch) => {
+const readProblem = (token, problem_id) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -9,8 +9,8 @@ const readProblem = (token, id) => async (dispatch) => {
   };
   try {
     dispatch({ type: problemConstants.FETCH_PROBLEM_START });
-    const res = await agent.get(`/problem/${id}`, config);
-    dispatch({ type: problemConstants.FETCH_PROBLEM_SUCCESS, payload: res.data.data });
+    const res = await agent.get(`/problem/${problem_id}`, config);
+    dispatch({ type: problemConstants.FETCH_PROBLEM_SUCCESS, payload: res.data });
   } catch (error) {
     dispatch({
       type: problemConstants.FETCH_PROBLEM_FAIL,
@@ -19,7 +19,7 @@ const readProblem = (token, id) => async (dispatch) => {
   }
 };
 
-const addProblem = (token, title, start_time, end_time, file) => async (dispatch) => {
+const addProblem = (token, title, start_time, end_time, file, history) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -36,7 +36,9 @@ const addProblem = (token, title, start_time, end_time, file) => async (dispatch
   try {
     dispatch({ type: problemConstants.ADD_PROBLEM_START });
     const res = await agent.post('/problem', formData, config);
-    dispatch({ type: problemConstants.ADD_PROBLEM_SUCCESS, payload: res.data });
+    const { id } = res.data;
+    dispatch({ type: problemConstants.ADD_PROBLEM_SUCCESS });
+    history.push(`/ta/problem/${id}`);
   } catch (error) {
     dispatch({
       type: problemConstants.ADD_PROBLEM_FAIL,
@@ -45,7 +47,7 @@ const addProblem = (token, title, start_time, end_time, file) => async (dispatch
   }
 };
 
-const editProblem = (token, problem_id, title, start_time, end_time, file) => async (dispatch) => {
+const editProblem = (token, problem_id, title, start_time, end_time, file, onSuccess) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -62,6 +64,7 @@ const editProblem = (token, problem_id, title, start_time, end_time, file) => as
     dispatch({ type: problemConstants.EDIT_PROBLEM_START });
     await agent.patch(`/problem/${problem_id}`, formData, config);
     dispatch({ type: problemConstants.EDIT_PROBLEM_SUCCESS });
+    onSuccess();
   } catch (error) {
     dispatch({ type: problemConstants.EDIT_PROBLEM_FAIL });
   }
@@ -110,6 +113,7 @@ const browseProblem = (token) => async (dispatch) => {
     const res = await agent.get('/problem', config);
     dispatch({ type: problemConstants.BROWSE_PROBLEM_SUCCESS, payload: res.data });
   } catch (error) {
+    console.log('action', error);
     dispatch({ type: problemConstants.BROWSE_PROBLEM_FAIL, error });
   }
 };
@@ -123,7 +127,6 @@ const downloadStudentScore = (token, problem_id) => async (dispatch) => {
   try {
     dispatch({ type: problemConstants.DOWNLOAD_STUDENT_SCORE_START });
     const res = await agent.get(`/problem/${problem_id}/student-score`, config);
-    console.log('heelo', res);
     fetch(res.data.data.url).then((t) => t.blob().then((b) => {
       const a = document.createElement('a');
       a.href = URL.createObjectURL(b);
