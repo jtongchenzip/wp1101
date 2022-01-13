@@ -268,6 +268,9 @@ const overrides = {
     text: {
       margin: '10px 5px 10px 5px',
       padding: '8.5px 25px 10px 25px',
+      '&hover': {
+        borderColor: mono.semiDarkGray,
+      },
       '&$disabled': {
         color: mono.gray,
         '& path': {
