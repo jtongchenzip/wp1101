@@ -1,6 +1,7 @@
+import { combineReducers } from 'redux';
 import { problemConstants } from '../actions/problem/constant';
 
-const problem = (state = [], action) => {
+const byId = (state = {}, action) => {
   switch (action.type) {
     case problemConstants.FETCH_PROBLEM_SUCCESS:
       return {
@@ -10,12 +11,22 @@ const problem = (state = [], action) => {
         },
       };
     case problemConstants.BROWSE_PROBLEM_SUCCESS:
-      return action.payload.data.problems;
-      // return action.payload.data.problems.reduce((acc, item) => (
-      //   { ...acc, [item.id]: { ...item } }), state);
+      return action.payload.data.problems.reduce((acc, item) => (
+        { ...acc, [item.id]: { ...item } }), state);
     default:
       return state;
   }
 };
 
-export default problem;
+const allIds = (state = [], action) => {
+  switch (action.type) {
+    case problemConstants.FETCH_PROBLEM_SUCCESS:
+      return [...new Set([action.payload.id, ...state])];
+    case problemConstants.BROWSE_PROBOEM_SUCCESS:
+      return [...new Set([...state, ...action.payload.data.problems.map((item) => item.id)])];
+    default:
+      return state;
+  }
+};
+
+export default combineReducers({ byId, allIds });
