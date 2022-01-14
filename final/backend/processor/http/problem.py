@@ -28,6 +28,7 @@ class ReadProblemOutput:
     id: int
     title: str
     description: Optional[str]
+    filename: Optional[str]
     start_time: datetime
     end_time: datetime
 
@@ -40,6 +41,7 @@ async def read_problem(problem_id: int) -> ReadProblemOutput:
     return ReadProblemOutput(id=problem.id,
                              title=problem.title,
                              description=problem.description if is_publicized else None,
+                             filename=problem.filename if is_publicized else None,
                              start_time=problem.start_time,
                              end_time=problem.end_time)
 
@@ -158,5 +160,6 @@ async def browse_problems() -> BrowseProblemOutput:
             start_time=problem.start_time,
             end_time=problem.end_time,
             description=problem.description if (time >= problem.start_time or is_ta) else None,
+            filename=problem.filename if (time >= problem.start_time or is_ta) else None,
         ) for problem in problems]
     )
