@@ -19,7 +19,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "npx cypress run --spec cypress/integration/TodoTests/Todo*_Modal.js --reporter mochawesome --reporter-options reportDir=results,overwrite=true,html=false,json=true",
+    "test": "npx cypress run --spec cypress/integration/TodoTests/*.js --reporter mochawesome --reporter-options reportDir=results,overwrite=true,html=false,json=true",
     "eject": "react-scripts eject",
     "cypress": "cypress open",
     "stop": "fuser -n tcp -k 3000"
