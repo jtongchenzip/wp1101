@@ -260,9 +260,9 @@ export default function TADetail() {
                 <Settings htmlColor={theme.palette.grey[300]} />
               </IconButton>
             </div>
-            <Typography style={{ marginTop: 15 }} variant="body1">Start Time</Typography>
+            <Typography style={{ marginTop: 15 }} variant="h6">Start Time</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">{startTime}</Typography>
-            <Typography style={{ marginTop: 5 }} variant="body1">End Time</Typography>
+            <Typography style={{ marginTop: 5 }} variant="h6">End Time</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">{endTime}</Typography>
 
             {moment(moment().toDate()).isAfter(endTime) && (

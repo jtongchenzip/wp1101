@@ -181,9 +181,9 @@ export default function Student() {
         <div className={classes.rightSidebar}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left' }}>
             <Typography variant="h4">{title}</Typography>
-            <Typography style={{ marginTop: 15 }} variant="body1">Start Time</Typography>
+            <Typography style={{ marginTop: 15 }} variant="h6">Start Time</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">{startTime}</Typography>
-            <Typography style={{ marginTop: 5 }} variant="body1">End Time</Typography>
+            <Typography style={{ marginTop: 5 }} variant="h6">End Time</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">{endTime}</Typography>
           </div>
           {/* submit only between  start time and end time */}
