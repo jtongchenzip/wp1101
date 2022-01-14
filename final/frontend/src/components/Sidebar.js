@@ -61,7 +61,7 @@ export default function Sidebar() {
     setAddCardOpen(false);
   };
   const handleAddProblem = () => {
-    if (title.trim() === '') {
+    if (title === '') {
       setShowSnackbar(true);
       setSnackbarText("Title can't be empty");
     } else if (moment(startTime).isAfter(endTime) || moment(startTime).isSame(endTime)) {
@@ -73,7 +73,7 @@ export default function Sidebar() {
     } else {
       const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss');
       const end = moment(endTime).format('YYYY-MM-DD HH:mm:ss');
-      dispatch(addProblem(token, title.trim(), start, end, uploadFile, history));
+      dispatch(addProblem(token, title, start, end, uploadFile, history));
       handleCloseAddCard();
     }
   };
@@ -125,7 +125,7 @@ export default function Sidebar() {
           </div>
           <div className={classes.dialogContent} style={{ marginTop: 25 }}>
             <Typography variant="body1">Title</Typography>
-            <TextField onChange={(e) => setTitle(e.target.value)} />
+            <TextField onChange={(e) => setTitle(e.target.value.trim())} />
           </div>
           <div className={classes.dialogContent} style={{ marginTop: 15 }}>
             <Typography variant="body1">Start Time</Typography>
