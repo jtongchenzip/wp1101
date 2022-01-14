@@ -3,11 +3,11 @@ version: "3.8"
 services:
     judgecore:
         build:
-            context: ./judgecore
+            context: .
         container_name: cpj-judgecore
         restart: unless-stopped
         command: sh -c "python -u main.py"
         ports:
             - 3000:3000
         env_file: 
-            - ./judgecore/.env
+            - .env
