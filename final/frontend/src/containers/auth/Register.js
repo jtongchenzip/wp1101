@@ -102,9 +102,7 @@ export default function Login() {
     }
 
     if (!hasError) {
-      dispatch(
-        signUp(inputs.studentId, inputs.realName, inputs.username, inputs.password),
-      );
+      dispatch(signUp(inputs.studentId, inputs.realName, inputs.username, inputs.password));
       setHasRequest(true);
     }
   };

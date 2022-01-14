@@ -26,7 +26,7 @@ const logIn = (username, password) => async (dispatch) => {
   }
 };
 
-const signUp = (username, password, real_name, student_id) => async (dispatch) => {
+const signUp = (student_id, real_name, username, password) => async (dispatch) => {
   const body = {
     username, password, real_name, student_id,
   };
