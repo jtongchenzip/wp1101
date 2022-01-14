@@ -14,5 +14,3 @@ services:
             MINIO_ROOT_USER: cpj_minio
             MINIO_ROOT_PASSWORD: wp175wp175
         command: server /data --address ":8000" --console-address ":8081"
-        networks:
-            - cpj
