@@ -169,6 +169,12 @@ export default function TADetail() {
     setSnackbarText(text);
     setHasRequest(true);
   };
+  const resetHandleError = () => {
+    setHasRequest(false);
+    setShowSnackbar(false);
+    setSnackbarText('');
+  };
+
   // edit problem
   const handleCloseEditCard = () => {
     setTitle(problems[problemId].title);
@@ -179,7 +185,7 @@ export default function TADetail() {
     setNewEndTime(problems[problemId].end_time);
     setUploadFile(null);
     setOpenEditCard(false);
-    setHasRequest(false);
+    resetHandleError();
   };
   const handleEditProblem = () => {
     setHasRequest(true);
@@ -340,7 +346,7 @@ export default function TADetail() {
 
       <Snackbar
         open={hasRequest && showSnackbar}
-        onClose={() => { setShowSnackbar(false); setSnackbarText(''); setHasRequest(false); }}
+        onClose={resetHandleError}
         message={snackbarText}
       />
     </>
