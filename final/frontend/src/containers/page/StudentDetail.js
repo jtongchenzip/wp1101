@@ -163,7 +163,7 @@ export default function Student() {
           {submissions.submission_id === '' && <Typography variant="h4" className={classes.noSubmissionText}>No submission yet.</Typography>}
           {submissions.submission_id !== '' && (
             submissions.judgecases.length === 0
-              ? (<Typography variant="h4" className={classes.noSubmissionText}>Wait for judging...</Typography>)
+              ? (<Typography variant="h4" className={classes.noSubmissionText}>Waiting for judge...</Typography>)
               : (
                 <>
                   <ScoreTable data={tableData} columns={columns} />

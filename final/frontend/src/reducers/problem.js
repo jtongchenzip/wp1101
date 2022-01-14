@@ -21,7 +21,7 @@ const byId = (state = {}, action) => {
 const allIds = (state = [], action) => {
   switch (action.type) {
     case problemConstants.FETCH_PROBLEM_SUCCESS:
-      return [...new Set([action.payload.id, ...state])];
+      return [...new Set([action.payload.data.id, ...state])];
     case problemConstants.BROWSE_PROBLEM_SUCCESS:
       return action.payload.data.problems.map((item) => item.id);
     default:

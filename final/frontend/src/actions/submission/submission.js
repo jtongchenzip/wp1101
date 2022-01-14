@@ -13,10 +13,10 @@ const submitCode = (token, problem_id, upload_file, onError) => async (dispatch)
   try {
     dispatch({ type: submissionConstants.ADD_SUBMISSION_START });
     const res = await agent.post(`/problem/${problem_id}/submission`, formData, config);
-    dispatch({ type: submissionConstants.ADD_PROBLEM_SUCCESS, payload: res.data });
+    dispatch({ type: submissionConstants.ADD_SUBMISSION_SUCCESS, payload: res.data });
   } catch (error) {
     onError(error);
-    dispatch({ type: submissionConstants.ADD_PROBLEM_FAIL, error });
+    dispatch({ type: submissionConstants.ADD_SUBMISSION_FAIL, error });
   }
 };
 
