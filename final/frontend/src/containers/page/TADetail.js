@@ -213,7 +213,6 @@ export default function TADetail() {
     setOpenSubmitCard(false);
     setSnackbarText('Please wait for 3-5 minutes for judging...');
     setShowSnackbar(true);
-    setHasRequest(false);
   };
   const handleSubmit = () => {
     setHasRequest(true);
@@ -347,6 +346,7 @@ export default function TADetail() {
       <Snackbar
         open={hasRequest && showSnackbar}
         onClose={resetHandleError}
+        key={snackbarText}
         message={snackbarText}
       />
     </>
