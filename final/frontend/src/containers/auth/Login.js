@@ -127,7 +127,7 @@ export default function Login() {
             Login
           </Button>
         </div>
-        <Typography color="primary" style={{ marginTop: 20 }} variant="body1">
+        {/* <Typography color="primary" style={{ marginTop: 20 }} variant="body1">
           Cypress Online Judge System
         </Typography>
         <Typography align="center" color="primary" variant="body1">
@@ -135,7 +135,7 @@ export default function Login() {
         </Typography>
         <Typography color="primary" variant="body1">
           National Taiwan University
-        </Typography>
+        </Typography> */}
       </div>
     </>
   );
