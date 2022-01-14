@@ -143,6 +143,7 @@ export default function TADetail() {
       setTitle(problems[problemId].title);
       setStartTime(moment(problems[problemId].start_time).format('YYYY-MM-DD HH:mm'));
       setEndTime(moment(problems[problemId].end_time).format('YYYY-MM-DD HH:mm'));
+      setUploadFile(problems[problemId].filename);
       setNewTitle(problems[problemId].title);
       setNewStartTime(problems[problemId].start_time);
       setNewEndTime(problems[problemId].end_time);
@@ -179,7 +180,7 @@ export default function TADetail() {
     setNewTitle(problems[problemId].title);
     setNewStartTime(problems[problemId].start_time);
     setNewEndTime(problems[problemId].end_time);
-    setUploadFile(null);
+    setUploadFile(problems[problemId].filename);
     setOpenEditCard(false);
     resetHandleError();
   };
@@ -312,7 +313,7 @@ export default function TADetail() {
           </div>
           <div className={classes.dialogContent} style={{ justifyContent: 'flex-start', marginTop: 10 }}>
             <Typography style={{ marginRight: 76 }} variant="body1">Problem file</Typography>
-            <UploadButton setUpLoadFile={setUploadFile} />
+            <UploadButton uploadFile={uploadFile} setUpLoadFile={setUploadFile} />
           </div>
         </DialogContent>
         <DialogActions style={{ justifyContent: 'space-between' }}>
