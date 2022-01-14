@@ -49,7 +49,7 @@ class AddProblemOutput:
     id: int
 
 
-@router.post('/problem/{problem_id}')
+@router.post('/problem')
 @enveloped
 async def add_problem(title: str, start_time: datetime, end_time: datetime,
                       description: Optional[str] = None, problem_file: UploadFile = File(...)) -> AddProblemOutput:
@@ -88,13 +88,17 @@ async def edit_problem(problem_id: int, title: str = None, start_time: datetime 
     if request.account.role != RoleType.TA:
         raise exc.NoPermission
 
-    s3_file_uuid = uuid4() if problem_file else None
-    filename = problem_file.filename if problem_file else None
+    s3_file_uuid = None
+    filename = None
 
-    await s3_handler.upload(problem_file.file, s3_file_uuid)
-    await db.s3_file.add(s3_file=do.S3File(key=str(s3_file_uuid),
-                                           bucket='temp',
-                                           uuid=s3_file_uuid))  # FIXME: bucket name
+    if problem_file:
+        s3_file_uuid = uuid4()
+        filename = problem_file.filename
+
+        await s3_handler.upload(problem_file.file, s3_file_uuid)
+        await db.s3_file.add(s3_file=do.S3File(key=str(s3_file_uuid),
+                                               bucket='temp',
+                                               uuid=s3_file_uuid))  # FIXME: bucket name
 
     await db.problem.edit(problem_id=problem_id, title=title, start_time=start_time, end_time=end_time,
                           description=description, filename=filename, testcase_file_uuid=s3_file_uuid)

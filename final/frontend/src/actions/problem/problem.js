@@ -1,7 +1,7 @@
 import agent from '../agent';
 import { problemConstants } from './constant';
 
-const readProblem = (id, token) => async (dispatch) => {
+const readProblem = (token, problem_id) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -9,8 +9,8 @@ const readProblem = (id, token) => async (dispatch) => {
   };
   try {
     dispatch({ type: problemConstants.FETCH_PROBLEM_START });
-    const res = await agent.get(`/problem/${id}`, config);
-    dispatch({ type: problemConstants.FETCH_PROBLEM_SUCCESS, payload: res.data.data });
+    const res = await agent.get(`/problem/${problem_id}`, config);
+    dispatch({ type: problemConstants.FETCH_PROBLEM_SUCCESS, payload: res.data });
   } catch (error) {
     dispatch({
       type: problemConstants.FETCH_PROBLEM_FAIL,
@@ -19,7 +19,7 @@ const readProblem = (id, token) => async (dispatch) => {
   }
 };
 
-const addProblem = (title, start_time, end_time, file, token) => async (dispatch) => {
+const addProblem = (token, title, start_time, end_time, file, history) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -32,11 +32,13 @@ const addProblem = (title, start_time, end_time, file, token) => async (dispatch
     },
   };
   const formData = new FormData();
-  formData.append('upload_file', file);
+  formData.append('problem_file', file[0]);
   try {
     dispatch({ type: problemConstants.ADD_PROBLEM_START });
     const res = await agent.post('/problem', formData, config);
-    dispatch({ type: problemConstants.ADD_PROBLEM_SUCCESS, payload: res.data });
+    const { id } = res.data;
+    dispatch({ type: problemConstants.ADD_PROBLEM_SUCCESS });
+    history.push(`/ta/problem/${id}`);
   } catch (error) {
     dispatch({
       type: problemConstants.ADD_PROBLEM_FAIL,
@@ -45,7 +47,7 @@ const addProblem = (title, start_time, end_time, file, token) => async (dispatch
   }
 };
 
-const editProblem = (problem_id, title, start_time, end_time, file, token) => async (dispatch) => {
+const editProblem = (token, problem_id, title, start_time, end_time, file, onSuccess, onError) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -62,12 +64,14 @@ const editProblem = (problem_id, title, start_time, end_time, file, token) => as
     dispatch({ type: problemConstants.EDIT_PROBLEM_START });
     await agent.patch(`/problem/${problem_id}`, formData, config);
     dispatch({ type: problemConstants.EDIT_PROBLEM_SUCCESS });
+    onSuccess();
   } catch (error) {
+    onError(error);
     dispatch({ type: problemConstants.EDIT_PROBLEM_FAIL });
   }
 };
 
-const readProblemLastSubmission = (problem_id, token) => async (dispatch) => {
+const readProblemLastSubmission = (token, problem_id) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -76,13 +80,18 @@ const readProblemLastSubmission = (problem_id, token) => async (dispatch) => {
   try {
     dispatch({ type: problemConstants.FETCH_LAST_SUBMISSION_START });
     const res = await agent.get(`/problem/${problem_id}/last-submission`, config);
-    dispatch({ type: problemConstants.FETCH_LAST_SUBMISSION_SUCCESS, payload: res.data });
+    const { id } = res.data.data;
+    const res2 = await agent.get(`/submission/${id}/judge-case`, config);
+    dispatch({
+      type: problemConstants.FETCH_LAST_SUBMISSION_SUCCESS,
+      payload: { data: res.data.data, judgecase: res2.data.data },
+    });
   } catch (error) {
     dispatch({ type: problemConstants.FETCH_LAST_SUBMISSION_FAIL, error });
   }
 };
 
-const deleteProblem = (problem_id, token) => async (dispatch) => {
+const deleteProblem = (token, problem_id) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -91,6 +100,7 @@ const deleteProblem = (problem_id, token) => async (dispatch) => {
   try {
     dispatch({ type: problemConstants.DELETE_PROBLEM_START });
     await agent.delete(`/problem/${problem_id}`, config);
+    await agent.get('/problem', config);
     dispatch({
       type: problemConstants.DELETE_PROBLEM_SUCCESS,
     });
@@ -114,7 +124,7 @@ const browseProblem = (token) => async (dispatch) => {
   }
 };
 
-const downloadStudentScore = (problem_id, token) => async (dispatch) => {
+const downloadStudentScore = (token, problem_id, onError) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -123,7 +133,6 @@ const downloadStudentScore = (problem_id, token) => async (dispatch) => {
   try {
     dispatch({ type: problemConstants.DOWNLOAD_STUDENT_SCORE_START });
     const res = await agent.get(`/problem/${problem_id}/student-score`, config);
-    console.log('heelo', res);
     fetch(res.data.data.url).then((t) => t.blob().then((b) => {
       const a = document.createElement('a');
       a.href = URL.createObjectURL(b);
@@ -132,6 +141,7 @@ const downloadStudentScore = (problem_id, token) => async (dispatch) => {
     }));
     dispatch({ type: problemConstants.DOWNLOAD_STUDENT_SCORE_SUCCESS });
   } catch (error) {
+    onError(error);
     dispatch({ type: problemConstants.DOWNLOAD_STUDENT_SCORE_FAIL, error });
   }
 };

@@ -1,7 +1,7 @@
 import agent from '../agent';
 import { submissionConstants } from './constant';
 
-const submitCode = (problem_id, upload_file, token) => async (dispatch) => {
+const submitCode = (token, problem_id, upload_file, onError) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -9,17 +9,18 @@ const submitCode = (problem_id, upload_file, token) => async (dispatch) => {
     },
   };
   const formData = new FormData();
-  formData.append('content_file', upload_file);
+  formData.append('content_file', upload_file[0]);
   try {
     dispatch({ type: submissionConstants.ADD_SUBMISSION_START });
     const res = await agent.post(`/problem/${problem_id}/submission`, formData, config);
     dispatch({ type: submissionConstants.ADD_PROBLEM_SUCCESS, payload: res.data });
   } catch (error) {
+    onError(error);
     dispatch({ type: submissionConstants.ADD_PROBLEM_FAIL, error });
   }
 };
 
-const readSubmission = (submission_id, token) => async (dispatch) => {
+const readSubmission = (token, submission_id) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -40,7 +41,7 @@ const readSubmission = (submission_id, token) => async (dispatch) => {
   }
 };
 
-const browseJudgeCase = (submission_id, token) => async (dispatch) => {
+const browseJudgeCase = (token, submission_id) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
