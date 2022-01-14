@@ -19,7 +19,7 @@ export default function UploadButtons({ filename, setUpLoadFile }) {
           style={{ display: 'none' }}
           id="upload-file"
           type="file"
-          accept="zip/*"
+          accept=".zip"
           onChange={(e) => handleUploadFile(e.target.files)}
         />
         <div style={{ display: 'flex', alignItems: 'center' }}>

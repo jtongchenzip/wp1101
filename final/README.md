@@ -37,7 +37,8 @@ This project is can judge your hackathon result with cypress online. It also giv
    * deploy
    * design db schema
 * 侯維書 b09705005 
-   * 前端架構
+   * UI/UX 設計
+   * 前端架構、動態頁面
    * 後端 API
    * design db schema
    * minio docker script
