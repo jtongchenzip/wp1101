@@ -74,7 +74,7 @@ class LoginOutput:
 async def login(data: LoginInput) -> LoginOutput:
     try:
         account_id, pass_hash, role = await db.account.read_by_username(data.username)
-    except exc.NotFound:
+    except TypeError:
         raise exc.LoginFailed
 
     if not verify_password(data.password, pass_hash):
