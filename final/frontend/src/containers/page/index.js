@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory, Switch, Route } from 'react-router-dom';
 
@@ -14,11 +14,13 @@ export default function Pages() {
 
   const token = localStorage.getItem('auth-token');
 
-  if (!token) {
-    history.push('/login');
-  } else {
-    dispatch(browseProblem(token));
-  }
+  useEffect(() => {
+    if (!token) {
+      history.push('/login');
+    } else {
+      dispatch(browseProblem(token));
+    }
+  }, [dispatch, history, token]);
 
   return (
     <Switch>
