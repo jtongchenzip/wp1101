@@ -48,10 +48,10 @@ export default function Sidebar() {
   const [snackbarText, setSnackbarText] = useState('');
 
   useEffect(() => {
-    if (!loading.addProblem) {
+    if (!loading.addProblem || !loading.deleteProblem || !loading.editProblem) {
       dispatch(browseProblem(token));
     }
-  }, [dispatch, token, loading.addProblem]);
+  }, [dispatch, token, loading.addProblem, loading.deleteProblem, loading.editProblem]);
 
   const handleCloseAddCard = () => {
     setTitle('');

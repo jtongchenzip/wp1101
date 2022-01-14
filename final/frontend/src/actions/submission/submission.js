@@ -1,7 +1,7 @@
 import agent from '../agent';
 import { submissionConstants } from './constant';
 
-const submitCode = (token, problem_id, upload_file, onSuccess) => async (dispatch) => {
+const submitCode = (token, problem_id, upload_file, onError) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -14,8 +14,8 @@ const submitCode = (token, problem_id, upload_file, onSuccess) => async (dispatc
     dispatch({ type: submissionConstants.ADD_SUBMISSION_START });
     const res = await agent.post(`/problem/${problem_id}/submission`, formData, config);
     dispatch({ type: submissionConstants.ADD_PROBLEM_SUCCESS, payload: res.data });
-    onSuccess();
   } catch (error) {
+    onError(error);
     dispatch({ type: submissionConstants.ADD_PROBLEM_FAIL, error });
   }
 };

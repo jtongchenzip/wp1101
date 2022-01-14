@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {
-  Button, Dialog, DialogActions, DialogContent, makeStyles, Typography,
+  Button, Dialog, DialogActions, DialogContent, makeStyles, Typography, Snackbar,
 } from '@material-ui/core';
 import moment from 'moment';
 import LinearProgressBar from '../../components/ui/LinearProgressBar';
@@ -91,10 +91,14 @@ export default function Student() {
   const [title, setTitle] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  const [submitFile, setSubmitFile] = useState(null);
   const [tableData, setTableData] = useState([]);
 
   const [openSubmitCard, setOpenSubmitCard] = useState(false);
-  const [submitFile, setSubmitFile] = useState(null);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarText, setSnackbarText] = useState('');
+  const [hasRequest, setHasRequest] = useState(false);
+
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -131,10 +135,18 @@ export default function Student() {
   const handleCloseSubmitCard = () => {
     setSubmitFile(null);
     setOpenSubmitCard(false);
+    setSnackbarText('Please wait for 3-5 minutes for judging...');
+    setShowSnackbar(true);
   };
   const handleSubmit = () => {
-    if (submitFile !== null) {
-      dispatch(submitCode(token, problemId, submitFile, handleCloseSubmitCard));
+    setHasRequest(true);
+    if (submitFile === null) {
+      setShowSnackbar(true);
+      setSnackbarText('Please select a file');
+    } else {
+      dispatch(submitCode(token, problemId, submitFile));
+      handleCloseSubmitCard();
+      setHasRequest(false);
     }
   };
 
@@ -166,7 +178,7 @@ export default function Student() {
             <Typography style={{ marginTop: 5 }} variant="body1">End Time</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">{endTime}</Typography>
           </div>
-          {/* submit only after start time */}
+          {/* submit only between  start time and end time */}
           {moment(moment().toDate()).isBetween(problems[problemId].start_time, problems[problemId].end_time) && (
           <div style={{
             display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 30,
@@ -197,6 +209,11 @@ export default function Student() {
           <Button color="primary" style={{ borderRadius: 10 }} onClick={handleSubmit}>Submit</Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        open={hasRequest && showSnackbar}
+        onClose={() => { setShowSnackbar(false); setSnackbarText(''); setHasRequest(false); }}
+        message={snackbarText}
+      />
     </>
   );
 }

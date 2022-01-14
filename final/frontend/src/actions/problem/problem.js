@@ -47,7 +47,7 @@ const addProblem = (token, title, start_time, end_time, file, history) => async 
   }
 };
 
-const editProblem = (token, problem_id, title, start_time, end_time, file, onSuccess) => async (dispatch) => {
+const editProblem = (token, problem_id, title, start_time, end_time, file, onSuccess, onError) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -66,6 +66,7 @@ const editProblem = (token, problem_id, title, start_time, end_time, file, onSuc
     dispatch({ type: problemConstants.EDIT_PROBLEM_SUCCESS });
     onSuccess();
   } catch (error) {
+    onError(error);
     dispatch({ type: problemConstants.EDIT_PROBLEM_FAIL });
   }
 };
@@ -99,6 +100,7 @@ const deleteProblem = (token, problem_id) => async (dispatch) => {
   try {
     dispatch({ type: problemConstants.DELETE_PROBLEM_START });
     await agent.delete(`/problem/${problem_id}`, config);
+    await agent.get('/problem', config);
     dispatch({
       type: problemConstants.DELETE_PROBLEM_SUCCESS,
     });

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import {
   Button, Dialog, DialogActions, DialogContent, IconButton, makeStyles, TextField, Typography, Snackbar,
 } from '@material-ui/core';
@@ -13,7 +13,7 @@ import ScoreTable from '../../components/ui/ScoreTable';
 import UploadButton from '../../components/ui/UploadButton';
 import theme from '../../theme';
 import {
-  editProblem, downloadStudentScore, browseProblem, readProblemLastSubmission,
+  editProblem, downloadStudentScore, browseProblem, readProblemLastSubmission, deleteProblem,
 } from '../../actions/problem/problem';
 import { submitCode } from '../../actions/submission/submission';
 import Sidebar from '../../components/Sidebar';
@@ -67,6 +67,12 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     marginTop: 30,
   },
+  deleteBtn: {
+    borderRadius: 10,
+    // color: theme.palette.error.main,
+    borderColor: theme.palette.error.main,
+    marginLeft: 22,
+  },
 }));
 
 const columns = [
@@ -96,6 +102,7 @@ const columns = [
 export default function TADetail() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
   const { problemId } = useParams();
 
   const token = localStorage.getItem('auth-token');
@@ -109,6 +116,7 @@ export default function TADetail() {
   const [title, setTitle] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  const [newTitle, setNewTitle] = useState('');
   const [newStartTime, setNewStartTime] = useState('');
   const [newEndTime, setNewEndTime] = useState('');
   const [uploadFile, setUploadFile] = useState(null);
@@ -118,10 +126,10 @@ export default function TADetail() {
   const [openSubmitCard, setOpenSubmitCard] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
-
-  const [progress, setProgress] = useState(0);
+  const [hasRequest, setHasRequest] = useState(false);
 
   const [tableData, setTableData] = useState([]);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     dispatch(readProblemLastSubmission(token, problemId));
@@ -139,6 +147,7 @@ export default function TADetail() {
       setTitle(problems[problemId].title);
       setStartTime(moment(problems[problemId].start_time).format('YYYY-MM-DD HH:mm'));
       setEndTime(moment(problems[problemId].end_time).format('YYYY-MM-DD HH:mm'));
+      setNewTitle(problems[problemId].title);
       setNewStartTime(problems[problemId].start_time);
       setNewEndTime(problems[problemId].end_time);
     }
@@ -155,47 +164,64 @@ export default function TADetail() {
     }
   }, [submissionLoading.browseJudgeCase, submission.judgecases]);
 
+  const handleError = (text) => {
+    setShowSnackbar(true);
+    setSnackbarText(text);
+    setHasRequest(true);
+  };
   // edit problem
   const handleCloseEditCard = () => {
     setTitle(problems[problemId].title);
     setStartTime(moment(problems[problemId].start_time).format('YYYY-MM-DD HH:mm'));
     setEndTime(moment(problems[problemId].end_time).format('YYYY-MM-DD HH:mm'));
+    setNewTitle(problems[problemId].title);
     setNewStartTime(problems[problemId].start_time);
     setNewEndTime(problems[problemId].end_time);
     setUploadFile(null);
     setOpenEditCard(false);
   };
   const handleEditProblem = () => {
-    if (title === '') {
+    setHasRequest(true);
+    if (newTitle === '') {
       setShowSnackbar(true);
       setSnackbarText("Title can't be empty");
-    } else if (moment(startTime).isAfter(endTime) || moment(startTime).isSame(endTime)) {
+    } else if (moment(newStartTime).isAfter(newEndTime) || moment(newStartTime).isSame(newEndTime)) {
       setShowSnackbar(true);
       setSnackbarText('Start time is not before end time');
     } else {
       const start = moment(newStartTime).format('YYYY-MM-DD HH:mm');
       const end = moment(newEndTime).format('YYYY-MM-DD HH:mm');
-      dispatch(editProblem(token, problemId, title, start, end, uploadFile, handleCloseEditCard));
+      dispatch(editProblem(token, problemId, newTitle, start, end, uploadFile, handleCloseEditCard, handleError));
+      setHasRequest(false);
     }
   };
-
+  // delete problem
+  const handleDeleteProblem = async () => {
+    await dispatch(deleteProblem(token, problemId));
+    handleCloseEditCard();
+    history.push('/ta');
+  };
   // submit code
   const handleCloseSubmitCard = () => {
     setSubmitFile(null);
     setOpenSubmitCard(false);
+    setSnackbarText('Please wait for 3-5 minutes for judging...');
+    setShowSnackbar(true);
   };
   const handleSubmit = () => {
-    if (submitFile !== null) {
-      dispatch(submitCode(token, problemId, submitFile, handleCloseSubmitCard));
+    setHasRequest(true);
+    if (submitFile === null) {
+      setShowSnackbar(true);
+      setSnackbarText('Please select a file');
+    } else {
+      dispatch(submitCode(token, problemId, submitFile, handleError));
+      handleCloseSubmitCard();
+      setHasRequest(false);
     }
   };
   // download student score
-  const handleDownloadError = (text) => {
-    setShowSnackbar(true);
-    setSnackbarText(text);
-  };
   const handleDownloadScore = () => {
-    dispatch(downloadStudentScore(token, problemId, handleDownloadError));
+    dispatch(downloadStudentScore(token, problemId, handleError));
   };
 
   return (
@@ -220,11 +246,9 @@ export default function TADetail() {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left' }}>
             <div className={classes.hackAndIcon}>
               <Typography variant="h4">{title}</Typography>
-              {moment(moment().toDate()).isBefore(startTime) && (
               <IconButton onClick={() => setOpenEditCard(true)}>
                 <Settings htmlColor={theme.palette.grey[300]} />
               </IconButton>
-              )}
             </div>
             <Typography style={{ marginTop: 15 }} variant="body1">Start Time</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">{startTime}</Typography>
@@ -260,7 +284,7 @@ export default function TADetail() {
           </div>
           <div className={classes.dialogContent} style={{ marginTop: 15 }}>
             <Typography variant="body1">Title</Typography>
-            <TextField value={title} onChange={(e) => setTitle(e.target.value.trim())} />
+            <TextField value={newTitle} onChange={(e) => setNewTitle(e.target.value.trim())} />
           </div>
           <div className={classes.dialogContent} style={{ marginTop: 15 }}>
             <Typography variant="body1">Start Time</Typography>
@@ -280,10 +304,16 @@ export default function TADetail() {
             <Typography style={{ marginRight: 76 }} variant="body1">Problem file</Typography>
             <UploadButton setUpLoadFile={setUploadFile} />
           </div>
-          <div className={classes.dialogContent} style={{ justifyContent: 'flex-end', marginTop: 0, borderRadius: 10 }}>
-            <Button color="primary" style={{ borderRadius: 10 }} onClick={handleEditProblem}>Save</Button>
-          </div>
         </DialogContent>
+        <DialogActions style={{ justifyContent: 'space-between' }}>
+          <Button
+            className={classes.deleteBtn}
+            onClick={handleDeleteProblem}
+          >
+            Delete
+          </Button>
+          <Button color="primary" style={{ borderRadius: 10 }} onClick={handleEditProblem}>Save</Button>
+        </DialogActions>
       </Dialog>
 
       {/* submit */}
@@ -307,8 +337,8 @@ export default function TADetail() {
       </Dialog>
 
       <Snackbar
-        open={showSnackbar}
-        onClose={() => setShowSnackbar(false)}
+        open={hasRequest && showSnackbar}
+        onClose={() => { setShowSnackbar(false); setSnackbarText(''); setHasRequest(false); }}
         message={snackbarText}
       />
     </>
