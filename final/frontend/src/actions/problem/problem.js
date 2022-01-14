@@ -59,7 +59,6 @@ const editProblem = (token, problem_id, title, start_time, end_time, file, onSuc
     },
   };
   const formData = new FormData();
-  console.log(file);
   if (file) {
     formData.append('problem_file', file[0]);
   } else {
