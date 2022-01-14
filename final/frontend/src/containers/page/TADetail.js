@@ -13,10 +13,12 @@ import ScoreTable from '../../components/ui/ScoreTable';
 import UploadButton from '../../components/ui/UploadButton';
 import theme from '../../theme';
 import {
-  editProblem, downloadStudentScore, readProblemLastSubmission, deleteProblem, browseProblem,
+  editProblem, downloadStudentScore, readProblemLastSubmission, deleteProblem,
 } from '../../actions/problem/problem';
 import { submitCode } from '../../actions/submission/submission';
 import Sidebar from '../../components/Sidebar';
+import Loading from '../../components/ui/Loading';
+import NotFound from '../../components/ui/NotFound';
 
 const useStyles = makeStyles(() => ({
   main: {
@@ -137,12 +139,6 @@ export default function TADetail() {
   }, [dispatch, problemId, submission.total_fail, submission.total_pass, token]);
 
   useEffect(() => {
-    if (!problemLoading.editProblem) {
-      dispatch(browseProblem(token, problemId));
-    }
-  }, [dispatch, problemId, problemLoading.editProblem, token]);
-
-  useEffect(() => {
     if (problems[problemId] !== undefined) {
       setTitle(problems[problemId].title);
       setStartTime(moment(problems[problemId].start_time).format('YYYY-MM-DD HH:mm'));
@@ -228,6 +224,13 @@ export default function TADetail() {
   const handleDownloadScore = () => {
     dispatch(downloadStudentScore(token, problemId, handleError));
   };
+
+  if (problems[problemId] === undefined) {
+    if (problemLoading.browseProblem) {
+      return <Loading />;
+    }
+    return <NotFound />;
+  }
 
   return (
     <>

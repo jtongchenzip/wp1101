@@ -9,8 +9,10 @@ import LinearProgressBar from '../../components/ui/LinearProgressBar';
 import ScoreTable from '../../components/ui/ScoreTable';
 import UploadButton from '../../components/ui/UploadButton';
 import Sidebar from '../../components/Sidebar';
-import { browseProblem, readProblemLastSubmission } from '../../actions/problem/problem';
+import { readProblemLastSubmission } from '../../actions/problem/problem';
 import { submitCode } from '../../actions/submission/submission';
+import Loading from '../../components/ui/Loading';
+import NotFound from '../../components/ui/NotFound';
 
 const useStyles = makeStyles(() => ({
   main: {
@@ -107,12 +109,6 @@ export default function Student() {
   }, [dispatch, problemId, submissions.total_fail, submissions.total_pass, token]);
 
   useEffect(() => {
-    if (!problemLoading.editProblem) {
-      dispatch(browseProblem(token));
-    }
-  }, [dispatch, problemLoading.editProblem, token]);
-
-  useEffect(() => {
     if (problems[problemId] !== undefined) {
       setTitle(problems[problemId].title);
       setStartTime(moment(problems[problemId].start_time).format('YYYY-MM-DD HH:mm'));
@@ -154,6 +150,13 @@ export default function Student() {
       handleCloseSubmitCard();
     }
   };
+
+  if (problems[problemId] === undefined) {
+    if (problemLoading.browseProblem) {
+      return <Loading />;
+    }
+    return <NotFound />;
+  }
 
   return (
     <>
