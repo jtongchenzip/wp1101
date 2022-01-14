@@ -138,7 +138,6 @@ export default function Student() {
     setOpenSubmitCard(false);
     setSnackbarText('Please wait for 3-5 minutes for judging...');
     setShowSnackbar(true);
-    setHasRequest(false);
   };
   const handleSubmit = () => {
     setHasRequest(true);
@@ -217,6 +216,7 @@ export default function Student() {
           <Button color="primary" style={{ borderRadius: 10 }} onClick={handleSubmit}>Submit</Button>
         </DialogActions>
       </Dialog>
+
       <Snackbar
         open={hasRequest && showSnackbar}
         onClose={() => { setShowSnackbar(false); setSnackbarText(''); setHasRequest(false); }}
