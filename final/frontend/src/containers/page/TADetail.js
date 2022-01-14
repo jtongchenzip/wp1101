@@ -13,7 +13,7 @@ import ScoreTable from '../../components/ui/ScoreTable';
 import UploadButton from '../../components/ui/UploadButton';
 import theme from '../../theme';
 import {
-  editProblem, downloadStudentScore, browseProblem, readProblemLastSubmission, deleteProblem,
+  editProblem, downloadStudentScore, readProblemLastSubmission, deleteProblem, readProblem,
 } from '../../actions/problem/problem';
 import { submitCode } from '../../actions/submission/submission';
 import Sidebar from '../../components/Sidebar';
@@ -138,9 +138,9 @@ export default function TADetail() {
 
   useEffect(() => {
     if (!problemLoading.editProblem) {
-      dispatch(browseProblem(token));
+      dispatch(readProblem(token, problemId));
     }
-  }, [dispatch, problemLoading.editProblem, token]);
+  }, [dispatch, problemId, problemLoading.editProblem, token]);
 
   useEffect(() => {
     if (problems[problemId] !== undefined) {

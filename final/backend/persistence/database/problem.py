@@ -15,7 +15,8 @@ async def read(problem_id: int) -> do.Problem:
     sql, params = pyformat2psql(
         sql=fr"SELECT id, title, testcase_file_uuid, description, start_time, end_time, filename"
             fr"  FROM problem"
-            fr" WHERE id = %(problem_id)s",
+            fr" WHERE id = %(problem_id)s"
+            fr"   AND NOT is_deleted",
         problem_id=problem_id,
     )
     try:
@@ -47,9 +48,10 @@ async def add(title: str, start_time: datetime, end_time: datetime,
 
 async def delete(problem_id: int) -> None:
     sql, params = pyformat2psql(
-        sql=fr"DELETE FROM problem"
+        sql=fr"UPDATE problem"
+            fr"   SET is_deleted = %(is_deleted)s"
             fr" WHERE id = %(problem_id)s",
-        problem_id=problem_id
+        problem_id=problem_id, is_deleted=True,
     )
     await pool_handler.pool.execute(sql, *params)
 
@@ -77,7 +79,8 @@ async def edit(problem_id: int, title: str = None, start_time: datetime = None, 
     sql, params = pyformat2psql(
         sql=fr"UPDATE problem"
             fr"   SET {set_sql}"
-            fr" WHERE id = %(problem_id)s",
+            fr" WHERE id = %(problem_id)s"
+            fr"   AND NOT is_deleted",
         problem_id=problem_id, **to_updates,
     )
     try:
@@ -90,6 +93,7 @@ async def browse() -> Sequence[do.Problem]:
     sql, params = pyformat2psql(
         sql=fr"SELECT id, title, testcase_file_uuid, description, start_time, end_time, filename"
             fr"  FROM problem"
+            fr" WHERE NOT is_deleted"
             fr" ORDER BY id ASC",
     )
     problems = await pool_handler.pool.fetch(sql, *params)
