@@ -218,6 +218,7 @@ export default function Student() {
       </Dialog>
 
       <Snackbar
+        key={snackbarText}
         open={hasRequest && showSnackbar}
         onClose={() => { setShowSnackbar(false); setSnackbarText(''); setHasRequest(false); }}
         message={snackbarText}
