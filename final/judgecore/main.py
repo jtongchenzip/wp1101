@@ -8,7 +8,7 @@ from aio_pika.pool import Pool
 
 async def main():
 
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
 
     async def get_connection():
         return await aio_pika.connect_robust(
@@ -64,6 +64,7 @@ async def main():
         await task
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
-    loop.close()
+   #  loop = asyncio.get_event_loop()
+   #  loop.run_until_complete(main())
+   #  loop.close()
+    asyncio.run(main())

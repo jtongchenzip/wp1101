@@ -67,8 +67,8 @@ This project is can judge your hackathon result with cypress online. It also giv
    * rabbitmq, backend, judgecore, db docker script
    * deploy    
 * 侯維書 b09705005   
-   * UI/UX 
-   * 前端架構
+   * UI/UX 設計
+   * 前端架構、動態頁面
    * 後端 API
    * design db schema
    * minio docker script
