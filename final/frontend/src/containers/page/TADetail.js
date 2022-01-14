@@ -179,6 +179,7 @@ export default function TADetail() {
     setNewEndTime(problems[problemId].end_time);
     setUploadFile(null);
     setOpenEditCard(false);
+    setHasRequest(false);
   };
   const handleEditProblem = () => {
     setHasRequest(true);
@@ -192,7 +193,6 @@ export default function TADetail() {
       const start = moment(newStartTime).format('YYYY-MM-DD HH:mm');
       const end = moment(newEndTime).format('YYYY-MM-DD HH:mm');
       dispatch(editProblem(token, problemId, newTitle, start, end, uploadFile, handleCloseEditCard, handleError));
-      setHasRequest(false);
     }
   };
   // delete problem
@@ -207,6 +207,7 @@ export default function TADetail() {
     setOpenSubmitCard(false);
     setSnackbarText('Please wait for 3-5 minutes for judging...');
     setShowSnackbar(true);
+    setHasRequest(false);
   };
   const handleSubmit = () => {
     setHasRequest(true);
@@ -216,7 +217,6 @@ export default function TADetail() {
     } else {
       dispatch(submitCode(token, problemId, submitFile, handleError));
       handleCloseSubmitCard();
-      setHasRequest(false);
     }
   };
   // download student score

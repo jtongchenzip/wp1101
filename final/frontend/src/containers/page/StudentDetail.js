@@ -131,12 +131,18 @@ export default function Student() {
     }
   }, [submissions.judgecases, submitLoading.browseJudgeCase]);
 
+  const handleError = (text) => {
+    setShowSnackbar(true);
+    setSnackbarText(text);
+    setHasRequest(true);
+  };
   // submit code
   const handleCloseSubmitCard = () => {
     setSubmitFile(null);
     setOpenSubmitCard(false);
     setSnackbarText('Please wait for 3-5 minutes for judging...');
     setShowSnackbar(true);
+    setHasRequest(false);
   };
   const handleSubmit = () => {
     setHasRequest(true);
@@ -144,13 +150,10 @@ export default function Student() {
       setShowSnackbar(true);
       setSnackbarText('Please select a file');
     } else {
-      dispatch(submitCode(token, problemId, submitFile));
+      dispatch(submitCode(token, problemId, submitFile, handleError));
       handleCloseSubmitCard();
-      setHasRequest(false);
     }
   };
-
-  console.log(submissions);
 
   return (
     <>
