@@ -17,12 +17,38 @@ services:
         networks:
             - cpj
 
+    postgres:
+        image: postgres:latest
+        container_name: cpj-db
+        ports:
+            - 5432:5432
+        environment:
+            - POSTGRES_PASSWORD=password
+        volumes: 
+            - db_data:/var/lib/postgres/db_data
+            - ./database/:/docker-entrypoint-initdb.d
+        networks:
+            - cpj
+
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+        container_name: cpj-rabbitmq
+        restart: unless-stopped
+        ports:
+            - 5672:5672
+            - 15672:15672
+        volumes:
+            - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+            - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+        networks:
+            - cpj
+
     judgecore:
         build:
             context: ./judgecore
         container_name: cpj-judgecore
         restart: unless-stopped
-        command: sh -c "python -u main.py"
+        command: sh -c "cd /app/hack1 && yarn && cd .. && python -u main.py"
         ports:
             - 3000:3000
         env_file: 
@@ -34,15 +60,15 @@ services:
         image: quay.io/minio/minio:latest
         container_name: cpj-minio
         ports:
-            - 8080:8080
-            - 8081:8081
+            - 9000:9000
+            - 9001:9001
         volumes:
             - ~/minio/data:/data
         restart: unless-stopped
         environment:
             MINIO_ROOT_USER: cpj_minio
             MINIO_ROOT_PASSWORD: wp175wp175
-        command: server /data --console-address ":8081"
+        command: server /data --console-address ":9001"
         networks:
             - cpj
 
