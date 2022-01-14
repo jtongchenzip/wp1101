@@ -13,7 +13,7 @@ import ScoreTable from '../../components/ui/ScoreTable';
 import UploadButton from '../../components/ui/UploadButton';
 import theme from '../../theme';
 import {
-  editProblem, downloadStudentScore, readProblemLastSubmission, deleteProblem, readProblem,
+  editProblem, downloadStudentScore, readProblemLastSubmission, deleteProblem, browseProblem,
 } from '../../actions/problem/problem';
 import { submitCode } from '../../actions/submission/submission';
 import Sidebar from '../../components/Sidebar';
@@ -138,7 +138,7 @@ export default function TADetail() {
 
   useEffect(() => {
     if (!problemLoading.editProblem) {
-      dispatch(readProblem(token, problemId));
+      dispatch(browseProblem(token, problemId));
     }
   }, [dispatch, problemId, problemLoading.editProblem, token]);
 
@@ -229,17 +229,19 @@ export default function TADetail() {
       <div className={classes.main}>
         <Sidebar />
         <div className={classes.scoreTableGroup}>
-          {submission.judgecases.length === 0
-            ? (<Typography variant="h4" className={classes.noSubmissionText}>No submission yet.</Typography>)
-            : (
-              <>
-                <ScoreTable data={tableData} columns={columns} />
-                <div className={classes.progressBarGroup}>
-                  <Typography style={{ marginRight: 10 }} variant="body1">Task Completed</Typography>
-                  <LinearProgressBar value={progress} />
-                </div>
-              </>
-            )}
+          {submission.submission_id === '' && <Typography variant="h4" className={classes.noSubmissionText}>No submission yet.</Typography>}
+          {submission.submission_id !== '' && (
+            submission.judgecases.length === 0
+              ? (<Typography variant="h4" className={classes.noSubmissionText}>Wait for judging...</Typography>)
+              : (
+                <>
+                  <ScoreTable data={tableData} columns={columns} />
+                  <div className={classes.progressBarGroup}>
+                    <Typography style={{ marginRight: 10 }} variant="body1">Task Completed</Typography>
+                    <LinearProgressBar value={progress} />
+                  </div>
+                </>
+              ))}
         </div>
         {problemIds.length !== 0 && (
         <div className={classes.rightSidebar}>

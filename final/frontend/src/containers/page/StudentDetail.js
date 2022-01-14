@@ -157,17 +157,19 @@ export default function Student() {
       <div className={classes.main}>
         <Sidebar />
         <div className={classes.scoreTableGroup}>
-          {submissions.judgecases.length === 0
-            ? (<Typography variant="h4" className={classes.noSubmissionText}>No submission yet.</Typography>)
-            : (
-              <>
-                <ScoreTable data={tableData} columns={columns} />
-                <div className={classes.progressBarGroup}>
-                  <Typography style={{ marginRight: 10 }} variant="body1">Task Completed</Typography>
-                  <LinearProgressBar value={progress} />
-                </div>
-              </>
-            )}
+          {submissions.submission_id === '' && <Typography variant="h4" className={classes.noSubmissionText}>No submission yet.</Typography>}
+          {submissions.submission_id !== '' && (
+            submissions.judgecases.length === 0
+              ? (<Typography variant="h4" className={classes.noSubmissionText}>Wait for judging...</Typography>)
+              : (
+                <>
+                  <ScoreTable data={tableData} columns={columns} />
+                  <div className={classes.progressBarGroup}>
+                    <Typography style={{ marginRight: 10 }} variant="body1">Task Completed</Typography>
+                    <LinearProgressBar value={progress} />
+                  </div>
+                </>
+              ))}
         </div>
         {problems[problemId] !== undefined && (
         <div className={classes.rightSidebar}>
