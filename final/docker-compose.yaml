@@ -13,4 +13,4 @@ services:
         environment:
             MINIO_ROOT_USER: cpj_minio
             MINIO_ROOT_PASSWORD: wp175wp175
-        command: server /data --address ":8000" --console-address ":8081"
+        command: server /data --address ":8080" --console-address ":8081"
