@@ -30,19 +30,6 @@ services:
         networks:
             - cpj
 
-    rabbitmq:
-        image: rabbitmq:3-management-alpine
-        container_name: cpj-rabbitmq
-        restart: unless-stopped
-        ports:
-            - 5672:5672
-            - 15672:15672
-        volumes:
-            - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-            - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
-        networks:
-            - cpj
-
     judgecore:
         build:
             context: ./judgecore
@@ -60,15 +47,15 @@ services:
         image: quay.io/minio/minio:latest
         container_name: cpj-minio
         ports:
-            - 9000:9000
-            - 9001:9001
+            - 8080:8080
+            - 8081:8081
         volumes:
             - ~/minio/data:/data
         restart: unless-stopped
         environment:
             MINIO_ROOT_USER: cpj_minio
             MINIO_ROOT_PASSWORD: wp175wp175
-        command: server /data --console-address ":9001"
+        command: server /data --address ":8080" --console-address ":8081"
         networks:
             - cpj
 
