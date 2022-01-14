@@ -209,7 +209,7 @@ const overrides = {
       padding: '8.5px 25px 10px 25px',
       color: mono.white,
       '&:hover': {
-        border: '1px solid',
+        // border: '1px solid',
         borderColor: mono.semiDarkGray,
       },
       '&:active': {
@@ -268,6 +268,9 @@ const overrides = {
     text: {
       margin: '10px 5px 10px 5px',
       padding: '8.5px 25px 10px 25px',
+      '&hover': {
+        borderColor: mono.semiDarkGray,
+      },
       '&$disabled': {
         color: mono.gray,
         '& path': {
@@ -441,7 +444,7 @@ const overrides = {
   // Box (dialog)
   MuiDialog: {
     paper: {
-      padding: '4px 6px 4px 6px',
+      padding: '10px 15px 4px 15px',
       boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.25)',
     },
     paperWidthMd: { width: '600px' },

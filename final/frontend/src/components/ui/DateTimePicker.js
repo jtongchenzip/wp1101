@@ -1,17 +1,12 @@
 import React from 'react';
-import DateFnsUtils from '@date-io/date-fns';
-import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { DateTimePicker } from '@material-ui/pickers';
 
-export default function DateAndTimePicker({ selectedDate, handleDateChange }) {
+export default function DateAndTimePicker({ selectedDate, setSelectedDate }) {
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <DateTimePicker
-        inputVariant="outlined"
-        disablePast
-        format="yyyy / MM / dd,  hh:mm a"
-        value={selectedDate}
-        onChange={handleDateChange}
-      />
-    </MuiPickersUtilsProvider>
+    <DateTimePicker
+      format="yyyy-MM-dd HH:mm"
+      value={selectedDate}
+      onChange={(e) => setSelectedDate(e)}
+    />
   );
 }
