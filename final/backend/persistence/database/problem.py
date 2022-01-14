@@ -47,9 +47,10 @@ async def add(title: str, start_time: datetime, end_time: datetime,
 
 async def delete(problem_id: int) -> None:
     sql, params = pyformat2psql(
-        sql=fr"DELETE FROM problem"
+        sql=fr"UPDATE problem"
+            fr"   SET is_deleted = %(is_deleted)s"
             fr" WHERE id = %(problem_id)s",
-        problem_id=problem_id
+        problem_id=problem_id, is_deleted=True,
     )
     await pool_handler.pool.execute(sql, *params)
 
