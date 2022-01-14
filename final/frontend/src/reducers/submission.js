@@ -5,6 +5,7 @@ const initialState = {
   submission_id: '',
   account_id: '',
   submit_time: '',
+  problem_id: '',
   total_pass: '',
   total_fail: '',
   judgecases: [],
@@ -22,6 +23,7 @@ const submission = (state = initialState, action) => {
         submission_id: action.payload.data.id,
         account_id: action.payload.data.account_id,
         submit_time: action.payload.data.submit_time,
+        problem_id: action.payload.data.problem_id,
         total_pass: action.payload.data.total_pass !== null ? action.payload.data.total_pass : '',
         total_fail: action.payload.data.total_fail !== null ? action.payload.data.total_fail : '',
         judgecases: [],
@@ -38,11 +40,15 @@ const submission = (state = initialState, action) => {
         submission_id: data.id,
         account_id: data.account_id,
         submit_time: data.submit_time,
+        problem_id: data.problem_id,
         total_pass: data.total_pass !== null ? data.total_pass : '',
         total_fail: data.total_fail !== null ? data.total_fail : '',
         judgecases: judgecase,
       };
     }
+    case problemConstants.FETCH_LAST_SUBMISSION_FAIL:
+      return initialState;
+
     default:
       return state;
   }
