@@ -70,13 +70,13 @@ export default function problem(state = initialState, action) {
     case problemConstants.DOWNLOAD_STUDENT_SCORE_START:
       return {
         ...state,
-        deleteProblem: true,
+        downloadStudentScore: true,
       };
     case problemConstants.DOWNLOAD_STUDENT_SCORE_SUCCESS:
     case problemConstants.DOWNLOAD_STUDENT_SCORE_FAIL:
       return {
         ...state,
-        deleteProblem: false,
+        downloadStudentScore: false,
       };
     case problemConstants.BROWSE_PROBLEM_START:
       return {
