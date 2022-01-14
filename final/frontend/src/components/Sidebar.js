@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   Avatar, Typography, Button, Dialog, DialogContent, TextField, makeStyles, Snackbar,
 } from '@material-ui/core';
 import moment from 'moment';
 import DateTimePicker from './ui/DateTimePicker';
 import UploadButton from './ui/UploadButton';
+import { browseProblem, addProblem } from '../actions/problem/problem';
 import theme from '../theme';
 import ric from '../asset/ric.png';
-import { browseProblem, addProblem } from '../actions/problem/problem';
 
 const useStyles = makeStyles(() => ({
   leftSidebar: {
@@ -23,16 +23,21 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  activeButton: {
+    backgroundColor: theme.palette.grey.A400,
+  },
 }));
 
 export default function Sidebar() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
 
   const token = localStorage.getItem('auth-token');
 
   const user = useSelector((state) => state.user);
+  const baseURL = user.role === 'TA' ? '/ta' : '/student';
 
   const problems = useSelector((state) => state.problem.byId);
   const problemIds = useSelector((state) => state.problem.allIds);
@@ -107,9 +112,9 @@ export default function Sidebar() {
             style={{ marginTop: 15 }}
             key={id}
             onClick={() => handleProblemBtnClick(id)}
+            className={location.pathname === `${baseURL}/problem/${id}` ? classes.activeButton : ''}
           >
             {problems[id].title}
-
           </Button>
         ))}
       </div>
