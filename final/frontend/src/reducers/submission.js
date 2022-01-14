@@ -15,8 +15,13 @@ const submission = (state = initialState, action) => {
   switch (action.type) {
     case submissionConstants.ADD_SUBMISSION_SUCCESS:
       return {
-        ...state,
         submission_id: action.payload.submission_id,
+        account_id: '',
+        submit_time: '',
+        problem_id: '',
+        total_pass: '',
+        total_fail: '',
+        judgecases: [],
       };
     case submissionConstants.FETCH_SUBMISSION_SUCCESS:
       return {

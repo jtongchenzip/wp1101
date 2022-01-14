@@ -9,8 +9,10 @@ import LinearProgressBar from '../../components/ui/LinearProgressBar';
 import ScoreTable from '../../components/ui/ScoreTable';
 import UploadButton from '../../components/ui/UploadButton';
 import Sidebar from '../../components/Sidebar';
-import { browseProblem, readProblemLastSubmission } from '../../actions/problem/problem';
+import { readProblemLastSubmission } from '../../actions/problem/problem';
 import { submitCode } from '../../actions/submission/submission';
+import Loading from '../../components/ui/Loading';
+import NotFound from '../../components/ui/NotFound';
 
 const useStyles = makeStyles(() => ({
   main: {
@@ -107,12 +109,6 @@ export default function Student() {
   }, [dispatch, problemId, submissions.total_fail, submissions.total_pass, token]);
 
   useEffect(() => {
-    if (!problemLoading.editProblem) {
-      dispatch(browseProblem(token));
-    }
-  }, [dispatch, problemLoading.editProblem, token]);
-
-  useEffect(() => {
     if (problems[problemId] !== undefined) {
       setTitle(problems[problemId].title);
       setStartTime(moment(problems[problemId].start_time).format('YYYY-MM-DD HH:mm'));
@@ -131,12 +127,18 @@ export default function Student() {
     }
   }, [submissions.judgecases, submitLoading.browseJudgeCase]);
 
+  const handleError = (text) => {
+    setShowSnackbar(true);
+    setSnackbarText(text);
+    setHasRequest(true);
+  };
   // submit code
   const handleCloseSubmitCard = () => {
     setSubmitFile(null);
     setOpenSubmitCard(false);
     setSnackbarText('Please wait for 3-5 minutes for judging...');
     setShowSnackbar(true);
+    setHasRequest(false);
   };
   const handleSubmit = () => {
     setHasRequest(true);
@@ -144,38 +146,44 @@ export default function Student() {
       setShowSnackbar(true);
       setSnackbarText('Please select a file');
     } else {
-      dispatch(submitCode(token, problemId, submitFile));
+      dispatch(submitCode(token, problemId, submitFile, handleError));
       handleCloseSubmitCard();
-      setHasRequest(false);
     }
   };
 
-  console.log(submissions);
+  if (problems[problemId] === undefined) {
+    if (problemLoading.browseProblem) {
+      return <Loading />;
+    }
+    return <NotFound />;
+  }
 
   return (
     <>
       <div className={classes.main}>
         <Sidebar />
         <div className={classes.scoreTableGroup}>
-          {submissions.judgecases.length === 0
-            ? (<Typography variant="h4" className={classes.noSubmissionText}>No submission yet.</Typography>)
-            : (
-              <>
-                <ScoreTable data={tableData} columns={columns} />
-                <div className={classes.progressBarGroup}>
-                  <Typography style={{ marginRight: 10 }} variant="body1">Task Completed</Typography>
-                  <LinearProgressBar value={progress} />
-                </div>
-              </>
-            )}
+          {submissions.submission_id === '' && <Typography variant="h4" className={classes.noSubmissionText}>No submission yet.</Typography>}
+          {submissions.submission_id !== '' && (
+            submissions.judgecases.length === 0
+              ? (<Typography variant="h4" className={classes.noSubmissionText}>Waiting for judge...</Typography>)
+              : (
+                <>
+                  <ScoreTable data={tableData} columns={columns} />
+                  <div className={classes.progressBarGroup}>
+                    <Typography style={{ marginRight: 10 }} variant="body1">Task Completed</Typography>
+                    <LinearProgressBar value={progress} />
+                  </div>
+                </>
+              ))}
         </div>
         {problems[problemId] !== undefined && (
         <div className={classes.rightSidebar}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left' }}>
             <Typography variant="h4">{title}</Typography>
-            <Typography style={{ marginTop: 15 }} variant="body1">Start Time</Typography>
+            <Typography style={{ marginTop: 15 }} variant="h6">Start Time</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">{startTime}</Typography>
-            <Typography style={{ marginTop: 5 }} variant="body1">End Time</Typography>
+            <Typography style={{ marginTop: 5 }} variant="h6">End Time</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">{endTime}</Typography>
           </div>
           {/* submit only between  start time and end time */}

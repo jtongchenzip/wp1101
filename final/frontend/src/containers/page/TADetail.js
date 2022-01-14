@@ -13,10 +13,12 @@ import ScoreTable from '../../components/ui/ScoreTable';
 import UploadButton from '../../components/ui/UploadButton';
 import theme from '../../theme';
 import {
-  editProblem, downloadStudentScore, readProblemLastSubmission, deleteProblem, readProblem,
+  editProblem, downloadStudentScore, readProblemLastSubmission, deleteProblem,
 } from '../../actions/problem/problem';
 import { submitCode } from '../../actions/submission/submission';
 import Sidebar from '../../components/Sidebar';
+import Loading from '../../components/ui/Loading';
+import NotFound from '../../components/ui/NotFound';
 
 const useStyles = makeStyles(() => ({
   main: {
@@ -137,16 +139,11 @@ export default function TADetail() {
   }, [dispatch, problemId, submission.total_fail, submission.total_pass, token]);
 
   useEffect(() => {
-    if (!problemLoading.editProblem) {
-      dispatch(readProblem(token, problemId));
-    }
-  }, [dispatch, problemId, problemLoading.editProblem, token]);
-
-  useEffect(() => {
     if (problems[problemId] !== undefined) {
       setTitle(problems[problemId].title);
       setStartTime(moment(problems[problemId].start_time).format('YYYY-MM-DD HH:mm'));
       setEndTime(moment(problems[problemId].end_time).format('YYYY-MM-DD HH:mm'));
+      setUploadFile(problems[problemId].filename);
       setNewTitle(problems[problemId].title);
       setNewStartTime(problems[problemId].start_time);
       setNewEndTime(problems[problemId].end_time);
@@ -169,6 +166,12 @@ export default function TADetail() {
     setSnackbarText(text);
     setHasRequest(true);
   };
+  const resetHandleError = () => {
+    setHasRequest(false);
+    setShowSnackbar(false);
+    setSnackbarText('');
+  };
+
   // edit problem
   const handleCloseEditCard = () => {
     setTitle(problems[problemId].title);
@@ -177,8 +180,9 @@ export default function TADetail() {
     setNewTitle(problems[problemId].title);
     setNewStartTime(problems[problemId].start_time);
     setNewEndTime(problems[problemId].end_time);
-    setUploadFile(null);
+    setUploadFile(problems[problemId].filename);
     setOpenEditCard(false);
+    resetHandleError();
   };
   const handleEditProblem = () => {
     setHasRequest(true);
@@ -192,7 +196,6 @@ export default function TADetail() {
       const start = moment(newStartTime).format('YYYY-MM-DD HH:mm');
       const end = moment(newEndTime).format('YYYY-MM-DD HH:mm');
       dispatch(editProblem(token, problemId, newTitle, start, end, uploadFile, handleCloseEditCard, handleError));
-      setHasRequest(false);
     }
   };
   // delete problem
@@ -216,7 +219,6 @@ export default function TADetail() {
     } else {
       dispatch(submitCode(token, problemId, submitFile, handleError));
       handleCloseSubmitCard();
-      setHasRequest(false);
     }
   };
   // download student score
@@ -224,22 +226,31 @@ export default function TADetail() {
     dispatch(downloadStudentScore(token, problemId, handleError));
   };
 
+  if (problems[problemId] === undefined) {
+    if (problemLoading.browseProblem) {
+      return <Loading />;
+    }
+    return <NotFound />;
+  }
+
   return (
     <>
       <div className={classes.main}>
         <Sidebar />
         <div className={classes.scoreTableGroup}>
-          {submission.judgecases.length === 0
-            ? (<Typography variant="h4" className={classes.noSubmissionText}>No submission yet.</Typography>)
-            : (
-              <>
-                <ScoreTable data={tableData} columns={columns} />
-                <div className={classes.progressBarGroup}>
-                  <Typography style={{ marginRight: 10 }} variant="body1">Task Completed</Typography>
-                  <LinearProgressBar value={progress} />
-                </div>
-              </>
-            )}
+          {submission.submission_id === '' && <Typography variant="h4" className={classes.noSubmissionText}>No submission yet.</Typography>}
+          {submission.submission_id !== '' && (
+            submission.judgecases.length === 0
+              ? (<Typography variant="h4" className={classes.noSubmissionText}>Waiting for judge...</Typography>)
+              : (
+                <>
+                  <ScoreTable data={tableData} columns={columns} />
+                  <div className={classes.progressBarGroup}>
+                    <Typography style={{ marginRight: 10 }} variant="body1">Task Completed</Typography>
+                    <LinearProgressBar value={progress} />
+                  </div>
+                </>
+              ))}
         </div>
         {problemIds.length !== 0 && (
         <div className={classes.rightSidebar}>
@@ -250,9 +261,9 @@ export default function TADetail() {
                 <Settings htmlColor={theme.palette.grey[300]} />
               </IconButton>
             </div>
-            <Typography style={{ marginTop: 15 }} variant="body1">Start Time</Typography>
+            <Typography style={{ marginTop: 15 }} variant="h6">Start Time</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">{startTime}</Typography>
-            <Typography style={{ marginTop: 5 }} variant="body1">End Time</Typography>
+            <Typography style={{ marginTop: 5 }} variant="h6">End Time</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">{endTime}</Typography>
 
             {moment(moment().toDate()).isAfter(endTime) && (
@@ -302,7 +313,7 @@ export default function TADetail() {
           </div>
           <div className={classes.dialogContent} style={{ justifyContent: 'flex-start', marginTop: 10 }}>
             <Typography style={{ marginRight: 76 }} variant="body1">Problem file</Typography>
-            <UploadButton setUpLoadFile={setUploadFile} />
+            <UploadButton uploadFile={uploadFile} setUpLoadFile={setUploadFile} />
           </div>
         </DialogContent>
         <DialogActions style={{ justifyContent: 'space-between' }}>
@@ -338,7 +349,8 @@ export default function TADetail() {
 
       <Snackbar
         open={hasRequest && showSnackbar}
-        onClose={() => { setShowSnackbar(false); setSnackbarText(''); setHasRequest(false); }}
+        onClose={resetHandleError}
+        key={snackbarText}
         message={snackbarText}
       />
     </>
