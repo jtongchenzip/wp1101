@@ -59,7 +59,7 @@ const editProblem = (token, problem_id, title, start_time, end_time, file, onSuc
     },
   };
   const formData = new FormData();
-  formData.append('upload_file', file);
+  formData.append('problem_file', file[0]);
   try {
     dispatch({ type: problemConstants.EDIT_PROBLEM_START });
     await agent.patch(`/problem/${problem_id}`, formData, config);
