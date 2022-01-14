@@ -38,8 +38,8 @@ const useStyles = makeStyles(() => ({
   rightSidebar: {
     display: 'flex',
     flexDirection: 'column',
-    // width: '15%',
     width: 'fit-content',
+    marginTop: 52,
     paddingLeft: '2.5%',
     paddingRight: '2%',
   },

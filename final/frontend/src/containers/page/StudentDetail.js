@@ -39,8 +39,9 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     width: 'fit-content',
-    paddingLeft: 30,
-    paddingRight: 15,
+    marginTop: 52,
+    paddingLeft: '2.5%',
+    paddingRight: '2%',
   },
   dialogContent: {
     display: 'flex',
