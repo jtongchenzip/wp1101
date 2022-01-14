@@ -232,7 +232,7 @@ export default function TADetail() {
           {submission.submission_id === '' && <Typography variant="h4" className={classes.noSubmissionText}>No submission yet.</Typography>}
           {submission.submission_id !== '' && (
             submission.judgecases.length === 0
-              ? (<Typography variant="h4" className={classes.noSubmissionText}>Wait for judging...</Typography>)
+              ? (<Typography variant="h4" className={classes.noSubmissionText}>Waiting for judge...</Typography>)
               : (
                 <>
                   <ScoreTable data={tableData} columns={columns} />
