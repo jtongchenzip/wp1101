@@ -122,6 +122,7 @@ export default function TADetail() {
   const [newStartTime, setNewStartTime] = useState('');
   const [newEndTime, setNewEndTime] = useState('');
   const [uploadFile, setUploadFile] = useState(null);
+  const [filename, setFilename] = useState('');
   const [submitFile, setSubmitFile] = useState(null);
 
   const [openEditCard, setOpenEditCard] = useState(false);
@@ -143,7 +144,7 @@ export default function TADetail() {
       setTitle(problems[problemId].title);
       setStartTime(moment(problems[problemId].start_time).format('YYYY-MM-DD HH:mm'));
       setEndTime(moment(problems[problemId].end_time).format('YYYY-MM-DD HH:mm'));
-      setUploadFile(problems[problemId].filename);
+      setFilename(problems[problemId].filename);
       setNewTitle(problems[problemId].title);
       setNewStartTime(problems[problemId].start_time);
       setNewEndTime(problems[problemId].end_time);
@@ -180,7 +181,8 @@ export default function TADetail() {
     setNewTitle(problems[problemId].title);
     setNewStartTime(problems[problemId].start_time);
     setNewEndTime(problems[problemId].end_time);
-    setUploadFile(problems[problemId].filename);
+    setUploadFile(null);
+    setFilename(problems[problemId].filename);
     setOpenEditCard(false);
     resetHandleError();
   };
@@ -313,7 +315,7 @@ export default function TADetail() {
           </div>
           <div className={classes.dialogContent} style={{ justifyContent: 'flex-start', marginTop: 10 }}>
             <Typography style={{ marginRight: 76 }} variant="body1">Problem file</Typography>
-            <UploadButton uploadFile={uploadFile} setUpLoadFile={setUploadFile} />
+            <UploadButton filename={filename} setUpLoadFile={setUploadFile} />
           </div>
         </DialogContent>
         <DialogActions style={{ justifyContent: 'space-between' }}>
