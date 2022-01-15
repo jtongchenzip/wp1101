@@ -9,7 +9,6 @@ export default function UploadButtons({ filename, setUpLoadFile }) {
     const newFile = Object.keys(file).map((key) => file[key]);
     setUpLoadFile(newFile);
     setFileName(file[0].name);
-    console.log(newFile);
   };
 
   return (

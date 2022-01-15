@@ -55,7 +55,6 @@ export default function Login() {
   }, [loginLoading.readAccount, loginError.readAccount]);
 
   useEffect(() => {
-    console.log(user);
     if (user.isAuthenticated) {
       localStorage.setItem(AUTH_TOKEN, user.token);
       localStorage.setItem(ACCOUNT_ID, user.id);

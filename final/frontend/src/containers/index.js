@@ -28,7 +28,6 @@ export default function Index() {
       if (token && account_id) {
         if (user.tokenExpired) {
           localStorage.clear();
-          console.log('localStorage cleared');
           history.push('/login');
         } else {
           dispatch(readAccount(token, account_id));
