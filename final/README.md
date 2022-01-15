@@ -30,6 +30,9 @@ This project is can judge your hackathon result with cypress online. It also giv
     docker-compose up
     ```
 
+3. `minio` bucket setting
+   (1) go to `localhost:8081` for minio console, login with account and password, select `Buckets` on sidebar and click `Create Bucket` at right hand side, create a bucket called `temp`.
+
 ### How to use Hackathon Online Judge?
 
 #### For Student

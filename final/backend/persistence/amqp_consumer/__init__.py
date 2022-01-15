@@ -18,7 +18,7 @@ def make_consumer(amqp_config: AMQPConfig, consume_function: Callable[[bytes], C
         ) as connection:
             channel: aio_pika.RobustChannel = await connection.channel()
             queue = await channel.declare_queue(
-                'cypress_report',
+                'cypress_report_local',
                 durable=True,
             )
 
