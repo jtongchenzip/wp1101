@@ -48,7 +48,10 @@ async def main():
                         await message.nack(requeue=False)
                     else:
                         print('task finished')
-                        await message.ack()
+                        try:
+                            await message.ack()
+                        except:
+                            await channel.reopen()
 
     async def publish(message: bytes, queue_name: str) -> None:
         async with channel_pool.acquire() as channel:  # type: aio_pika.Channel
