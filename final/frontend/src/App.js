@@ -9,7 +9,6 @@ import store from './store';
 import Index from './containers';
 import theme from './theme';
 
-// Login page, Index for test student and TA page
 export default function App() {
   return (
     <Provider store={store}>
