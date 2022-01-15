@@ -6,7 +6,6 @@ import {
 import Header from '../components/ui/Header';
 import Login from './auth/Login';
 import Register from './auth/Register';
-import UIComponentUsage from '../UIComponentUsage';
 import Pages from './page';
 import { readAccount } from '../actions/user/auth';
 import '../App.css';
@@ -56,7 +55,6 @@ export default function Index() {
         <Switch>
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
-          <Route path="/ui-components" component={UIComponentUsage} />
           <Route path="/" component={Pages} />
         </Switch>
       </div>
