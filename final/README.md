@@ -20,8 +20,8 @@ This project can judge your hackathon result with cypress online. It also gives 
     ```
 2. `backend` and `judgecore`  
     (1) copy `.env.local.example` in `/backend`, rename it to `.env` and modify it if needed   
-    (2) copy `.env.example` in `/judgecore`, rename it to `.env` and modify it if needed  
-    (3) rename `docker-compose.local.example` to `docker-compose.yaml`      
+    (2) copy `.env.local.example` in `/judgecore`, rename it to `.env` and modify it if needed  
+    (3) rename `docker-compose.local.example.yaml` to `docker-compose.yaml`      
     (4) run the following commands at root
     ``` shell
     docker network create cpj
