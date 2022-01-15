@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    marginTop: 220,
+    marginTop: '15%',
   },
   buttonGroup: {
     marginTop: 40,
@@ -63,7 +63,9 @@ export default function Login() {
     }
   }, [user.is_authenticated, user.token, user.id, user.role, history, user]);
 
-  const handleLogIn = () => {
+  const handleLogIn = (e) => {
+    e.preventDefault();
+
     if (username === '') {
       setErrors((err) => ({ ...err, username: true }));
       setErrorTexts((err) => ({ ...err, username: 'Can\'t be empty' }));
@@ -93,7 +95,7 @@ export default function Login() {
 
   return (
     <>
-      <div className={classes.main}>
+      <form className={classes.main} onSubmit={(e) => handleLogIn(e)}>
         <TextField
           label="Username"
           value={username}
@@ -123,20 +125,20 @@ export default function Login() {
           <Button color="primary" variant="outlined" onClick={() => { history.push('/register'); }}>
             Register
           </Button>
-          <Button color="primary" variant="contained" onClick={handleLogIn}>
+          <Button color="primary" variant="contained" type="submit">
             Login
           </Button>
         </div>
-        {/* <Typography color="primary" style={{ marginTop: 20 }} variant="body1">
+      </form>
+      {/* <Typography color="primary" style={{ marginTop: 20 }} variant="body1">
           Cypress Online Judge System
-        </Typography>
-        <Typography align="center" color="primary" variant="body1">
-          Department of Information Management
-        </Typography>
-        <Typography color="primary" variant="body1">
+        </Typography> */}
+      <Typography align="center" variant="body1" style={{ marginTop: '9%', color: theme.palette.grey[300] }}>
+        Dept. of Information Management, NTU 2022
+      </Typography>
+      {/* <Typography color="primary" variant="body1">
           National Taiwan University
         </Typography> */}
-      </div>
     </>
   );
 }
