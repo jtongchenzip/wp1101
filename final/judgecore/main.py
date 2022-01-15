@@ -32,7 +32,6 @@ async def main():
 
     async def consume():
         async with channel_pool.acquire() as channel:  # type: aio_pika.Channel
-            await channel.set_qos(10)
 
             queue = await channel.declare_queue(
                 consume_name, durable=True, auto_delete=False

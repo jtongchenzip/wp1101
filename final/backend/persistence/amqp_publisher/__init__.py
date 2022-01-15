@@ -31,4 +31,4 @@ amqp_publish_handler = AMQPPublishHandler()
 
 
 async def send_judge(task: do.JudgeTask):
-    await amqp_publish_handler.publish(queue_name='cypress', message=marshal(task))
+    await amqp_publish_handler.publish(queue_name='cypress_local', message=marshal(task))
