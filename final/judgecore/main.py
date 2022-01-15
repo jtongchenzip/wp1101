@@ -26,7 +26,7 @@ async def main():
             return await connection.channel()
 
     channel_pool = Pool(get_channel, max_size=10, loop=loop)
-    consume_name = "cypress"
+    consume_name = "cypress_local"
 
     print('amqp connected')
 

@@ -48,7 +48,7 @@ async def handle_report(directory_path: str, submission_id: int,
 
             judge_report = marshal(judge_report)
             print('report arranged, publishing...')
-            await publish_func(judge_report, 'cypress_report')
+            await publish_func(judge_report, 'cypress_report_local')
             print('report published')
 
     print('finish handling report')
