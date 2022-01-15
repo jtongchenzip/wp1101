@@ -23,7 +23,7 @@ services:
         ports:
             - 5432:5432
         environment:
-            - POSTGRES_PASSWORD=password
+            - POSTGRES_PASSWORD=cpj_demo
         volumes: 
             - db_data:/var/lib/postgres/db_data
             - ./database/:/docker-entrypoint-initdb.d
@@ -53,8 +53,8 @@ services:
             - ~/minio/data:/data
         restart: unless-stopped
         environment:
-            MINIO_ROOT_USER: cpj_minio
-            MINIO_ROOT_PASSWORD: wp175wp175
+            MINIO_ROOT_USER: cpj_demo
+            MINIO_ROOT_PASSWORD: cpj_demo
         command: server /data --address ":8080" --console-address ":8081"
         networks:
             - cpj
