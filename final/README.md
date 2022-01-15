@@ -3,7 +3,7 @@
 by daphne, jtc, wsa
 
 ### About this project
-This project is can judge your hackathon result with cypress online. It also gives you a friendly designed page to see your judged results. 
+This project can judge your hackathon result with cypress online. It also gives you a friendly designed page to see your judged results. 
 
 ### How to run this service locally
 1. `frontend`  
