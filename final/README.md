@@ -36,15 +36,16 @@ This project is can judge your hackathon result with cypress online. It also giv
 ### How to use Hackathon Online Judge?
 
 #### For Student
-1. Register an account
-2. Login
-3. Zip your src folder
-4. Choose a task to submit
-5. Submit your `src.zip`
-6. Wait for your result
-7. Start again from step four
+1. Login with username : student, password : wp1101student 
+2. Register an account
+3. Login
+4. Zip your src folder
+5. Choose a task to submit
+6. Submit your `src.zip`
+7. Wait for your result
+8. Start again from step four
 #### For TA
-1. Login with the TA account given
+1. Login with username : TA, password : wp1101ta 
 2. Zip your cypress folder
 3. Add a task (include uploading the `cypress.zip`)
 4. Zip your src folder
