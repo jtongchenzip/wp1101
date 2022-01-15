@@ -76,7 +76,6 @@ export default function Login() {
   const handleRegister = async () => {
     const newInputs = labelName.reduce((acc, item) => ({ ...acc, [item]: inputs[item].trim() }), {});
     let hasError = labelName.reduce((acc, item) => acc || newInputs[item] === '', false);
-    console.log(inputs, newInputs, hasError);
 
     setErrors(
       labelName.reduce((acc, item) => {

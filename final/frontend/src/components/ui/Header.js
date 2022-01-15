@@ -15,7 +15,6 @@ export default function Header({ title }) {
 
   const handleLogout = () => {
     localStorage.clear();
-    console.log('localStorage cleared');
     dispatch(logout(history));
   };
 
