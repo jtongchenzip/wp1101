@@ -135,7 +135,7 @@ export default function TADetail() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (!problemLoading.addProblem) {
+    if (!problemLoading.addProblem && problemId !== undefined) {
       dispatch(readProblemLastSubmission(token, problemId));
       setProgress(((submission.total_pass / (submission.total_pass + submission.total_fail)) * 100));
     }
