@@ -38,7 +38,7 @@ This project can judge your hackathon result with cypress online. It also gives 
 
 ### How to use Hackathon Online Judge?
 
-If you're running the project at local, go to `http://localhost:3006`.
+If you're running the project at local, go to `http://localhost:3006`.  
 Or if you want to use the deployed version, go to `https://hackathon.judge.nanami.one`.
 
 #### For TA
