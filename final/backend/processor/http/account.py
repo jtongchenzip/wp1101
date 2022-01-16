@@ -36,14 +36,11 @@ class AddAccountOutput:
 async def add_account(data: AddAccountInput) -> AddAccountOutput:
     if await db.account.is_duplicate_student_id(student_id=data.student_id):
         raise exc.DuplicateStudentId
-    try:
-        account_id = await db.account.add(username=data.username,
-                                          pass_hash=hash_password(data.password),
-                                          role=RoleType.student,
-                                          real_name=data.real_name,
-                                          student_id=data.student_id)
-    except exc.UniqueViolationError:
-        raise exc.UsernameExists
+    account_id = await db.account.add(username=data.username,
+                                      pass_hash=hash_password(data.password),
+                                      role=RoleType.student,
+                                      real_name=data.real_name,
+                                      student_id=data.student_id)
 
     return AddAccountOutput(id=account_id)
 
