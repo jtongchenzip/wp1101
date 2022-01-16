@@ -129,8 +129,8 @@ async def get_student_score(problem_id: int) -> GetStudentScoreOutput:
     for account in accounts:
         try:
             submission = await db.submission.read_last_submission(account_id=account.id, problem_id=problem_id)
-        except:
-            pass
+        except exc.NotFound:
+            submission = None
         if submission:
             student_score += f"{account.student_id},{submission.total_pass},{submission.total_fail}\n"
         else:
