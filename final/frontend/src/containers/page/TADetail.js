@@ -83,7 +83,7 @@ const columns = [
     label: 'Task',
     align: 'center',
     minWidth: 50,
-    width: 100,
+    width: 150,
   },
   {
     id: 'description',
