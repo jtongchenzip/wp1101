@@ -19,7 +19,7 @@ const readProblem = (token, problem_id) => async (dispatch) => {
   }
 };
 
-const addProblem = (token, title, start_time, end_time, file, history) => async (dispatch) => {
+const addProblem = (token, title, start_time, end_time, file, history, onError) => async (dispatch) => {
   const config = {
     headers: {
       'auth-token': token,
@@ -36,10 +36,11 @@ const addProblem = (token, title, start_time, end_time, file, history) => async 
   try {
     dispatch({ type: problemConstants.ADD_PROBLEM_START });
     const res = await agent.post('/problem', formData, config);
-    const { id } = res.data;
+    const { id } = res.data.data;
     dispatch({ type: problemConstants.ADD_PROBLEM_SUCCESS });
     history.push(`/ta/problem/${id}`);
   } catch (error) {
+    onError(error);
     dispatch({
       type: problemConstants.ADD_PROBLEM_FAIL,
       error,

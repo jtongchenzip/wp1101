@@ -87,7 +87,7 @@ export default function Student() {
   const token = localStorage.getItem('auth-token');
 
   const problems = useSelector((state) => state.problem.byId);
-  const problemLoading = useSelector((state) => state.loading.problem);
+  const problemIds = useSelector((state) => state.problem.byId);
   const submissions = useSelector((state) => state.submission);
   const submitLoading = useSelector((state) => state.loading.submission);
 
@@ -105,8 +105,10 @@ export default function Student() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    dispatch(readProblemLastSubmission(token, problemId));
-    setProgress(((submissions.total_pass / (submissions.total_pass + submissions.total_fail)) * 100));
+    if (problemId !== undefined) {
+      dispatch(readProblemLastSubmission(token, problemId));
+      setProgress(((submissions.total_pass / (submissions.total_pass + submissions.total_fail)) * 100));
+    }
   }, [dispatch, problemId, submissions.total_fail, submissions.total_pass, token]);
 
   useEffect(() => {
@@ -152,10 +154,10 @@ export default function Student() {
   };
 
   if (problems[problemId] === undefined) {
-    if (problemLoading.browseProblem) {
-      return <Loading />;
+    if (problemIds.find((id) => id === problemId)) {
+      return <NotFound />;
     }
-    return <NotFound />;
+    return <Loading />;
   }
 
   return (

@@ -23,7 +23,7 @@ export default function auth(state = initialState, action) {
     case authConstants.SIGNUP_FAIL:
       return {
         ...state,
-        signup: false,
+        signup: action.error,
       };
     case authConstants.SIGNUP_SUCCESS:
       return {

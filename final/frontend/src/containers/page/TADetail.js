@@ -135,8 +135,10 @@ export default function TADetail() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    dispatch(readProblemLastSubmission(token, problemId));
-    setProgress(((submission.total_pass / (submission.total_pass + submission.total_fail)) * 100));
+    if (problemId !== undefined) {
+      dispatch(readProblemLastSubmission(token, problemId));
+      setProgress(((submission.total_pass / (submission.total_pass + submission.total_fail)) * 100));
+    }
   }, [dispatch, problemId, submission.total_fail, submission.total_pass, token]);
 
   useEffect(() => {
@@ -163,9 +165,9 @@ export default function TADetail() {
   }, [submissionLoading.browseJudgeCase, submission.judgecases]);
 
   const handleError = (text) => {
+    setHasRequest(true);
     setShowSnackbar(true);
     setSnackbarText(text);
-    setHasRequest(true);
   };
   const resetHandleError = () => {
     setHasRequest(false);
@@ -188,7 +190,7 @@ export default function TADetail() {
   };
   const handleEditProblem = () => {
     setHasRequest(true);
-    if (newTitle === '') {
+    if (newTitle.trim() === '') {
       setShowSnackbar(true);
       setSnackbarText("Title can't be empty");
     } else if (moment(newStartTime).isAfter(newEndTime) || moment(newStartTime).isSame(newEndTime)) {
@@ -223,16 +225,16 @@ export default function TADetail() {
       handleCloseSubmitCard();
     }
   };
-  // download student score
-  const handleDownloadScore = () => {
-    dispatch(downloadStudentScore(token, problemId, handleError));
-  };
+  // // download student score
+  // const handleDownloadScore = () => {
+  //   dispatch(downloadStudentScore(token, problemId, handleError));
+  // };
 
   if (problems[problemId] === undefined) {
-    if (problemLoading.browseProblem) {
-      return <Loading />;
+    if (problemIds.find((id) => id === problemId)) {
+      return <NotFound />;
     }
-    return <NotFound />;
+    return <Loading />;
   }
 
   return (
@@ -268,14 +270,15 @@ export default function TADetail() {
             <Typography style={{ marginTop: 5 }} variant="h6">End Time</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">{endTime}</Typography>
 
-            {moment(moment().toDate()).isAfter(endTime) && (
+            {/* {moment(moment().toDate()).isAfter(endTime) && (
             <div className={classes.stuAndIcon}>
               <Typography style={{ marginRight: 10 }} variant="body1">Student Score</Typography>
               <IconButton onClick={handleDownloadScore}>
                 <CloudDownloadOutlined htmlColor={theme.palette.grey[300]} />
               </IconButton>
             </div>
-            )}
+            )} */}
+
           </div>
           {/* TA can submit whenever the problem is created */}
           <div className={classes.submitBtn}>
@@ -297,7 +300,7 @@ export default function TADetail() {
           </div>
           <div className={classes.dialogContent} style={{ marginTop: 15 }}>
             <Typography variant="body1">Title</Typography>
-            <TextField value={newTitle} onChange={(e) => setNewTitle(e.target.value.trim())} />
+            <TextField value={newTitle} onChange={(e) => setNewTitle(e.target.value)} />
           </div>
           <div className={classes.dialogContent} style={{ marginTop: 15 }}>
             <Typography variant="body1">Start Time</Typography>

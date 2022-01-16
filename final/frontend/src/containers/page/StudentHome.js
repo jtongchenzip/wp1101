@@ -23,7 +23,7 @@ export default function StudentHome() {
     <>
       <div className={classes.main}>
         <Sidebar />
-        <Typography variant="h4" className={classes.noProblemText}>Please select a task.</Typography>
+        <Typography variant="h4" className={classes.noProblemText}>Please select a problem.</Typography>
       </div>
     </>
   );
