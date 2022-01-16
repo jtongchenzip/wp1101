@@ -3,6 +3,8 @@ from base.enums import RoleType
 from typing import Sequence
 import exceptions as exc
 
+import asyncpg
+
 from .util import pyformat2psql
 from . import pool_handler
 
@@ -15,8 +17,10 @@ async def add(username: str, pass_hash: str, role: RoleType, real_name: str, stu
             fr"  RETURNING id",
         username=username, pass_hash=pass_hash, role=role.value, real_name=real_name, student_id=student_id
     )
-
-    id_, = await pool_handler.pool.fetchrow(sql, *params)
+    try:
+        id_, = await pool_handler.pool.fetchrow(sql, *params)
+    except asyncpg.exceptions.UniqueViolationError:
+        raise exc.UniqueViolationError
     return id_
 
 

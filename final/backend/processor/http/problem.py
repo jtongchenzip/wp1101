@@ -127,7 +127,11 @@ async def get_student_score(problem_id: int) -> GetStudentScoreOutput:
     student_score = 'student_id,total_pass,total_fail\n'
 
     for account in accounts:
-        submission = await db.submission.read_last_submission(account_id=account.id, problem_id=problem_id)
+        try:
+            submission = await db.submission.read_last_submission(account_id=account.id, problem_id=problem_id)
+        except exc.NotFound:
+            submission = None
+
         if submission:
             student_score += f"{account.student_id},{submission.total_pass},{submission.total_fail}\n"
         else:
