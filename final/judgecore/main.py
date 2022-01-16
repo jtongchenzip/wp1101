@@ -1,4 +1,4 @@
-from amqp import receive_task
+from amqp import receive_task, unmarshal_task, fail_report
 from config import amqp_config
 
 import asyncio
@@ -45,6 +45,8 @@ async def main():
                         await receive_task(message.body, publish_func=publish)
                     except Exception as e:
                         print('message nacked, exception=', e)
+                        task = unmarshal_task(message.body)
+                        await fail_report(submission_id=task.submission_id, publish_func=publish, error=e)
                         await message.nack(requeue=False)
                     else:
                         print('task finished')
@@ -67,7 +69,4 @@ async def main():
         await task
 
 if __name__ == "__main__":
-   #  loop = asyncio.get_event_loop()
-   #  loop.run_until_complete(main())
-   #  loop.close()
     asyncio.run(main())
