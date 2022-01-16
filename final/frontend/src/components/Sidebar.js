@@ -58,6 +58,15 @@ export default function Sidebar() {
     }
   }, [dispatch, token, loading.addProblem, loading.deleteProblem, loading.editProblem]);
 
+  const handleError = (text) => {
+    setShowSnackbar(true);
+    setSnackbarText(text);
+  };
+  const resetHandleError = () => {
+    setShowSnackbar(false);
+    setSnackbarText('');
+  };
+
   const handleCloseAddCard = () => {
     setTitle('');
     setStartTime(moment().toDate());
@@ -78,8 +87,8 @@ export default function Sidebar() {
     } else {
       const start = moment(startTime).format('YYYY-MM-DD HH:mm:ss');
       const end = moment(endTime).format('YYYY-MM-DD HH:mm:ss');
-      dispatch(addProblem(token, title, start, end, uploadFile, history));
-      handleCloseAddCard();
+      dispatch(addProblem(token, title, start, end, uploadFile, history, handleError));
+      // handleCloseAddCard();
     }
   };
 
@@ -158,7 +167,8 @@ export default function Sidebar() {
 
       <Snackbar
         open={showSnackbar}
-        onClose={() => setShowSnackbar(false)}
+        onClose={resetHandleError}
+        key={snackbarText}
         message={snackbarText}
       />
     </>
