@@ -19,7 +19,7 @@ async def main():
             timeout=300,
         )
     print('amqp connecting...')
-    connection_pool = Pool(get_connection, max_size=2, loop=loop)
+    connection_pool = Pool(get_connection, max_size=10, loop=loop)
 
     async def get_channel() -> aio_pika.Channel:
         async with connection_pool.acquire() as connection:
