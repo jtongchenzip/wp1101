@@ -41,13 +41,6 @@ This project can judge your hackathon result with cypress online. It also gives 
 If you're running the project at local, go to `http://localhost:3006`.
 Or if you want to use the deployed version, go to `https://hackathon.judge.nanami.one`.
 
-#### For Student
-1. Login with username : `student`, password : `wp1101student` or register an account
-2. Zip your src folder
-3. Choose a task to submit
-4. Submit your `src.zip`
-5. Wait for your result
-6. Start again from step four
 #### For TA
 1. Login with username : `TA`, password : `wp1101ta`
 2. Zip your cypress folder
@@ -57,6 +50,14 @@ Or if you want to use the deployed version, go to `https://hackathon.judge.nanam
 6. Submit your `src.zip`
 7. Wait for your result
 8. Start again from step three or step five
+
+#### For Student
+1. Login with username : `student`, password : `wp1101student` or register an account
+2. Zip your src folder
+3. Choose a task to submit
+4. Submit your `src.zip`
+5. Wait for your result
+6. Start again from step four
 
 #### Notes
 1. There are `cypress` and `src` in the `example` folder, you can zip them and upload them if you want.
