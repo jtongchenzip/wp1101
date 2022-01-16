@@ -62,6 +62,7 @@ This project can judge your hackathon result with cypress online. It also gives 
 4. If your OS is Windows, change `"start": "PORT=3006 react-scripts start"` in `/frontend/package.json` to `"start": "set PORT=3006 && react-scripts start"`.
 5. Strongly recommend that you reserve enough RAM for running these services at local in case of judgecore's performance issue. (It's highly possible that the judge feature fails with less than 8G RAM.)
 6.  When you need to test the judge feature on the deployed website, contact [陳杰彤](https://www.facebook.com/jtongchenzip/) to open the judgecore.
+7.  Currently, this project will connect to the developer's RabbitMQ by default. If you want to connect to your own RabbitMQ, change `.env` in `/judgecore` and `/backend`. **Do not** start a rabbitmq service in docker because connection error is likely to happen. See [StackOverFlow](https://stackoverflow.com/questions/64952005/pika-rabbitmq-docker-with-tls-gen-connection-reset-no-logs).
 
 
 ### Job Distribution
