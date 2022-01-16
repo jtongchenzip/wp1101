@@ -56,7 +56,7 @@ async def handle_report(directory_path: str, submission_id: int,
 
 
 async def fail_report(submission_id: int, publish_func: Callable[[bytes, str], Coroutine[Any, Any, None]], error):
-    judge_cases = [do.JudgeCaseReport(title='Compile Error', description=str(error), state=enums.JudgeCaseState.fail,
+    judge_cases = [do.JudgeCaseReport(title='Compile Err', description=str(error), state=enums.JudgeCaseState.fail,
                                       error_message=None)]
 
     judge_report = do.JudgeReport(submission_id=submission_id, total_passes=0,
