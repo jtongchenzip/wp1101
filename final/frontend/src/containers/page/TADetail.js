@@ -135,9 +135,11 @@ export default function TADetail() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    dispatch(readProblemLastSubmission(token, problemId));
-    setProgress(((submission.total_pass / (submission.total_pass + submission.total_fail)) * 100));
-  }, [dispatch, problemId, submission.total_fail, submission.total_pass, token]);
+    if (!problemLoading.addProblem) {
+      dispatch(readProblemLastSubmission(token, problemId));
+      setProgress(((submission.total_pass / (submission.total_pass + submission.total_fail)) * 100));
+    }
+  }, [dispatch, problemId, problemLoading.addProblem, submission.total_fail, submission.total_pass, token]);
 
   useEffect(() => {
     if (problems[problemId] !== undefined) {
@@ -228,11 +230,18 @@ export default function TADetail() {
   //   dispatch(downloadStudentScore(token, problemId, handleError));
   // };
 
+  // if (problems[problemId] === undefined) {
+  //   if (problemLoading.browseProblem) {
+  //     return <Loading />;
+  //   }
+  //   return <NotFound />;
+  // }
+
   if (problems[problemId] === undefined) {
-    if (problemLoading.browseProblem) {
-      return <Loading />;
+    if (problemIds.findOne((id) => id === problemId)) {
+      return <NotFound />;
     }
-    return <NotFound />;
+    return <Loading />;
   }
 
   return (
