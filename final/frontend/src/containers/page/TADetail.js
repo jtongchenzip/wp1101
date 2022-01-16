@@ -188,7 +188,7 @@ export default function TADetail() {
   };
   const handleEditProblem = () => {
     setHasRequest(true);
-    if (newTitle === '') {
+    if (newTitle.trim() === '') {
       setShowSnackbar(true);
       setSnackbarText("Title can't be empty");
     } else if (moment(newStartTime).isAfter(newEndTime) || moment(newStartTime).isSame(newEndTime)) {
@@ -298,7 +298,7 @@ export default function TADetail() {
           </div>
           <div className={classes.dialogContent} style={{ marginTop: 15 }}>
             <Typography variant="body1">Title</Typography>
-            <TextField value={newTitle} onChange={(e) => setNewTitle(e.target.value.trim())} />
+            <TextField value={newTitle} onChange={(e) => setNewTitle(e.target.value)} />
           </div>
           <div className={classes.dialogContent} style={{ marginTop: 15 }}>
             <Typography variant="body1">Start Time</Typography>
