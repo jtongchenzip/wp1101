@@ -61,7 +61,7 @@ This project can judge your hackathon result with cypress online. It also gives 
 3. Save port `3000`, `3006`, `5432`, `8000`, `8080`, `8081` when deploying in local environment. 
 4. If your OS is Windows, change `"start": "PORT=3006 react-scripts start"` in `/frontend/package.json` to `"start": "set PORT=3006 && react-scripts start"`.
 5. Strongly recommend that you reserve enough RAM for running these services at local in case of judgecore's performance issue. (It's highly possible that the judge feature fails with less than 8G RAM.)
-6.  When you need to test the judge feature on the  deployed website, contact [陳杰彤](https://www.facebook.com/jtongchenzip/) to open the judgecore.
+6.  When you need to test the judge feature on the deployed website, contact [陳杰彤](https://www.facebook.com/jtongchenzip/) to open the judgecore.
 
 
 ### Job Distribution
