@@ -40,7 +40,8 @@ async def handle_report(directory_path: str, submission_id: int,
                                               description=test['title'],
                                               state=enums.JudgeCaseState.pass_
                                               if test['pass'] is True else enums.JudgeCaseState.fail,
-                                              error_message=test['err']['message'] if 'message' in test['err'] else None)
+                                              error_message=test['err']['message'] if 'message' in test[
+                                                  'err'] else None)
                            for test in file['results'][0]['suites'][0]['tests']]
 
             judge_report = do.JudgeReport(submission_id=submission_id, total_passes=file['stats']['passes'],
@@ -48,10 +49,23 @@ async def handle_report(directory_path: str, submission_id: int,
 
             judge_report = marshal(judge_report)
             print('report arranged, publishing...')
-            await publish_func(judge_report, 'cypress_report_local')
+            await publish_func(judge_report, 'cypress_report')
             print('report published')
 
     print('finish handling report')
+
+
+async def fail_report(submission_id: int, publish_func: Callable[[bytes, str], Coroutine[Any, Any, None]], error):
+    judge_cases = [do.JudgeCaseReport(title='Compile Error', description=str(error), state=enums.JudgeCaseState.fail,
+                                      error_message=None)]
+
+    judge_report = do.JudgeReport(submission_id=submission_id, total_passes=0,
+                                  total_failures=1, judge_cases=judge_cases)
+    judge_report = marshal(judge_report)
+    print('compiled error report arranged, publishing...')
+    await publish_func(judge_report, 'cypress_report')
+    print('compiled error report published')
+    return
 
 
 async def receive_task(body: bytes, publish_func: Callable[[bytes, str], Coroutine[Any, Any, None]]):
@@ -79,9 +93,11 @@ async def receive_task(body: bytes, publish_func: Callable[[bytes, str], Corouti
         with Judge():
             pass
 
-        await handle_report(submission_id=task.submission_id, directory_path='/app/hack1/results', publish_func=publish_func)
-    
+        await handle_report(submission_id=task.submission_id, directory_path='/app/hack1/results',
+                            publish_func=publish_func)
+
     except Exception as e:
+        await fail_report(submission_id=task.submission_id, publish_func=publish_func, error=e)
         print(e)
 
     finally:
