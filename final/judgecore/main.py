@@ -1,4 +1,4 @@
-from amqp import receive_task
+from amqp import receive_task, unmarshal_task, fail_report
 from config import amqp_config
 
 import asyncio
@@ -26,12 +26,13 @@ async def main():
             return await connection.channel()
 
     channel_pool = Pool(get_channel, max_size=10, loop=loop)
-    consume_name = "cypress_local"
+    consume_name = "cypress"
 
     print('amqp connected')
 
     async def consume():
         async with channel_pool.acquire() as channel:  # type: aio_pika.Channel
+            await channel.set_qos(10)
 
             queue = await channel.declare_queue(
                 consume_name, durable=True, auto_delete=False
@@ -44,10 +45,15 @@ async def main():
                         await receive_task(message.body, publish_func=publish)
                     except Exception as e:
                         print('message nacked, exception=', e)
+                        task = unmarshal_task(message.body)
+                        await fail_report(submission_id=task.submission_id, publish_func=publish, error=e)
                         await message.nack(requeue=False)
                     else:
                         print('task finished')
-                        await message.ack()
+                        try:
+                            await message.ack()
+                        except:
+                            await channel.reopen()
 
     async def publish(message: bytes, queue_name: str) -> None:
         async with channel_pool.acquire() as channel:  # type: aio_pika.Channel
@@ -63,7 +69,4 @@ async def main():
         await task
 
 if __name__ == "__main__":
-   #  loop = asyncio.get_event_loop()
-   #  loop.run_until_complete(main())
-   #  loop.close()
     asyncio.run(main())
