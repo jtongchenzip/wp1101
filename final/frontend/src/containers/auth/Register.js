@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
-  Button, TextField, makeStyles, InputAdornment, IconButton, Snackbar,
+  Button, TextField, makeStyles, InputAdornment, IconButton,
 } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import '../../App.css';
@@ -56,22 +56,20 @@ export default function Login() {
   const registerLoading = useSelector((state) => state.loading.auth);
 
   useEffect(() => {
-    if (!registerLoading.signup) {
-      if (registerError.signUp === 'UsernameExists') {
-        setErrors((ori) => ({ ...ori, username: true }));
-        setErrorTexts((ori) => ({ ...ori, username: 'Username exists' }));
-      } else if (registerError.signUp === 'DuplicateStudentId') {
-        setErrors((ori) => ({ ...ori, studentId: true }));
-        setErrorTexts((ori) => ({ ...ori, studentId: 'Duplicate student ID' }));
+    if (!registerLoading.signup && hasRequest) {
+      if (registerError.signup !== null) {
+        if (registerError.signup === 'UsernameExists') {
+          setErrors((ori) => ({ ...ori, username: true }));
+          setErrorTexts((ori) => ({ ...ori, username: 'Username exists' }));
+        } else if (registerError.signup === 'DuplicateStudentId') {
+          setErrors((ori) => ({ ...ori, studentId: true }));
+          setErrorTexts((ori) => ({ ...ori, studentId: 'Duplicate student ID' }));
+        }
+      } else {
+        history.push('/');
       }
     }
-  }, [registerLoading.signup, registerError.signUp]);
-
-  useEffect(() => {
-    if (hasRequest) {
-      history.push('/');
-    }
-  }, [hasRequest, history]);
+  }, [registerLoading.signup, registerError.signup, registerLoading, hasRequest, history]);
 
   const handleRegister = async () => {
     const newInputs = labelName.reduce((acc, item) => ({ ...acc, [item]: inputs[item].trim() }), {});
@@ -190,8 +188,6 @@ export default function Login() {
         />
         <Button color="primary" variant="contained" onClick={handleRegister}>Register</Button>
       </div>
-
-      <Snackbar />
     </>
   );
 }
