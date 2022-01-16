@@ -49,7 +49,7 @@ async def handle_report(directory_path: str, submission_id: int,
 
             judge_report = marshal(judge_report)
             print('report arranged, publishing...')
-            await publish_func(judge_report, 'cypress_report')
+            await publish_func(judge_report, 'cypress_report_local')
             print('report published')
 
     print('finish handling report')
@@ -63,7 +63,7 @@ async def fail_report(submission_id: int, publish_func: Callable[[bytes, str], C
                                   total_failures=1, judge_cases=judge_cases)
     judge_report = marshal(judge_report)
     print('compiled error report arranged, publishing...')
-    await publish_func(judge_report, 'cypress_report')
+    await publish_func(judge_report, 'cypress_report_local')
     print('compiled error report published')
     return
 

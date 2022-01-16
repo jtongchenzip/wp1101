@@ -6,7 +6,18 @@ by daphne, jtc, wsa
 This project can judge your hackathon result with cypress online. It also gives you a friendly designed page to see your judged results. 
 
 ### How to run this service locally
-1. `frontend`  
+1. `backend` and `judgecore`  
+    (1) copy `.env.local.example` in `/backend`, rename it to `.env` and modify it if needed   
+    (2) copy `.env.local.example` in `/judgecore`, rename it to `.env` and modify it if needed  
+    (3) rename `docker-compose.local.example.yaml` to `docker-compose.yaml`      
+    (4) run the following commands at root
+    ``` shell
+    docker network create cpj
+    ```
+    ``` shell
+    docker-compose up
+    ```
+2. `frontend`  
    (1) copy `.env.example` in `frontend`, rename it to `.env` and modify it if needed   
    (2) run the following commands
     ```shell
@@ -18,17 +29,6 @@ This project can judge your hackathon result with cypress online. It also gives 
     ``` shell
     yarn start
     ```
-2. `backend` and `judgecore`  
-    (1) copy `.env.local.example` in `/backend`, rename it to `.env` and modify it if needed   
-    (2) copy `.env.local.example` in `/judgecore`, rename it to `.env` and modify it if needed  
-    (3) rename `docker-compose.local.example.yaml` to `docker-compose.yaml`      
-    (4) run the following commands at root
-    ``` shell
-    docker network create cpj
-    ```
-    ``` shell
-    docker-compose up
-    ```
 
 3. `minio` bucket setting  
    (1) go to `localhost:8081` for minio console  
@@ -37,6 +37,9 @@ This project can judge your hackathon result with cypress online. It also gives 
    (4) create a bucket called `temp`
 
 ### How to use Hackathon Online Judge?
+
+If you're running the project at local, go to `http://localhost:3006`.
+Or if you want to use the deployed version, go to `https://hackathon.judge.nanami.one`.
 
 #### For Student
 1. Login with username : `student`, password : `wp1101student` or register an account
@@ -92,4 +95,3 @@ https://hackathon.judge.nanami.one
 
 ### DEMO 影片連結
 https://youtu.be/A_7S-DE9dug
-
