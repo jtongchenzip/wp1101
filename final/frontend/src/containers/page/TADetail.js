@@ -223,10 +223,10 @@ export default function TADetail() {
       handleCloseSubmitCard();
     }
   };
-  // download student score
-  const handleDownloadScore = () => {
-    dispatch(downloadStudentScore(token, problemId, handleError));
-  };
+  // // download student score
+  // const handleDownloadScore = () => {
+  //   dispatch(downloadStudentScore(token, problemId, handleError));
+  // };
 
   if (problems[problemId] === undefined) {
     if (problemLoading.browseProblem) {
@@ -268,14 +268,15 @@ export default function TADetail() {
             <Typography style={{ marginTop: 5 }} variant="h6">End Time</Typography>
             <Typography style={{ marginTop: 5 }} variant="body1">{endTime}</Typography>
 
-            {moment(moment().toDate()).isAfter(endTime) && (
+            {/* {moment(moment().toDate()).isAfter(endTime) && (
             <div className={classes.stuAndIcon}>
               <Typography style={{ marginRight: 10 }} variant="body1">Student Score</Typography>
               <IconButton onClick={handleDownloadScore}>
                 <CloudDownloadOutlined htmlColor={theme.palette.grey[300]} />
               </IconButton>
             </div>
-            )}
+            )} */}
+
           </div>
           {/* TA can submit whenever the problem is created */}
           <div className={classes.submitBtn}>
