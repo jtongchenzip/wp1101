@@ -67,6 +67,7 @@ Or if you want to use the deployed version, go to `https://hackathon.judge.nanam
 5. Strongly recommend that you reserve enough RAM for running these services at local in case of judgecore's performance issue. (It's highly possible that the judge feature fails with less than 8G RAM.)
 6.  When you need to test the judge feature on the deployed website, contact [陳杰彤](https://www.facebook.com/jtongchenzip/) to open the judgecore.
 7.  Currently, this project will connect to the developer's RabbitMQ by default. If you want to connect to your own RabbitMQ, change `.env` in `/judgecore` and `/backend`. **Do not** start a rabbitmq service in docker because connection error is likely to happen. See [StackOverFlow](https://stackoverflow.com/questions/64952005/pika-rabbitmq-docker-with-tls-gen-connection-reset-no-logs).
+8.  Only a pure frontend hackathon can be judged now, i.e., only hack1 is supported, not hack2 nor hack3. 
 
 
 ### Job Distribution
