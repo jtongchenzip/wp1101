@@ -82,3 +82,6 @@ This project can judge your hackathon result with cypress online. It also gives 
    * 後端架構, API
    * design db schema
    * Judge core
+
+### 參考架構
+此 project 參考了資管系程式課程批改系統 PDOGS 的程式碼架構，但所有程式碼皆由組員從頭撰寫。
