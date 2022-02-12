@@ -1,2 +1,4 @@
 docker-compose.yaml
 backend/.env.prod.example
+backend/.env.local.example
+judgecore/.env.local.example
